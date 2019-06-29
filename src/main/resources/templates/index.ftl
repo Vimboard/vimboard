@@ -9,6 +9,12 @@
 <body>
 <h2>Index</h2>
 
+
+<h3>Test board config</h3>
+<p>Log dir: ${boardConfig.log}</p>
+<p>Www dir: ${boardConfig.www}</p>
+
+<h3>Test freemarker</h3>
 <table>
     <tr>
         <th>Id</th>

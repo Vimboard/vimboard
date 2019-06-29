@@ -7,7 +7,7 @@
     <!--    <link rel="stylesheet" href="css/style.css">-->
 </head>
 <body>
-<h2>Yes, it's admin</h2>
+<h2>Write to file</h2>
 
 </body>
 </html>
