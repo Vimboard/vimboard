@@ -9,4 +9,4 @@ rebuild:
 	mvn package
 
 run:
-	java -jar target/vimboard.jar
+	java -jar server/target/vimboard.jar
