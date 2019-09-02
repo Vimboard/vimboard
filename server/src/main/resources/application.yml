@@ -1,0 +1,9 @@
+board:
+  log: /h/board/log
+  www: /h/board/www
+
+server:
+  servlet:
+    session:
+      cookie:
+        name: _ssid

@@ -7,6 +7,7 @@ import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.Writer;
 import java.util.HashMap;
 
 @Controller()
+@RequestMapping("/admin.php")
 public class Admin {
 
     private final BoardConfig boardConfig;
@@ -28,7 +30,7 @@ public class Admin {
         this.freemarkerCfg = freemarkerCfg;
     }
 
-    @GetMapping("/index.php")
+    @GetMapping("/")
     public ModelAndView index() {
         var cities = cityService.findAll();
 
@@ -39,7 +41,7 @@ public class Admin {
         return new ModelAndView("index", params);
     }
 
-    @GetMapping("/write.php")
+    @GetMapping("/write")
     String home() throws Exception {
         Writer file = new FileWriter(new File(boardConfig.getWww() + "/index.html"));
         Template template = freemarkerCfg.getTemplate("write.ftl");
