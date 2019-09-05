@@ -1,7 +1,7 @@
-package com.github.vimboard.rest;
+package com.github.vimboard.server.rest;
 
-import com.github.vimboard.config.BoardConfig;
-import com.github.vimboard.service.ICityService;
+import com.github.vimboard.server.config.BoardConfig;
+import com.github.vimboard.server.service.ICityService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.vimboard.cli.mapper.SchemaMapper">
+
+    <sql id="createSchema">
+
+        CREATE SCHEMA vmb;
+
+        ----------------------------------------------------------------------
+
+        CREATE TABLE vmb.version (
+            version    varchar(20) NOT NULL,
+            UNIQUE(version)
+        );
+
+        ----------------------------------------------------------------------
+
+        CREATE TABLE vmb.board (
+            id          serial NOT NULL,
+            uri         varchar(58) NOT NULL,
+            title       text NOT NULL,
+            subtitle    text,
+            PRIMARY KEY(uri)
+        );
+        CREATE INDEX ON vmb.board(uri);
+
+        ----------------------------------------------------------------------
+
+        CREATE TABLE vmb.cite (
+            board           int NOT NULL,
+            post            bigint NOT NULL,
+            target_board    int NOT NULL,
+            target_post     bigint NOT NULL,
+            UNIQUE(board, post, target_board, target_post)
+        );
+        CREATE INDEX ON vmb.cite(board, post);
+        CREATE INDEX ON vmb.cite(target_board, target_post);
+
+        ----------------------------------------------------------------------
+
+        CREATE TABLE vmb.mod (
+            id               serial NOT NULL,
+            username         varchar(100) NOT NULL,
+            password         varchar(1000) NOT NULL,
+            PRIMARY KEY(id),
+            UNIQUE(username)
+        );
+
+        ----------------------------------------------------------------------
+
+        CREATE TABLE vmb.post (
+            board            int NOT NULL,
+            id               bigint NOT NULL, --
+            thread           bigint DEFAULT NULL,
+            subject          varchar(100) DEFAULT NULL,
+            email            varchar(30) DEFAULT NULL,
+            name             varchar(35) DEFAULT NULL,
+            trip             varchar(15) DEFAULT NULL,
+            capcode          varchar(50) DEFAULT NULL,
+            body             text NOT NULL,
+            body_nomarkup    text,
+            time             bigint NOT NULL,
+            bump             bigint DEFAULT NULL,
+            files            text DEFAULT NULL,
+            num_files        smallint DEFAULT 0,
+            filehash         text,
+            password         varchar(20) DEFAULT NULL,
+            ip               varchar(39) NOT NULL,
+            sticky           boolean NOT NULL,
+            locked           boolean NOT NULL,
+            cycle            boolean NOT NULL,
+            sage             boolean NOT NULL,
+            embed            text,
+            slug             varchar(256) DEFAULT NULL
+        ) PARTITION BY LIST(board);
+
+        ----------------------------------------------------------------------
+
+        CREATE TABLE vmb.resource (
+            board       int NOT NULL,
+            post        bigint NOT NULL,
+            filename    varchar(20) NOT NULL,
+            UNIQUE(board, post, filename)
+        );
+        CREATE INDEX ON vmb.resource(board, post);
+        CREATE INDEX ON vmb.resource(filename);
+
+    </sql>
+
+    <!--<sql id="createPostPartition">
+        CREATE TABLE vmb.post_#{id} PARTITION OF vmb.post (
+            UNIQUE (board, id)
+        ) FOR VALUES IN (#{id});
+
+
+        CREATE INDEX ON vmb.post_#{id} (thread, id);
+        CREATE INDEX ON vmb.post_#{id} (filehash(40));
+        CREATE INDEX ON vmb.post_#{id} (time);
+        CREATE INDEX ON vmb.post_#{id} (ip);
+        CREATE INDEX ON vmb.post_#{id} (thread, sticky, bump);
+    </sql>-->
+
+    <sql id="dropSchema">
+        DROP SCHEMA IF EXISTS vmb CASCADE;
+    </sql>
+
+    <select id="getVersion" resultType="String">
+        SELECT version();
+    </select>
+
+</mapper>

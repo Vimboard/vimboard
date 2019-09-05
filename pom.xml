@@ -13,7 +13,7 @@
     <description>Build all components</description>
 
     <modules>
-        <!--<module>admin-cli</module>-->
+        <module>cli</module>
         <module>server</module>
     </modules>
 

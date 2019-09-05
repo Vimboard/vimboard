@@ -1,4 +1,4 @@
-package com.github.vimboard.config;
+package com.github.vimboard.server.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

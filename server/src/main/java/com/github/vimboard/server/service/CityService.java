@@ -1,6 +1,6 @@
-package com.github.vimboard.service;
+package com.github.vimboard.server.service;
 
-import com.github.vimboard.model.City;
+import com.github.vimboard.server.model.City;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
