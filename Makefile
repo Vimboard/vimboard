@@ -13,3 +13,7 @@ run:
 
 run-cli:
 	java -jar cli/target/vimboard-cli.jar ${arg0}
+
+run-cli-createdb:
+	java -jar cli/target/vimboard-cli.jar drop-schema
+	java -jar cli/target/vimboard-cli.jar create-schema

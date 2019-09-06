@@ -5,12 +5,14 @@ import com.github.vimboard.cli.domain.DBVersion;
 import com.github.vimboard.version.ApplicationVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application implements CommandLineRunner {
+public class Application implements CommandLineRunner, ExitCodeGenerator {
 
+    private int exitCode = 0;
     private final SchemaDao schemaDao;
 
     @Autowired
@@ -19,13 +21,20 @@ public class Application implements CommandLineRunner {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        System.exit(SpringApplication.exit(
+                SpringApplication.run(Application.class, args)));
+    }
+
+    @Override
+    public int getExitCode() {
+        return exitCode;
     }
 
     @Override
     public void run(String... args) {
         if (args.length != 1) {
             doPrintUsage();
+            exitCode = 1;
             return;
         }
 
@@ -36,11 +45,15 @@ public class Application implements CommandLineRunner {
             case "drop-schema":
                 doDropSchema();
                 break;
+            case "help":
+                doPrintUsage();
+                break;
             case "version":
                 doPrintVersion();
                 break;
             default:
                 doPrintUsage();
+                exitCode = 1;
         }
     }
 
@@ -57,6 +70,7 @@ public class Application implements CommandLineRunner {
         System.out.println("Available commands:");
         System.out.println("   create-schema");
         System.out.println("   drop-schema");
+        System.out.println("   help");
         System.out.println("   version");
     }
 
