@@ -3,39 +3,41 @@ package com.github.vimboard.cli;
 import com.github.vimboard.cli.dao.SchemaDao;
 import com.github.vimboard.cli.domain.DBVersion;
 import com.github.vimboard.version.ApplicationVersion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-public class Application implements CommandLineRunner, ExitCodeGenerator {
+public class Application implements CommandLineRunner {
 
-    private int exitCode = 0;
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
+
+    private final ApplicationContext applicationContext;
     private final SchemaDao schemaDao;
 
     @Autowired
-    public Application(SchemaDao schemaDao) {
+    public Application(SchemaDao schemaDao, ConfigurableApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
         this.schemaDao = schemaDao;
     }
 
     public static void main(String[] args) {
-        System.exit(SpringApplication.exit(
-                SpringApplication.run(Application.class, args)));
-    }
-
-    @Override
-    public int getExitCode() {
-        return exitCode;
+        SpringApplication.run(Application.class, args);
     }
 
     @Override
     public void run(String... args) {
+        logger.info("Run application");
+
         if (args.length != 1) {
             doPrintUsage();
-            exitCode = 1;
-            return;
+            exit();
         }
 
         switch (args[0]) {
@@ -53,8 +55,10 @@ public class Application implements CommandLineRunner, ExitCodeGenerator {
                 break;
             default:
                 doPrintUsage();
-                exitCode = 1;
+                exit();
         }
+
+        logger.info("Complete application with success");
     }
 
     private void doCreateSchema() {
@@ -79,5 +83,12 @@ public class Application implements CommandLineRunner, ExitCodeGenerator {
         System.out.println("Database server: " + dbVersion.getServerVersion());
         System.out.println("Vimboard application: " + ApplicationVersion.get());
         System.out.println("Vimboard database: " + dbVersion.getSchemaVersion());
+    }
+
+    private void exit() {
+        logger.info("Exit application with fail");
+        final int actualExitCode = SpringApplication.exit(
+                applicationContext, (ExitCodeGenerator) () -> 1);
+        System.exit(actualExitCode);
     }
 }
