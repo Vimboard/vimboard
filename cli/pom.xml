@@ -18,12 +18,12 @@
         <dependency>
             <groupId>com.github.vimboard</groupId>
             <artifactId>version</artifactId>
-            <version>6.0.0</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.0</version>
+            <version>${ver.mybatis-spring-boot-starter}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

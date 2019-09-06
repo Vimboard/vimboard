@@ -22,7 +22,9 @@ public class Application implements CommandLineRunner {
     private final SchemaDao schemaDao;
 
     @Autowired
-    public Application(SchemaDao schemaDao, ConfigurableApplicationContext applicationContext) {
+    public Application(
+            ConfigurableApplicationContext applicationContext,
+            SchemaDao schemaDao) {
         this.applicationContext = applicationContext;
         this.schemaDao = schemaDao;
     }

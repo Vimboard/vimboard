@@ -4,9 +4,15 @@ import com.github.vimboard.server.config.BoardConfig;
 import com.github.vimboard.server.service.ICityService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ExitCodeGenerator;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,12 +25,22 @@ import java.util.HashMap;
 @RequestMapping("/admin.php")
 public class Admin {
 
+    private static final Logger logger = LoggerFactory.getLogger(Admin.class);
+
+    private final ApplicationContext applicationContext;
+
     private final BoardConfig boardConfig;
     private final Configuration freemarkerCfg;
+
     private final ICityService cityService;
 
     @Autowired
-    public Admin(BoardConfig boardConfig, ICityService cityService, Configuration freemarkerCfg) {
+    public Admin(
+            ApplicationContext applicationContext,
+            BoardConfig boardConfig,
+            ICityService cityService,
+            Configuration freemarkerCfg) {
+        this.applicationContext = applicationContext;
         this.boardConfig = boardConfig;
         this.cityService = cityService;
         this.freemarkerCfg = freemarkerCfg;
@@ -39,6 +55,14 @@ public class Admin {
         params.put("cities", cities);
 
         return new ModelAndView("index", params);
+    }
+
+    @GetMapping("/shutdown")
+    public void shutdown() {
+        logger.info("Exit application with success");
+        final int actualExitCode = SpringApplication.exit(
+                applicationContext, (ExitCodeGenerator) () -> 0);
+        System.exit(actualExitCode);
     }
 
     @GetMapping("/write")

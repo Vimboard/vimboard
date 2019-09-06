@@ -7,3 +7,14 @@ server:
     session:
       cookie:
         name: _ssid
+
+spring:
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.56.101/vimboard
+    username: vimadmin
+    password: vimadmin123
+
+  main:
+    banner-mode: 'OFF'
