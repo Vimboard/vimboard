@@ -4,10 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.vimboard</groupId>
     <artifactId>vimboard</artifactId>
-    <version>6.0.0</version>
     <packaging>pom</packaging>
+
+    <parent>
+        <groupId>com.github.vimboard</groupId>
+        <artifactId>vimboard-parent-pom</artifactId>
+        <version>6.0.0</version>
+        <relativePath>common/parent-pom.xml</relativePath>
+    </parent>
 
     <name>Vimboard POM</name>
     <description>Build all components</description>
@@ -19,7 +24,49 @@
     </modules>
 
     <build>
+
         <defaultGoal>package</defaultGoal>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-jars</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/cli/target</directory>
+                                    <includes>
+                                        <include>vimboard-cli.jar</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/server/target</directory>
+                                    <includes>
+                                        <include>vimboard-server.jar</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>${basedir}/common</directory>
+                                    <includes>
+                                        <include>config/*.yml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
     </build>
 
 </project>

@@ -9,11 +9,12 @@ rebuild:
 	mvn package
 
 run:
-	java -jar server/target/vimboard-server.jar
+	cd target; java -jar vimboard-server.jar
 
 run-cli:
-	java -jar cli/target/vimboard-cli.jar ${arg0}
+	cd target; java -jar vimboard-cli.jar ${arg0}
 
 run-cli-createdb:
-	java -jar cli/target/vimboard-cli.jar drop-schema
-	java -jar cli/target/vimboard-cli.jar create-schema
+	cd target; java -jar vimboard-cli.jar drop-schema
+	cd target; java -jar vimboard-cli.jar create-schema
+
