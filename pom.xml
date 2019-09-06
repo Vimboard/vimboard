@@ -13,6 +13,7 @@
     <description>Build all components</description>
 
     <modules>
+        <module>common/version</module>
         <module>cli</module>
         <module>server</module>
     </modules>

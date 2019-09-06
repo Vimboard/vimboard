@@ -3,16 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.vimboard.cli.mapper.SchemaMapper">
 
-    <sql id="createSchema">
+    <update id="createSchema" parameterType="String">
 
         CREATE SCHEMA vmb;
-
-        ----------------------------------------------------------------------
-
-        CREATE TABLE vmb.version (
-            version    varchar(20) NOT NULL,
-            UNIQUE(version)
-        );
 
         ----------------------------------------------------------------------
 
@@ -86,7 +79,15 @@
         CREATE INDEX ON vmb.resource(board, post);
         CREATE INDEX ON vmb.resource(filename);
 
-    </sql>
+        ----------------------------------------------------------------------
+
+        CREATE TABLE vmb.version (
+            version    varchar(20) NOT NULL,
+            UNIQUE(version)
+        );
+        INSERT INTO vmb.version (version) VALUES (#{version});
+
+    </update>
 
     <!--<sql id="createPostPartition">
         CREATE TABLE vmb.post_#{id} PARTITION OF vmb.post (
@@ -101,12 +102,21 @@
         CREATE INDEX ON vmb.post_#{id} (thread, sticky, bump);
     </sql>-->
 
-    <sql id="dropSchema">
+    <update id="dropSchema">
         DROP SCHEMA IF EXISTS vmb CASCADE;
-    </sql>
+    </update>
 
-    <select id="getVersion" resultType="String">
-        SELECT version();
+    <resultMap id="getVersionResult"
+               type="com.github.vimboard.cli.domain.DBVersion">
+        <result property="schemaVersion" column="schema_version"/>
+        <result property="serverVersion" column="server_version"/>
+    </resultMap>
+
+    <select id="getVersion" resultMap="getVersionResult">
+        SELECT version AS schema_version,
+               version() AS server_version
+        FROM vmb.version
+        LIMIT 1;
     </select>
 
 </mapper>

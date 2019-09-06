@@ -1,8 +1,8 @@
 package com.github.vimboard.cli;
 
 import com.github.vimboard.cli.dao.SchemaDao;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.vimboard.cli.domain.DBVersion;
+import com.github.vimboard.version.ApplicationVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,8 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
-
-    private static Logger logger = LoggerFactory.getLogger(Application.class);
 
     private final SchemaDao schemaDao;
 
@@ -26,21 +24,46 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.println("Startin application...");
-
-        if (args.length == 0) {
-            logger.error("USAGE");
+        if (args.length != 1) {
+            doPrintUsage();
             return;
         }
 
         switch (args[0]) {
             case "create-schema":
-                System.out.println(schemaDao.getVersion());
+                doCreateSchema();
                 break;
             case "drop-schema":
+                doDropSchema();
+                break;
+            case "version":
+                doPrintVersion();
                 break;
             default:
-                logger.error("USAGE");
+                doPrintUsage();
         }
+    }
+
+    private void doCreateSchema() {
+        schemaDao.createSchema();
+    }
+
+    private void doDropSchema() {
+        schemaDao.dropSchema();
+    }
+
+    private void doPrintUsage() {
+        System.out.println("Usage: vimboard-cli <command>");
+        System.out.println("Available commands:");
+        System.out.println("   create-schema");
+        System.out.println("   drop-schema");
+        System.out.println("   version");
+    }
+
+    private void doPrintVersion() {
+        DBVersion dbVersion = schemaDao.getVersion();
+        System.out.println("Database server: " + dbVersion.getServerVersion());
+        System.out.println("Vimboard application: " + ApplicationVersion.get());
+        System.out.println("Vimboard database: " + dbVersion.getSchemaVersion());
     }
 }

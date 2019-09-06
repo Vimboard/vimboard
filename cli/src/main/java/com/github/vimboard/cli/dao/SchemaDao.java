@@ -1,6 +1,8 @@
 package com.github.vimboard.cli.dao;
 
+import com.github.vimboard.cli.domain.DBVersion;
 import com.github.vimboard.cli.mapper.SchemaMapper;
+import com.github.vimboard.version.ApplicationVersion;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +15,19 @@ public class SchemaDao {
         this.sqlSession = sqlSession;
     }
 
-    public void create() {
-
+    public void createSchema() {
+        schemaMapper().createSchema(ApplicationVersion.get());
     }
 
-    public String getVersion() {
-        SchemaMapper schemaMapper = sqlSession.getMapper(SchemaMapper.class);
-        return "Server version: " + schemaMapper.getVersion();
+    public void dropSchema() {
+        schemaMapper().dropSchema();
+    }
+
+    public DBVersion getVersion() {
+        return schemaMapper().getVersion();
+    }
+
+    private SchemaMapper schemaMapper() {
+        return sqlSession.getMapper(SchemaMapper.class);
     }
 }
