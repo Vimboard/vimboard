@@ -2,7 +2,7 @@ package com.github.vimboard.cli;
 
 import com.github.vimboard.cli.dao.SchemaDao;
 import com.github.vimboard.cli.domain.DBVersion;
-import com.github.vimboard.starter.FooConfig;
+import com.github.vimboard.starter.FooBean;
 import com.github.vimboard.version.ApplicationVersion;
 import org.mybatis.spring.MyBatisSystemException;
 import org.slf4j.Logger;
@@ -21,17 +21,17 @@ public class CliApplication implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(CliApplication.class);
 
-    private final FooConfig fooConfig;
+    private final FooBean fooBean;
 
     private final ApplicationContext applicationContext;
     private final SchemaDao schemaDao;
 
     @Autowired
     public CliApplication(
-            FooConfig fooConfig,
+            FooBean fooBean,
             ConfigurableApplicationContext applicationContext,
             SchemaDao schemaDao) {
-        this.fooConfig = fooConfig;
+        this.fooBean = fooBean;
         this.applicationContext = applicationContext;
         this.schemaDao = schemaDao;
     }
@@ -93,8 +93,8 @@ public class CliApplication implements CommandLineRunner {
 
     private void doPrintFoo() {
         System.out.println("Foo:");
-        System.out.println("  - 1: " + fooConfig.getVar1());
-        System.out.println("  - 2: " + fooConfig.getVar2());
+        System.out.println("  - 1: " + fooBean.getVar1());
+        System.out.println("  - 2: " + fooBean.getVar2());
     }
 
     private void doPrintUsage() {
