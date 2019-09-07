@@ -18,9 +18,10 @@
     <description>Build all components</description>
 
     <modules>
-        <module>common/version</module>
         <module>cli</module>
         <module>server</module>
+        <module>starter</module>
+        <module>version</module>
     </modules>
 
     <build>
@@ -70,4 +71,3 @@
     </build>
 
 </project>
-

@@ -11,23 +11,16 @@
         <groupId>com.github.vimboard</groupId>
         <artifactId>vimboard-parent-pom</artifactId>
         <version>6.0.0</version>
-        <relativePath>../parent-pom.xml</relativePath>
+        <relativePath>../common/parent-pom.xml</relativePath>
     </parent>
 
-    <name>Lib: Version</name>
+    <name>Vimboard Version</name>
     <description>Application version number library</description>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ver.postgres>42.2.6</ver.postgres>
-    </properties>
 
     <build>
         <resources>
             <resource>
-                <directory>${basedir}/src/main/java</directory>
+                <directory>src/main/java</directory>
                 <filtering>true</filtering>
                 <excludes>
                     <exclude>**/*.java</exclude>

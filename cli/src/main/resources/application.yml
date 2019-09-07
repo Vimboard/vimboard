@@ -1,3 +1,7 @@
+foo:
+  var1: none
+  var2: none
+
 logging:
   level:
     root: OFF

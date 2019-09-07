@@ -17,6 +17,11 @@
     <dependencies>
         <dependency>
             <groupId>com.github.vimboard</groupId>
+            <artifactId>starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vimboard</groupId>
             <artifactId>version</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -53,4 +58,3 @@
     </build>
 
 </project>
-
