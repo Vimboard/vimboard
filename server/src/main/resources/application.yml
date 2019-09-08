@@ -1,6 +1,6 @@
-board:
-  log: /h/board/log
-  www: /h/board/www
+logging:
+  level:
+    root: WARN
 
 server:
   servlet:
@@ -18,3 +18,6 @@ spring:
 
   main:
     banner-mode: 'OFF'
+
+vimboard:
+  www: /var/www/vimboard/public

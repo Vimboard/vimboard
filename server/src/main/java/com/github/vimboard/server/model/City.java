@@ -2,6 +2,7 @@ package com.github.vimboard.server.model;
 
 import java.util.Objects;
 
+@Deprecated
 public class City {
 
     private Long id;

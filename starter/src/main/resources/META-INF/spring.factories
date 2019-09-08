@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.github.vimboard.starter.FooConfig
+com.github.vimboard.starter.VimboardConfig

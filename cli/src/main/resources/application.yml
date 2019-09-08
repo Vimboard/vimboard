@@ -1,10 +1,6 @@
-foo:
-  var1: none
-  var2: none
-
 logging:
   level:
-    root: OFF
+    root: WARN
 
 spring:
 
@@ -16,3 +12,6 @@ spring:
 
   main:
     banner-mode: 'OFF'
+
+vimboard:
+  www: /var/www/vimboard/public

@@ -15,15 +15,26 @@
 # ------------------------------------------------------------------------------
 logging:
   level:
-    root: OFF
+    root: WARN
 
 
 # ------------------------------------------------------------------------------
 # DATABASE CONNECTION
 # ------------------------------------------------------------------------------
 spring:
+#
+# Database connection
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost/databaseName
     username: username
     password: password
+
+
+# ------------------------------------------------------------------------------
+# VIMBOARD
+# ------------------------------------------------------------------------------
+vimboard:
+#
+# Static content location
+  www: /var/www/vimboard/public

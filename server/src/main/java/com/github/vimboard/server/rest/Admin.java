@@ -46,17 +46,6 @@ public class Admin {
         this.freemarkerCfg = freemarkerCfg;
     }
 
-    @GetMapping("/")
-    public ModelAndView index() {
-        var cities = cityService.findAll();
-
-        var params = new HashMap<String, Object>();
-        params.put("boardConfig", boardConfig);
-        params.put("cities", cities);
-
-        return new ModelAndView("index", params);
-    }
-
     @GetMapping("/shutdown")
     public void shutdown() {
         logger.info("Exit application with success");
@@ -66,6 +55,7 @@ public class Admin {
     }
 
     @GetMapping("/write")
+    @Deprecated
     String home() throws Exception {
         Writer file = new FileWriter(new File(boardConfig.getWww() + "/index.html"));
         Template template = freemarkerCfg.getTemplate("write.ftl");
@@ -73,5 +63,17 @@ public class Admin {
         file.flush();
         file.close();
         return "write";
+    }
+
+    @GetMapping("/write2")
+    @Deprecated
+    public ModelAndView write2() {
+        var cities = cityService.findAll();
+
+        var params = new HashMap<String, Object>();
+        params.put("boardConfig", boardConfig);
+        params.put("cities", cities);
+
+        return new ModelAndView("index", params);
     }
 }

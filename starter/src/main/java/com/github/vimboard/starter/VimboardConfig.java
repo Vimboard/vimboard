@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties(FooProperties.class)
-public class FooConfig {
+@EnableConfigurationProperties(VimboardProperties.class)
+public class VimboardConfig {
 
     @Bean
-    public FooBean fooBean(FooProperties fooProperties) {
-        return new FooBean(fooProperties);
+    public VimboardBean fooBean(VimboardProperties vimboardProperties) {
+        return new VimboardBean(vimboardProperties);
     }
 }

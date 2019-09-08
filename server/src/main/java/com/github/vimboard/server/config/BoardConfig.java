@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration("boardConfig")
 @ConfigurationProperties(prefix = "board")
+@Deprecated
 public class BoardConfig {
 
     private String log;
