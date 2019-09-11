@@ -7,12 +7,16 @@ import com.github.vimboard.server.domain.templates.PersonalMessageModel;
 import com.github.vimboard.version.ApplicationVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController()
 @RequestMapping("/mod.php")
@@ -24,7 +28,7 @@ public class ModController extends AbstractController {
     }
 
     @GetMapping("")
-    ModelAndView index() {
+    public ModelAndView index() {
         final var params = new HashMap<String, Object>();
 
         final var configModel = new ConfigModel();
@@ -43,13 +47,9 @@ public class ModController extends AbstractController {
         return new ModelAndView("page", params);
     }
 
-    @GetMapping("/foo")
-    String foo() {
-        return "MOD: foo";
-    }
-
-    @GetMapping("/bar")
-    String bar() {
-        return "MOD: bar";
+    @GetMapping({"/", "/**"})
+    public RedirectView redirectToIndex(HttpServletRequest request) {
+        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.SEE_OTHER);
+        return new RedirectView("/mod.php?/");
     }
 }
