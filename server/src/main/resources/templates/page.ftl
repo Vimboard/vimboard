@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,17 +7,18 @@
         var active_page = "page";
     </script>
     {% include 'header.html' %}
-    <title>${title}</title>
+    <title>${page.title}</title>
 </head>
-<body class="8chan vichan {% if mod %}is-moderator{% else %}is-not-moderator{% endif %} active-page" data-stylesheet="{% if config.default_stylesheet.1 != '' %}{{ config.default_stylesheet.1 }}{% else %}default{% endif %}">
+<body class="8chan vichan <#if page.mod??>is-moderator<#else>is-not-moderator</#if> active-page" data-stylesheet="{% if config.default_stylesheet.1 != '' %}{{ config.default_stylesheet.1 }}{% else %}default{% endif %}">
 {{ boardlist.top }}
 
-{% if pm %}<div class="top_notice">You have <a href="?/PM/{{ pm.id }}">an unread PM</a>{% if pm.waiting > 0 %}, plus {{ pm.waiting }} more waiting{% endif %}.</div><hr>{% endif %}
+<#if page.pm??><div class="top_notice">You have <a href="?/PM/${page.pm.id?string["0"]}">an unread PM</a><#if page.pm.waiting gt 0 >, plus ${page.pm.waiting} more waiting</#if>.</div><hr></#if>
+<#if page.pm??><div class="top_notice"><@spring.message "page.You_have"/> <a href="?/PM/${page.pm.id?string["0"]}"><@spring.message "page.An_unread_PM"/></a><#if page.pm.waiting gt 0 ><@spring.messageArgs "page.Plus_{count}_more_waiting", [ page.pm.waiting ]/></#if>.</div><hr></#if>
 <header>
-    <h1>{{ title }}</h1>
+    <h1>${page.title}</h1>
     <div class="subtitle">
-        <#if subtitle?has_content>${subtitle}</#if>
-        {% if mod and not hide_dashboard_link %}<p><a href="?/">{% trans %}Return to dashboard{% endtrans %}</a></p>{% endif %}
+        <#if page.subtitle?has_content>${page.subtitle}</#if>
+        <#if page.mod?? && !page.hideDashboardLink><p><a href="?/"><@spring.message "page.Return_to_dashboard"/></a></p></#if>
     </div>
 </header>
 {{ body }}

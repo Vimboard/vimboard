@@ -5,9 +5,9 @@ import com.github.vimboard.cli.mapper.SchemaMapper;
 import com.github.vimboard.version.ApplicationVersion;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class SchemaDao {
 
     private final SqlSession sqlSession;

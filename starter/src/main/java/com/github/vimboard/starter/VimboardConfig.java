@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class VimboardConfig {
 
     @Bean
-    public VimboardBean fooBean(VimboardProperties vimboardProperties) {
+    public VimboardBean getVimboardBean(VimboardProperties vimboardProperties) {
         return new VimboardBean(vimboardProperties);
     }
 }

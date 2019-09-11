@@ -2,9 +2,9 @@ package com.github.vimboard.server.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class BoardDao {
 
     private final SqlSession sqlSession;

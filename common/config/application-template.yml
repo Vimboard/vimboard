@@ -37,4 +37,4 @@ spring:
 vimboard:
 #
 # Static content location
-  www: /var/www/vimboard/public
+  www: /var/www/vimboard/public/

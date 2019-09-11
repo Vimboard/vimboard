@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 @RequestMapping("/post.php")
-public class Post {
+public class PostController {
 
     @GetMapping("/foo")
     String foo() {
