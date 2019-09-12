@@ -43,8 +43,8 @@ public class WebConfig {
         @Bean
         public LocaleResolver localeResolver() {
             SessionLocaleResolver slr = new SessionLocaleResolver();
-            //Locale locale = Locale.ENGLISH;
-            Locale locale = new Locale("ru", "RU");
+            Locale locale = Locale.ENGLISH;
+            //Locale locale = new Locale("ru", "RU");
             slr.setDefaultLocale(locale);
             return slr;
         }

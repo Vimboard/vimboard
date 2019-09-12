@@ -20,15 +20,17 @@ public class ConfigModel {
         return version;
     }
 
-    public void setVersion(String version) {
+    public ConfigModel setVersion(String version) {
         this.version = version;
+        return this;
     }
 
     public Map<String, String> getStylesheets() {
         return stylesheets;
     }
 
-    public void setStylesheets(Map<String, String> stylesheets) {
+    public ConfigModel setStylesheets(Map<String, String> stylesheets) {
         this.stylesheets = stylesheets;
+        return this;
     }
 }

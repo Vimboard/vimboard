@@ -8,17 +8,14 @@ import com.github.vimboard.version.ApplicationVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 
-@RestController()
+@Controller
 @RequestMapping("/mod.php")
 public class ModController extends AbstractController {
 
@@ -27,29 +24,44 @@ public class ModController extends AbstractController {
         super(messageSource);
     }
 
-    @GetMapping("")
-    public ModelAndView index() {
-        final var params = new HashMap<String, Object>();
-
-        final var configModel = new ConfigModel();
-        configModel.setVersion(ApplicationVersion.get());
-        params.put("config", configModel);
-
-        params.put("page", new PageModel()
-            //.setHideDashboardLink(true)
-            .setMod(new ModModel())
-            .setPm(new PersonalMessageModel()
-                .setId(2234525534L)
-                .setWaiting(15L))
-            .setTitle(i18n("page.Dashboard")));
-
-        // TODO mod_page(_('Dashboard'), 'mod/dashboard.html', $args);
-        return new ModelAndView("page", params);
+    @RequestMapping({"/", "/**"})
+    public String index(HttpServletRequest request) {
+        return redirectToDashboard(request);
     }
 
-    @GetMapping({"/", "/**"})
-    public RedirectView redirectToIndex(HttpServletRequest request) {
+    @RequestMapping("")
+    public String root(HttpServletRequest request, Model model) {
+        final String query = request.getQueryString();
+
+        if (query == null || query.isEmpty()) {
+            return redirectToDashboard(request);
+
+        } else if (query.equals("/")) {
+            return dashboard(model);
+        }
+
+        throw new ResourceBadRequestException();
+    }
+
+    // TODO mod_page(_('Dashboard'), 'mod/dashboard.html', $args);
+    private String dashboard(Model model) {
+
+        model.addAttribute("config", new ConfigModel()
+                .setVersion(ApplicationVersion.get()));
+
+        model.addAttribute("page", new PageModel()
+                .setHideDashboardLink(true)
+                .setMod(new ModModel())
+                .setPm(new PersonalMessageModel()
+                        .setId(2234525534L)
+                        .setWaiting(15L))
+                .setTitle(i18n("page.Dashboard")));
+
+        return "page";
+    }
+
+    private String redirectToDashboard(HttpServletRequest request) {
         request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.SEE_OTHER);
-        return new RedirectView("/mod.php?/");
+        return "redirect:/mod.php?/";
     }
 }

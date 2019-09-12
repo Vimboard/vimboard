@@ -21,7 +21,7 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.util.HashMap;
 
-@Controller()
+@Controller
 @RequestMapping("/admin.php")
 public class AdminController {
 
