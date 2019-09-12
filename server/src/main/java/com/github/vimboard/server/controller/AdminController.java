@@ -1,4 +1,4 @@
-package com.github.vimboard.server.rest;
+package com.github.vimboard.server.controller;
 
 import com.github.vimboard.server.domain.Board;
 import com.github.vimboard.server.service.ICityService;

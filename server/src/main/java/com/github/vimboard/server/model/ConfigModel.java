@@ -1,8 +1,13 @@
-package com.github.vimboard.server.domain.templates;
+package com.github.vimboard.server.model;
 
 import java.util.Map;
 
 public class ConfigModel {
+
+    /**
+     * TODO page body data-stylesheet = ( defaultStylesheet[1] is empty ? default : defaultStylesheet[1] )
+     */
+    private String[] defaultStylesheet = null;
 
     /**
      * Vimboard version.
@@ -14,7 +19,17 @@ public class ConfigModel {
      * "stylesheets/" folder for a list of available stylesheets (or
      * create your own).
      */
+    // TODO: unused
     private Map<String, String> stylesheets;
+
+    public String[] getDefaultStylesheet() {
+        return defaultStylesheet;
+    }
+
+    public ConfigModel setDefaultStylesheet(String[] defaultStylesheet) {
+        this.defaultStylesheet = defaultStylesheet;
+        return this;
+    }
 
     public String getVersion() {
         return version;

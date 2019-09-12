@@ -1,4 +1,4 @@
-package com.github.vimboard.server.domain.templates;
+package com.github.vimboard.server.model;
 
 public class PersonalMessageModel {
 

@@ -1,6 +1,4 @@
-package com.github.vimboard.server.domain.templates;
-
-import org.springframework.lang.NonNull;
+package com.github.vimboard.server.model;
 
 public class PageModel {
 

@@ -1,4 +1,4 @@
-package com.github.vimboard.server.rest;
+package com.github.vimboard.server.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

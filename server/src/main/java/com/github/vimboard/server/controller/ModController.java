@@ -1,9 +1,9 @@
-package com.github.vimboard.server.rest;
+package com.github.vimboard.server.controller;
 
-import com.github.vimboard.server.domain.templates.ConfigModel;
-import com.github.vimboard.server.domain.templates.ModModel;
-import com.github.vimboard.server.domain.templates.PageModel;
-import com.github.vimboard.server.domain.templates.PersonalMessageModel;
+import com.github.vimboard.server.model.ConfigModel;
+import com.github.vimboard.server.model.ModModel;
+import com.github.vimboard.server.model.PageModel;
+import com.github.vimboard.server.model.PersonalMessageModel;
 import com.github.vimboard.version.ApplicationVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
