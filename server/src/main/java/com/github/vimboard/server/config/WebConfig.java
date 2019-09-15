@@ -74,17 +74,19 @@ public class WebConfig {
                     .antMatchers("/admin.php/**").hasRole("ADMIN")
                     .antMatchers("/mod.php/**").hasRole("MOD")
                     .and()
-                .formLogin();
+                .formLogin()
+//                    .loginPage("/my-login-page")
+            ;
         }
-    }
 
-    @Bean
-    public UserDetailsService userDetailsService() throws Exception {
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(users.username("admin").password("admin123").roles("USER", "MOD", "ADMIN").build());
-        manager.createUser(users.username("mod").password("mod123").roles("USER", "MOD").build());
-        manager.createUser(users.username("user").password("user123").roles("USER").build());
-        return manager;
+        @Bean
+        public UserDetailsService userDetailsService() {
+            User.UserBuilder users = User.withDefaultPasswordEncoder();
+            InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+            manager.createUser(users.username("admin").password("admin123").roles("USER", "MOD", "ADMIN").build());
+            manager.createUser(users.username("mod").password("mod123").roles("USER", "MOD").build());
+            manager.createUser(users.username("user").password("user123").roles("USER").build());
+            return manager;
+        }
     }
 }
