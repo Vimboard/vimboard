@@ -3,10 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.vimboard.cli.mapper.SchemaMapper">
 
-    <update id="createSchema" parameterType="String">
+    <update id="create" parameterType="String">
 
         CREATE SCHEMA vmb;
 
+
+
+        ----------------------------------------------------------------------
+        -- TABLES
         ----------------------------------------------------------------------
 
         CREATE TABLE vmb.board (
@@ -87,6 +91,26 @@
         );
         INSERT INTO vmb.version (version) VALUES (#{version});
 
+
+
+        ----------------------------------------------------------------------
+        -- FUNCTIONS
+        ----------------------------------------------------------------------
+
+        CREATE FUNCTION vmb.sec_authorities_by_username(IN in_username varchar(100))
+        RETURNS TABLE (username varchar, authority varchar) AS $$
+            SELECT in_username, 'ROLE_MOD'
+        $$ LANGUAGE sql;
+
+        ----------------------------------------------------------------------
+
+        CREATE FUNCTION vmb.sec_users_by_username(IN in_username varchar(100))
+        RETURNS TABLE (username varchar, password VARCHAR, enabled boolean) AS $$
+            SELECT username, password, TRUE
+            FROM vmb.mod
+            WHERE username = in_username
+        $$ LANGUAGE sql;
+
     </update>
 
     <!--<sql id="createPostPartition">
@@ -102,21 +126,21 @@
         CREATE INDEX ON vmb.post_#{id} (thread, sticky, bump);
     </sql>-->
 
-    <update id="dropSchema">
+    <update id="drop">
         DROP SCHEMA IF EXISTS vmb CASCADE;
     </update>
 
-    <resultMap id="getVersionResult"
+    <select id="version" resultMap="versionResult">
+        SELECT version AS schema_version,
+               version() AS server_version
+        FROM vmb.version
+        LIMIT 1
+    </select>
+
+    <resultMap id="versionResult"
                type="com.github.vimboard.cli.domain.DBVersion">
         <result property="schemaVersion" column="schema_version"/>
         <result property="serverVersion" column="server_version"/>
     </resultMap>
-
-    <select id="getVersion" resultMap="getVersionResult">
-        SELECT version AS schema_version,
-               version() AS server_version
-        FROM vmb.version
-        LIMIT 1;
-    </select>
 
 </mapper>

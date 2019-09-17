@@ -6,9 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SchemaMapper {
 
-    void createSchema(String version);
+    void create(String version);
 
-    void dropSchema();
+    void drop();
 
-    DBVersion getVersion();
+    DBVersion version();
 }
