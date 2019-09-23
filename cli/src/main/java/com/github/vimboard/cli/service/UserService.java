@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,20 +20,24 @@ public class UserService {
         this.sqlSession = sqlSession;
     }
 
+    @Transactional
     public User alter(String username, String password) {
         String psw = new BCryptPasswordEncoder().encode(password);
         return userMapper().alter(username, psw);
     }
 
+    @Transactional
     public User create(String username, String password) {
         String psw = new BCryptPasswordEncoder().encode(password);
         return userMapper().create(username, psw);
     }
 
+    @Transactional
     public User drop(String username) {
         return userMapper().drop(username);
     }
 
+    @Transactional(readOnly = true)
     public List<User> list() {
         return userMapper().list();
     }

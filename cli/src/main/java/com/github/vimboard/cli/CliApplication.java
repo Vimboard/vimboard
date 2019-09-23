@@ -16,8 +16,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
+//@EnableTransactionManagement
 public class CliApplication implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(CliApplication.class);

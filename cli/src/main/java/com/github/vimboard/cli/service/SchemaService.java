@@ -6,6 +6,7 @@ import com.github.vimboard.version.ApplicationVersion;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SchemaService {
@@ -17,10 +18,12 @@ public class SchemaService {
         this.sqlSession = sqlSession;
     }
 
+    @Transactional
     public void create() {
         schemaMapper().create(ApplicationVersion.get());
     }
 
+    @Transactional
     public void drop() {
         schemaMapper().drop();
     }
