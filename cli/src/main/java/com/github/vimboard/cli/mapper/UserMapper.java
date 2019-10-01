@@ -8,14 +8,13 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    // TODO map result
-    User alter(String username, String password);
+    void alter(String username, String password);
 
-    // TODO map result
-    User create(String username, String password);
+    void create(String username, String password);
 
-    // TODO map result
-    User drop(String username);
+    void drop(String username);
+
+    User findByName(String username);
 
     // TODO map result
     List<User> list();

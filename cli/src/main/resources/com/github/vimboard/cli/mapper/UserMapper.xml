@@ -18,7 +18,7 @@
         DELETE FROM vmb.mod WHERE username = #{username}
     </delete>
 
-    <select id="find" resultMap="userResult">
+    <select id="findByName" resultType="com.github.vimboard.cli.domain.User"><!--resultMap="userResult"-->
         SELECT id, username, password FROM vmb.mod WHERE username = #{username} LIMIT 1
     </select>
 
@@ -26,11 +26,11 @@
         SELECT id, username, password FROM vmb.mod
     </select>
 
-    <resultMap id="userResult"
-               type="com.github.vimboard.cli.domain.User">
-        <result property="id" column="id"/>
-        <result property="username" column="username"/>
-        <result property="password" column="password"/>
-    </resultMap>
+    <!--<resultMap id="userResult"-->
+               <!--type="com.github.vimboard.cli.domain.User">-->
+        <!--<result property="id" column="id"/>-->
+        <!--<result property="username" column="username"/>-->
+        <!--<result property="password" column="password"/>-->
+    <!--</resultMap>-->
 
 </mapper>

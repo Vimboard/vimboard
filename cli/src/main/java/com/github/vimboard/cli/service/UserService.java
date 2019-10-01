@@ -23,18 +23,21 @@ public class UserService {
     @Transactional
     public User alter(String username, String password) {
         String psw = new BCryptPasswordEncoder().encode(password);
-        return userMapper().alter(username, psw);
+        userMapper().alter(username, psw);
+        return userMapper().findByName(username);
     }
 
     @Transactional
     public User create(String username, String password) {
         String psw = new BCryptPasswordEncoder().encode(password);
-        return userMapper().create(username, psw);
+        userMapper().create(username, psw);
+        return userMapper().findByName(username);
     }
 
     @Transactional
     public User drop(String username) {
-        return userMapper().drop(username);
+        userMapper().drop(username);
+        return userMapper().findByName(username);
     }
 
     @Transactional(readOnly = true)

@@ -27,6 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <ver.mybatis-spring-boot-starter>2.1.0</ver.mybatis-spring-boot-starter>
         <ver.postgres>42.2.6</ver.postgres>
+        <ver.spring-shell>2.0.0.RELEASE</ver.spring-shell>
     </properties>
 
 </project>
