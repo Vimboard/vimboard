@@ -21,7 +21,6 @@
         <module>cli</module>
         <module>server</module>
         <module>starter</module>
-        <module>version</module>
     </modules>
 
     <build>
