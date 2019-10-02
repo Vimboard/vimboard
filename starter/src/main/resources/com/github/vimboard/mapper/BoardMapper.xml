@@ -8,4 +8,8 @@
         VALUES (#{uri}, #{title}, #{subtitle})
     </insert>
 
+    <select id="list" resultType="com.github.vimboard.domain.Board">
+        SELECT id, uri, title, subtitle FROM vmb.board
+    </select>
+
 </mapper>

@@ -43,7 +43,7 @@ public class UserCommand {
         return userToString(user);
     }
 
-    @ShellMethod(key = "user-list", value = "List all users")
+    @ShellMethod(key = "user-list", value = "List all users.")
     public String list() {
         StringBuilder sb = new StringBuilder();
         for (User user : userService.list()) {
@@ -56,6 +56,6 @@ public class UserCommand {
     }
 
     private String userToString(User user) {
-        return user.getUsername() + "(" + user.getId() + ")";
+        return user.getId() + "(" + user.getUsername() + ")";
     }
 }

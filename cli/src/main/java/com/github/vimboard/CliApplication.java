@@ -11,10 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = {
-//        "com.github.vimboard.starter.*",
-//        "com.github.vimboard.cli.*"
-//})
 public class CliApplication implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(CliApplication.class);

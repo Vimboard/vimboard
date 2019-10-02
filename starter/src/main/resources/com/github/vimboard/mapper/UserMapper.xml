@@ -26,11 +26,4 @@
         SELECT id, username, password FROM vmb.mod
     </select>
 
-    <!--<resultMap id="userResult"-->
-               <!--type="com.github.vimboard.starter.domain.User">-->
-        <!--<result property="id" column="id"/>-->
-        <!--<result property="username" column="username"/>-->
-        <!--<result property="password" column="password"/>-->
-    <!--</resultMap>-->
-
 </mapper>
