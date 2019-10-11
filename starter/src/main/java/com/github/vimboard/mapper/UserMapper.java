@@ -16,6 +16,5 @@ public interface UserMapper {
 
     User findByName(String username);
 
-    // TODO map result
     List<User> list();
 }

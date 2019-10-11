@@ -12,6 +12,3 @@ spring:
 
   main:
     banner-mode: 'OFF'
-
-vimboard:
-  www: /var/www/vimboard/public/

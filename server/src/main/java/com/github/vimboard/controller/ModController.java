@@ -1,5 +1,6 @@
 package com.github.vimboard.controller;
 
+import com.github.vimboard.config.VimboardProperties;
 import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.model.ConfigModel;
 import com.github.vimboard.model.ModModel;
@@ -19,9 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/mod.php")
 public class ModController extends AbstractController {
 
+    private final VimboardProperties vimboardProperties;
+
     @Autowired
-    public ModController(MessageSource messageSource) {
+    public ModController(
+            MessageSource messageSource,
+            VimboardProperties vimboardProperties) {
         super(messageSource);
+        this.vimboardProperties = vimboardProperties;
     }
 
     @RequestMapping({"/", "/**"})
@@ -47,12 +53,16 @@ public class ModController extends AbstractController {
     private String dashboard(Model model) {
 
         model.addAttribute("config", new ConfigModel()
+                .setDefaultStylesheet(new String[] {
+                        vimboardProperties.getAllBoards().getDefaultStylesheet(),
+                        vimboardProperties.getAllBoards().getStylesheets().get(vimboardProperties.getAllBoards().getDefaultStylesheet())
+                })
                 .setVersion(VimboardVersion.get()));
 
         model.addAttribute("page", new PageModel()
                 .setHideDashboardLink(true)
-                .setMod(new ModModel())
-                .setPm(new PersonalMessageModel()
+                .setMod(new ModModel()) // TODO
+                .setPm(new PersonalMessageModel() // TODO
                         .setId(2234525534L)
                         .setWaiting(15L))
                 .setTitle(i18n("page.Dashboard")));

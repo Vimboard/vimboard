@@ -1,7 +1,6 @@
 package com.github.vimboard.command;
 
 import com.github.vimboard.domain.Board;
-import com.github.vimboard.domain.User;
 import com.github.vimboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;

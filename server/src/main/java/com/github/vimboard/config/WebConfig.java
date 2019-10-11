@@ -1,6 +1,5 @@
 package com.github.vimboard.config;
 
-import com.github.vimboard.config.VimboardBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,11 +26,11 @@ public class WebConfig {
     @EnableWebMvc
     public static class WebMvcConfig implements WebMvcConfigurer {
 
-        private final VimboardBean vimboardBean;
+        private final VimboardProperties vimboardProperties;
 
         @Autowired
-        public WebMvcConfig(VimboardBean vimboardBean) {
-            this.vimboardBean = vimboardBean;
+        public WebMvcConfig(VimboardProperties vimboardProperties) {
+            this.vimboardProperties = vimboardProperties;
         }
 
         @Bean
@@ -60,7 +59,7 @@ public class WebConfig {
             registry
                 .addResourceHandler("/**")
                 .addResourceLocations(
-                        "file:" + vimboardBean.getWww(),
+                        "file:" + vimboardProperties.getWww(),
                         "classpath:/static/");
         }
     }
@@ -104,15 +103,5 @@ public class WebConfig {
         public PasswordEncoder passwordEncoder() {
             return new BCryptPasswordEncoder();
         }
-
-//        @Bean
-//        public UserDetailsService userDetailsService() {
-//            User.UserBuilder users = User.withDefaultPasswordEncoder();
-//            InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//            manager.createUser(users.username("admin").password("admin123").roles("USER", "MOD", "ADMIN").build());
-//            manager.createUser(users.username("mod").password("mod123").roles("USER", "MOD").build());
-//            manager.createUser(users.username("user").password("user123").roles("USER").build());
-//            return manager;
-//        }
     }
 }
