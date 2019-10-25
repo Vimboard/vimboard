@@ -11,6 +11,7 @@
 </head>
 <body class="8chan vichan <#if page.mod??>is-moderator<#else>is-not-moderator</#if> active-page" data-stylesheet="<#if (config.defaultStylesheet[1])?has_content>${config.defaultStylesheet[1]}<#else>default</#if>">
 {{ boardlist.top }}
+${boardlist}
 
 <#if page.pm??><div class="top_notice"><@spring.message "page.You_have"/> <a href="?/PM/${page.pm.id?string["0"]}"><@spring.message "page.An_unread_PM"/></a><#if page.pm.waiting gt 0 ><@spring.messageArgs "page.Plus_{count}_more_waiting", [ page.pm.waiting ]/></#if>.</div><hr></#if>
 <header>
@@ -20,7 +21,7 @@
         <#if page.mod?? && !page.hideDashboardLink><p><a href="?/"><@spring.message "page.Return_to_dashboard"/></a></p></#if>
     </div>
 </header>
-{{ body }}
+<#include body>
 <hr>
 <footer>
     <p class="unimportant" style="margin-top:20px;text-align:center;">- Tinyboard +

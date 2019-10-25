@@ -5,7 +5,7 @@ import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.model.ConfigModel;
 import com.github.vimboard.model.ModModel;
 import com.github.vimboard.model.PageModel;
-import com.github.vimboard.model.PersonalMessageModel;
+import com.github.vimboard.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -20,13 +20,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/mod.php")
 public class ModController extends AbstractController {
 
+    private final BoardRepository boardRepository;
     private final VimboardProperties vimboardProperties;
 
     @Autowired
     public ModController(
             MessageSource messageSource,
+            BoardRepository boardRepository,
             VimboardProperties vimboardProperties) {
         super(messageSource);
+        this.boardRepository = boardRepository;
         this.vimboardProperties = vimboardProperties;
     }
 
@@ -49,8 +52,23 @@ public class ModController extends AbstractController {
         throw new ResourceBadRequestException();
     }
 
-    // TODO mod_page(_('Dashboard'), 'mod/dashboard.html', $args);
     private String dashboard(Model model) {
+
+        //model.addAttribute("boards", boardService.list()); // todo
+
+        //model.addAttribute("noticeboard",  // todo
+
+        //model.addAttribute("unread_pms", // todo
+
+        //model.addAttribute("reports", // todo
+
+        //model.addAttribute("logout_token", // todo
+
+        return modPage("mod/dashboard.ftl", model, i18n("page.Dashboard"), null);
+    }
+
+    // TODO move
+    private String modPage(String bodyTemplate, Model model, String pageTitle, String pageSubTitle) {
 
         model.addAttribute("config", new ConfigModel()
                 .setDefaultStylesheet(new String[] {
@@ -60,12 +78,16 @@ public class ModController extends AbstractController {
                 .setVersion(VimboardVersion.get()));
 
         model.addAttribute("page", new PageModel()
-                .setHideDashboardLink(true)
+                // 'boardlist' => createBoardlist($mod), // TODO
+                .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftl"))
                 .setMod(new ModModel()) // TODO
-                .setPm(new PersonalMessageModel() // TODO
-                        .setId(2234525534L)
-                        .setWaiting(15L))
-                .setTitle(i18n("page.Dashboard")));
+                .setTitle(pageTitle)
+                .setSubtitle(pageSubTitle)
+                );
+
+        model.addAttribute("boardlist", "<hr><h4>"+ vimboardProperties.getAllBoards().getBoards()/*.getClass().getName()*/ + "</h4><hr>");
+
+        model.addAttribute("body", bodyTemplate);
 
         return "page";
     }

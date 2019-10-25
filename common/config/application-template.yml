@@ -1,6 +1,6 @@
-# ------------------------------------------------------------------------------
+# ============================================================================
 # Vimboard default configuration file
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 #
 # WARNING: Please leave this file unchanged. If you would like to make
 # instance-specific changes to your own setup, please use application.yml.
@@ -10,20 +10,20 @@
 #
 
 
-# ------------------------------------------------------------------------------
-# LOGGING
-# ------------------------------------------------------------------------------
+# ============================================================================
+# SERVER SETTINGS
+# ----------------------------------------------------------------------------
+
+# Logging
 logging:
   level:
     root: WARN
 
+server:
+  port: 8080
 
-# ------------------------------------------------------------------------------
-# DATABASE CONNECTION
-# ------------------------------------------------------------------------------
-spring:
-#
 # Database connection
+spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost/databaseName
@@ -31,10 +31,79 @@ spring:
     password: password
 
 
-# ------------------------------------------------------------------------------
+# ============================================================================
 # VIMBOARD
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 vimboard:
-#
-# Static content location
+
+  # todo - move to board config
+  # Static content location
   www: /var/www/vimboard/public/
+
+  # ==========================================================================
+  # The common configuration for all boards.
+  # --------------------------------------------------------------------------
+  all-boards:
+
+    # ------------------------------------------------------------------------
+    # Display settings
+    # ------------------------------------------------------------------------
+
+    # For lack of a better name, “boardlinks” are those sets of navigational
+    # links that appear at the top and bottom of board pages. They can be a
+    # list of links to boards and/or other pages such as status blogs and
+    # social network profiles/pages.
+    #
+    # "Groups" in the boardlinks are marked with square brackets. Vimboard
+    # allows for infinite recursion with groups. Each array in boards
+    # porperty represents a new square bracket group.
+    #
+#    boards:
+#      - General group:
+#        - a
+#        - b
+#      - Second group:
+#        - c
+#        - d
+#        - e: http://example.org/e
+#      - f
+#      - g
+#      - Recursive:
+#        - h
+#        - Inner:
+#          - i
+#          - j
+#      - status: http://example.org/status
+
+    # Whether or not to put brackets around the whole board list.
+    boardlist-wrap-bracket: false
+
+    # The default stylesheet to use.
+    default-stylesheet: Yotsuba B
+
+    # Custom stylesheets available for the user to choose.
+    # See the "stylesheets/" folder for a list of available
+    # stylesheets (or create your own).
+    #
+    stylesheets:
+      Yotsuba B: ''
+      Yotsuba: yotsuba.css
+#      Futaba: futaba.css
+#      Dark: dark.css
+
+  # ==========================================================================
+  # Separate configurations that overrides settings
+  # of the common configuration for each board.
+  # --------------------------------------------------------------------------
+#  customBoard:
+
+    # ========================================================================
+    # /a/ board settings
+    # ------------------------------------------------------------------------
+#    a: ... same as allBoards ...
+
+
+    # ========================================================================
+    # /b/ board settings
+    # ------------------------------------------------------------------------
+#    b: ... same as allBoards ...

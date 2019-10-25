@@ -5,6 +5,25 @@ import java.util.Map;
 
 public class BoardProperties {
 
+    // Display settings ------------------------------------------------------
+
+    /**
+     * For lack of a better name, “boardlinks” are those sets of navigational
+     * links that appear at the top and bottom of board pages. They can be a
+     * list of links to boards and/or other pages such as status blogs and
+     * social network profiles/pages.
+     *
+     * "Groups" in the boardlinks are marked with square brackets. Vimboard
+     * allows for infinite recursion with groups. Each array in boards
+     * porperty represents a new square bracket group.
+     */
+    private Map boards;
+
+    /**
+     * Whether or not to put brackets around the whole board list.
+     */
+    private Boolean boardlistWrapBracket;
+
     /**
      * The default stylesheet to use.
      */
@@ -20,6 +39,18 @@ public class BoardProperties {
     // Init ------------------------------------------------------------------
 
     static void init(final BoardProperties b, VimboardProperties v) {
+
+        if (b.boards == null) {
+            b.boards = (v == null
+                    ? null
+                    : v.getAllBoards().boards);
+        }
+
+        if (b.boardlistWrapBracket == null) {
+            b.boardlistWrapBracket = (v == null
+                    ? false
+                    : v.getAllBoards().boardlistWrapBracket);
+        }
 
         if (b.defaultStylesheet == null) {
             b.defaultStylesheet = (v == null
@@ -41,6 +72,22 @@ public class BoardProperties {
     }
 
     // Getters and setters ---------------------------------------------------
+
+    public Map getBoards() {
+        return boards;
+    }
+
+    public void setBoards(Map boards) {
+        this.boards = boards;
+    }
+
+    public boolean isBoardlistWrapBracket() {
+        return boardlistWrapBracket;
+    }
+
+    public void setBoardlistWrapBracket(boolean boardlistWrapBracket) {
+        this.boardlistWrapBracket = boardlistWrapBracket;
+    }
 
     public String getDefaultStylesheet() {
         return defaultStylesheet;

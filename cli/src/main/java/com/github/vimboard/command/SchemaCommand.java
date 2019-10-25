@@ -1,6 +1,6 @@
 package com.github.vimboard.command;
 
-import com.github.vimboard.service.SchemaService;
+import com.github.vimboard.repository.SchemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -8,20 +8,20 @@ import org.springframework.shell.standard.ShellMethod;
 @ShellComponent
 public class SchemaCommand {
 
-    private final SchemaService schemaService;
+    private final SchemaRepository schemaRepository;
 
     @Autowired
-    public SchemaCommand(SchemaService schemaService) {
-        this.schemaService = schemaService;
+    public SchemaCommand(SchemaRepository schemaRepository) {
+        this.schemaRepository = schemaRepository;
     }
 
     @ShellMethod(key = "schema-create", value = "Create vimboard database schema.")
     public void create() {
-        schemaService.create();
+        schemaRepository.create();
     }
 
     @ShellMethod(key = "schema-drop", value = "Drop vimboard database schema.")
     public void drop() {
-        schemaService.drop();
+        schemaRepository.drop();
     }
 }

@@ -1,5 +1,7 @@
 package com.github.vimboard.config;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -7,13 +9,15 @@ import javax.annotation.PostConstruct;
 public class VimboardProperties {
 
     /**
-     * TODO
+     * The common configuration for all boards.
      */
+    @NestedConfigurationProperty
     private BoardProperties allBoards;
 
     /**
-     * TODO
-     */
+      * Separate configurations that overrides settings
+      * of the common configuration for each board.
+      */
     private Map<String, BoardProperties> customBoard;
 
     /**

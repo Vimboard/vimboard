@@ -1,22 +1,22 @@
-package com.github.vimboard.service;
+package com.github.vimboard.repository;
 
 import com.github.vimboard.domain.User;
 import com.github.vimboard.mapper.UserMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-public class UserService {
+@Repository
+public class UserRepository {
 
     private final SqlSession sqlSession;
 
     @Autowired
-    public UserService(SqlSession sqlSession) {
+    public UserRepository(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 

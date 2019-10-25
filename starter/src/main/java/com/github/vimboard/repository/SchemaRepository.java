@@ -1,20 +1,20 @@
-package com.github.vimboard.service;
+package com.github.vimboard.repository;
 
 import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.domain.DBVersion;
 import com.github.vimboard.mapper.SchemaMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class SchemaService {
+@Repository
+public class SchemaRepository {
 
     private final SqlSession sqlSession;
 
     @Autowired
-    public SchemaService(SqlSession sqlSession) {
+    public SchemaRepository(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 

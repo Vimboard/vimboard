@@ -1,21 +1,21 @@
-package com.github.vimboard.service;
+package com.github.vimboard.repository;
 
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.mapper.BoardMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-public class BoardService {
+@Repository
+public class BoardRepository {
 
     private final SqlSession sqlSession;
 
     @Autowired
-    public BoardService(SqlSession sqlSession) {
+    public BoardRepository(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 
