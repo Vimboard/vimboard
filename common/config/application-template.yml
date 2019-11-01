@@ -46,6 +46,17 @@ vimboard:
   all-boards:
 
     # ------------------------------------------------------------------------
+    # Directory/file settings
+    # ------------------------------------------------------------------------
+
+    # Name of index file.
+    file-index: index.html
+
+    # The root directory, including the trailing slash,
+    # Examples: '/', 'http://boards.chan.org/', '/chan/'.
+    root: /
+
+    # ------------------------------------------------------------------------
     # Display settings
     # ------------------------------------------------------------------------
 

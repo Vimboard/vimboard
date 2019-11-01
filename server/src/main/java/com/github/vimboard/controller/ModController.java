@@ -5,7 +5,7 @@ import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.model.ConfigModel;
 import com.github.vimboard.model.ModModel;
 import com.github.vimboard.model.PageModel;
-import com.github.vimboard.repository.BoardRepository;
+import com.github.vimboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -20,16 +20,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/mod.php")
 public class ModController extends AbstractController {
 
-    private final BoardRepository boardRepository;
+    private final BoardService boardService;
     private final VimboardProperties vimboardProperties;
 
     @Autowired
     public ModController(
             MessageSource messageSource,
-            BoardRepository boardRepository,
+            BoardService boardService,
             VimboardProperties vimboardProperties) {
         super(messageSource);
-        this.boardRepository = boardRepository;
+        this.boardService = boardService;
         this.vimboardProperties = vimboardProperties;
     }
 
@@ -78,7 +78,7 @@ public class ModController extends AbstractController {
                 .setVersion(VimboardVersion.get()));
 
         model.addAttribute("page", new PageModel()
-                // 'boardlist' => createBoardlist($mod), // TODO
+                .setBoardlist(boardService.buildBoardlist())
                 .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftl"))
                 .setMod(new ModModel()) // TODO
                 .setTitle(pageTitle)

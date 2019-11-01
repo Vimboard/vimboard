@@ -3,6 +3,11 @@ package com.github.vimboard.model;
 public class PageModel {
 
     /**
+     * Html rendered board list bar.
+     */
+    private BoardlistModel boardlist = null;
+
+    /**
      * If {@code true} then don't draw return to dashboard link.
      */
     private Boolean hideDashboardLink = false;
@@ -26,6 +31,17 @@ public class PageModel {
      * Title of the page.
      */
     private String title;
+
+    // Getters and setters ---------------------------------------------------
+
+    public BoardlistModel getBoardlist() {
+        return boardlist;
+    }
+
+    public PageModel setBoardlist(BoardlistModel boardlist) {
+        this.boardlist = boardlist;
+        return this;
+    }
 
     public Boolean getHideDashboardLink() {
         return hideDashboardLink;

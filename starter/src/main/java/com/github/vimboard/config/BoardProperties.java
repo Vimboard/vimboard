@@ -5,6 +5,19 @@ import java.util.Map;
 
 public class BoardProperties {
 
+    // Directory/file settings -----------------------------------------------
+
+    /**
+     * Name of index file.
+     */
+    private String fileIndex;
+
+    /**
+     * The root directory, including the trailing slash,
+     * Examples: '/', 'http://boards.chan.org/', '/chan/'.
+     */
+    private String root;
+
     // Display settings ------------------------------------------------------
 
     /**
@@ -40,6 +53,22 @@ public class BoardProperties {
 
     static void init(final BoardProperties b, VimboardProperties v) {
 
+        // Directory/file settings -------------------------------------------
+
+        if (b.fileIndex == null) {
+            b.fileIndex = (v == null
+                    ? "index.html"
+                    : v.getAllBoards().fileIndex);
+        }
+
+        if (b.root == null) {
+            b.root = (v == null
+                    ? "/"
+                    : v.getAllBoards().root);
+        }
+
+        // Display settings --------------------------------------------------
+
         if (b.boards == null) {
             b.boards = (v == null
                     ? null
@@ -73,6 +102,22 @@ public class BoardProperties {
 
     // Getters and setters ---------------------------------------------------
 
+    public String getFileIndex() {
+        return fileIndex;
+    }
+
+    public void setFileIndex(String fileIndex) {
+        this.fileIndex = fileIndex;
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
+    }
+
     public Map getBoards() {
         return boards;
     }
@@ -81,11 +126,11 @@ public class BoardProperties {
         this.boards = boards;
     }
 
-    public boolean isBoardlistWrapBracket() {
+    public Boolean getBoardlistWrapBracket() {
         return boardlistWrapBracket;
     }
 
-    public void setBoardlistWrapBracket(boolean boardlistWrapBracket) {
+    public void setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
         this.boardlistWrapBracket = boardlistWrapBracket;
     }
 
