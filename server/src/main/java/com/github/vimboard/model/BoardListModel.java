@@ -1,6 +1,6 @@
 package com.github.vimboard.model;
 
-public class BoardlistModel {
+public class BoardListModel {
 
     private String top;
     private String bottom;
@@ -9,7 +9,7 @@ public class BoardlistModel {
         return top;
     }
 
-    public BoardlistModel setTop(String top) {
+    public BoardListModel setTop(String top) {
         this.top = top;
         return this;
     }
@@ -18,7 +18,7 @@ public class BoardlistModel {
         return bottom;
     }
 
-    public BoardlistModel setBottom(String bottom) {
+    public BoardListModel setBottom(String bottom) {
         this.bottom = bottom;
         return this;
     }

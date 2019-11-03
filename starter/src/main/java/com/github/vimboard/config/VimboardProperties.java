@@ -12,13 +12,13 @@ public class VimboardProperties {
      * The common configuration for all boards.
      */
     @NestedConfigurationProperty
-    private BoardProperties allBoards;
+    private BoardProperties all;
 
     /**
       * Separate configurations that overrides settings
       * of the common configuration for each board.
       */
-    private Map<String, BoardProperties> customBoard;
+    private Map<String, BoardProperties> custom;
 
     /**
       * Static content location.
@@ -30,16 +30,16 @@ public class VimboardProperties {
     @PostConstruct
     public void init() {
 
-        if (allBoards == null) {
-            allBoards = new BoardProperties();
+        if (all == null) {
+            all = new BoardProperties();
         }
-        BoardProperties.init(allBoards, null);
+        BoardProperties.init(all, null);
 
-        if (customBoard == null) {
-            customBoard = new HashMap<>();
+        if (custom == null) {
+            custom = new HashMap<>();
         }
-        for (String boardUrl : customBoard.keySet()) {
-            BoardProperties b = customBoard.get(boardUrl);
+        for (String boardUrl : custom.keySet()) {
+            BoardProperties b = custom.get(boardUrl);
             BoardProperties.init(b, this);
         }
 
@@ -50,20 +50,20 @@ public class VimboardProperties {
 
     // Getters and setters ---------------------------------------------------
 
-    public BoardProperties getAllBoards() {
-        return allBoards;
+    public BoardProperties getAll() {
+        return all;
     }
 
-    public void setAllBoards(BoardProperties allBoards) {
-        this.allBoards = allBoards;
+    public void setAll(BoardProperties all) {
+        this.all = all;
     }
 
-    public Map<String, BoardProperties> getCustomBoard() {
-        return customBoard;
+    public Map<String, BoardProperties> getCustom() {
+        return custom;
     }
 
-    public void setCustomBoard(Map<String, BoardProperties> customBoard) {
-        this.customBoard = customBoard;
+    public void setCustom(Map<String, BoardProperties> custom) {
+        this.custom = custom;
     }
 
     public String getWww() {
@@ -72,5 +72,13 @@ public class VimboardProperties {
 
     public void setWww(String www) {
         this.www = www;
+    }
+
+    // Static ----------------------------------------------------------------
+
+    public static BoardProperties props(
+            VimboardProperties vimboardProperties, String boardUri) {
+        final BoardProperties result = vimboardProperties.custom.get(boardUri);
+        return (result == null) ? vimboardProperties.all : result;
     }
 }

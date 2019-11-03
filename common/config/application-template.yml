@@ -43,7 +43,7 @@ vimboard:
   # ==========================================================================
   # The common configuration for all boards.
   # --------------------------------------------------------------------------
-  all-boards:
+  all:
 
     # ------------------------------------------------------------------------
     # Directory/file settings
@@ -106,7 +106,7 @@ vimboard:
   # Separate configurations that overrides settings
   # of the common configuration for each board.
   # --------------------------------------------------------------------------
-#  customBoard:
+#  custom:
 
     # ========================================================================
     # /a/ board settings

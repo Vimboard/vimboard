@@ -72,20 +72,20 @@ public class ModController extends AbstractController {
 
         model.addAttribute("config", new ConfigModel()
                 .setDefaultStylesheet(new String[] {
-                        vimboardProperties.getAllBoards().getDefaultStylesheet(),
-                        vimboardProperties.getAllBoards().getStylesheets().get(vimboardProperties.getAllBoards().getDefaultStylesheet())
+                        vimboardProperties.getAll().getDefaultStylesheet(),
+                        vimboardProperties.getAll().getStylesheets().get(vimboardProperties.getAll().getDefaultStylesheet())
                 })
                 .setVersion(VimboardVersion.get()));
 
         model.addAttribute("page", new PageModel()
-                .setBoardlist(boardService.buildBoardlist())
+                .setBoardlist(boardService.buildBoardList())
                 .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftl"))
                 .setMod(new ModModel()) // TODO
                 .setTitle(pageTitle)
                 .setSubtitle(pageSubTitle)
                 );
 
-        model.addAttribute("boardlist", "<hr><h4>"+ vimboardProperties.getAllBoards().getBoards()/*.getClass().getName()*/ + "</h4><hr>");
+        model.addAttribute("boardlist", "<hr><h4>"+ vimboardProperties.getAll().getBoards()/*.getClass().getName()*/ + "</h4><hr>");
 
         model.addAttribute("body", bodyTemplate);
 

@@ -58,13 +58,13 @@ public class BoardProperties {
         if (b.fileIndex == null) {
             b.fileIndex = (v == null
                     ? "index.html"
-                    : v.getAllBoards().fileIndex);
+                    : v.getAll().fileIndex);
         }
 
         if (b.root == null) {
             b.root = (v == null
                     ? "/"
-                    : v.getAllBoards().root);
+                    : v.getAll().root);
         }
 
         // Display settings --------------------------------------------------
@@ -72,19 +72,19 @@ public class BoardProperties {
         if (b.boards == null) {
             b.boards = (v == null
                     ? null
-                    : v.getAllBoards().boards);
+                    : v.getAll().boards);
         }
 
         if (b.boardlistWrapBracket == null) {
             b.boardlistWrapBracket = (v == null
                     ? false
-                    : v.getAllBoards().boardlistWrapBracket);
+                    : v.getAll().boardlistWrapBracket);
         }
 
         if (b.defaultStylesheet == null) {
             b.defaultStylesheet = (v == null
                     ? "Yotsuba B"
-                    : v.getAllBoards().defaultStylesheet);
+                    : v.getAll().defaultStylesheet);
         }
 
         if (b.stylesheets == null) {
@@ -95,7 +95,7 @@ public class BoardProperties {
                 //b.stylesheets.put("Futaba", "futaba.css");
                 //b.stylesheets.put("Dark", "dark.css");
             } else {
-                b.stylesheets = v.getAllBoards().stylesheets;
+                b.stylesheets = v.getAll().stylesheets;
             }
         }
     }

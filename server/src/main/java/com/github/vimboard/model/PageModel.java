@@ -5,7 +5,7 @@ public class PageModel {
     /**
      * Html rendered board list bar.
      */
-    private BoardlistModel boardlist = null;
+    private BoardListModel boardlist = null;
 
     /**
      * If {@code true} then don't draw return to dashboard link.
@@ -34,11 +34,11 @@ public class PageModel {
 
     // Getters and setters ---------------------------------------------------
 
-    public BoardlistModel getBoardlist() {
+    public BoardListModel getBoardlist() {
         return boardlist;
     }
 
-    public PageModel setBoardlist(BoardlistModel boardlist) {
+    public PageModel setBoardlist(BoardListModel boardlist) {
         this.boardlist = boardlist;
         return this;
     }
