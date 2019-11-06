@@ -106,47 +106,53 @@ public class BoardProperties {
         return fileIndex;
     }
 
-    public void setFileIndex(String fileIndex) {
+    public BoardProperties setFileIndex(String fileIndex) {
         this.fileIndex = fileIndex;
+        return this;
     }
 
     public String getRoot() {
         return root;
     }
 
-    public void setRoot(String root) {
+    public BoardProperties setRoot(String root) {
         this.root = root;
+        return this;
     }
 
     public Map getBoards() {
         return boards;
     }
 
-    public void setBoards(Map boards) {
+    public BoardProperties setBoards(Map boards) {
         this.boards = boards;
+        return this;
     }
 
     public Boolean getBoardlistWrapBracket() {
         return boardlistWrapBracket;
     }
 
-    public void setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
+    public BoardProperties setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
         this.boardlistWrapBracket = boardlistWrapBracket;
+        return this;
     }
 
     public String getDefaultStylesheet() {
         return defaultStylesheet;
     }
 
-    public void setDefaultStylesheet(String defaultStylesheet) {
+    public BoardProperties setDefaultStylesheet(String defaultStylesheet) {
         this.defaultStylesheet = defaultStylesheet;
+        return this;
     }
 
     public Map<String, String> getStylesheets() {
         return stylesheets;
     }
 
-    public void setStylesheets(Map<String, String> stylesheets) {
+    public BoardProperties setStylesheets(Map<String, String> stylesheets) {
         this.stylesheets = stylesheets;
+        return this;
     }
 }

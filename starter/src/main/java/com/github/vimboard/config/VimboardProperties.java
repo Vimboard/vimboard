@@ -54,24 +54,27 @@ public class VimboardProperties {
         return all;
     }
 
-    public void setAll(BoardProperties all) {
+    public VimboardProperties setAll(BoardProperties all) {
         this.all = all;
+        return this;
     }
 
     public Map<String, BoardProperties> getCustom() {
         return custom;
     }
 
-    public void setCustom(Map<String, BoardProperties> custom) {
+    public VimboardProperties setCustom(Map<String, BoardProperties> custom) {
         this.custom = custom;
+        return this;
     }
 
     public String getWww() {
         return www;
     }
 
-    public void setWww(String www) {
+    public VimboardProperties setWww(String www) {
         this.www = www;
+        return this;
     }
 
     // Static ----------------------------------------------------------------
