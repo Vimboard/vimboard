@@ -3,7 +3,7 @@ package com.github.vimboard.model;
 public class PageModel {
 
     /**
-     * Html rendered board list bar.
+     * Board list bar model.
      */
     private BoardListModel boardlist = null;
 
@@ -18,7 +18,7 @@ public class PageModel {
     private ModModel mod = null;
 
     /**
-     *
+     * TODO
      */
     private PersonalMessageModel pm = null;
 

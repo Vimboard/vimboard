@@ -68,6 +68,10 @@ public class BoardListBeanTest {
                                                     .item(i5 -> assertEquals("g", i5))
                                                     .item(i5 -> assertTrue(checkEntry(i5, "h", "http://example.org/h")))))))))
                     .end());
+
+            assertTrue(checkArray(bean.get("a"), Object.class, 1)
+                    .item(i -> assertEquals("a", i))
+                    .end());
         }
         {
         }

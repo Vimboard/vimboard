@@ -13,6 +13,10 @@ import java.util.Map;
 
 import static com.github.vimboard.config.VimboardProperties.props;
 
+/**
+ * TODO
+ * Board related functions.
+ */
 @Service
 public class BoardService {
 
@@ -33,10 +37,21 @@ public class BoardService {
         this.vimboardProperties = vimboardProperties;
     }
 
+    /**
+     * Build a board list bar model.
+     *
+     * @return the board list bar model.
+     */
     public BoardListModel buildBoardList() {
         return buildBoardList("");
     }
 
+    /**
+     * Build a board list bar model for a specific board.
+     *
+     * @param boardUri the board uri.
+     * @return the board list bar model.
+     */
     public BoardListModel buildBoardList(String boardUri) {
         final Object[] boards = boardListBean.get(boardUri);
 
@@ -52,8 +67,8 @@ public class BoardService {
         }
 
         final StringBuilder sb = new StringBuilder();
-
-        final String body = buildBoardlistPart(sb, boards, "?/", enabledBoards);
+        buildBoardlistPart(sb, boards, "?/", enabledBoards);
+        final String body = sb.toString();
 
 //        if ($config['boardlist_wrap_bracket'] && !preg_match('/\] $/', $body))
 //            $body = '[' . $body . ']';
@@ -67,25 +82,24 @@ public class BoardService {
                 .setTop("<div class=\"boardlist\">" + body + "</div>" + top);
     }
 
-    private String buildBoardlistPart(StringBuilder sb, Object[] boards,
+    private void buildBoardlistPart(StringBuilder sb, Object[] boards,
             String root, Map<String, String> enabledBoards) {
-        StringBuilder body = new StringBuilder();
-
-        for (final Object obj : boards) {
+        for (int i = 0; i < boards.length; i++) {
+            final Object obj = boards[i];
             if (obj instanceof Map.Entry) {
                 final Map.Entry entry = (Map.Entry) obj;
                 if (entry.getValue() instanceof Object[]) {
-                    body.append(" <span class=\"sub\" data-description=\"")
+                    sb.append("<span class=\"sub\" data-description=\"")
                             .append((String) entry.getKey())
-                            .append("\">[")
-                            .append(buildBoardlistPart(sb, (Object[]) entry.getValue(), root, enabledBoards))
-                            .append("]</span> ");
+                            .append("\">[ ");
+                    buildBoardlistPart(sb, (Object[]) entry.getValue(), root, enabledBoards);
+                    sb.append(" ]</span> ");
                 } else {
-                    body.append(" <a href=\"")
+                    sb.append("<a href=\"")
                             .append((String) entry.getValue())
                             .append("\">")
                             .append((String) entry.getKey())
-                            .append("</a> /");
+                            .append("</a>");
                 }
             } else {
                 final String boardUri = (String) obj;
@@ -93,7 +107,7 @@ public class BoardService {
                 final String titleAttr = (boardTitle == null)
                         ? ""
                         : " title=\"" + boardTitle + "\"";
-                body.append(" <a href=\"")
+                sb.append("<a href=\"")
                         .append(root)
                         .append(boardUri)
                         .append("/")
@@ -102,9 +116,11 @@ public class BoardService {
                         .append(titleAttr)
                         .append(">")
                         .append(boardUri)
-                        .append("</a> /");
+                        .append("</a>");
+            }
+            if (i < boards.length - 1) {
+                sb.append(" / ");
             }
         }
-        return body.toString();
     }
 }

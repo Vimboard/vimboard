@@ -1,9 +1,21 @@
 package com.github.vimboard.model;
 
+/**
+ * Board list bar model.
+ */
 public class BoardListModel {
 
+    /**
+     * String containing html for the top bar.
+     */
     private String top;
+
+    /**
+     * String containing html for the bottom bar.
+     */
     private String bottom;
+
+    // Getters and setters ---------------------------------------------------
 
     public String getTop() {
         return top;

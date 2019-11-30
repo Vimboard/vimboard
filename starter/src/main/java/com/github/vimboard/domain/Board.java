@@ -2,7 +2,14 @@ package com.github.vimboard.domain;
 
 public class Board {
 
+    /**
+     * The board identifier.
+     */
     private int id;
+
+    /**
+     * A board uri wihtout '/' at
+     */
     private String uri;
     private String title;
     private String subtitle;
