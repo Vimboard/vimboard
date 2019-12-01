@@ -79,6 +79,13 @@ public class VimboardProperties {
 
     // Static ----------------------------------------------------------------
 
+    /**
+     * Returns board porperties by the board uri.
+     *
+     * @param vimboardProperties vimboard properties.
+     * @param boardUri the board uri.
+     * @return board properties.
+     */
     public static BoardProperties props(
             VimboardProperties vimboardProperties, String boardUri) {
         final BoardProperties result = vimboardProperties.custom.get(boardUri);

@@ -67,13 +67,8 @@ public class BoardService {
         }
 
         final StringBuilder sb = new StringBuilder();
-        buildBoardlistPart(sb, boards, "?/", enabledBoards);
+        buildBoardlistPart(sb, boards, securityService.isMod() ? "?/" : , enabledBoards);
         final String body = sb.toString();
-
-//        if ($config['boardlist_wrap_bracket'] && !preg_match('/\] $/', $body))
-//            $body = '[' . $body . ']';
-//
-//        $body = trim($body);
 
         // Message compact-boardlist.js faster, so that page looks less ugly during loading
         final String top = "<script type=\"text/javascript\">if (typeof do_boardlist != 'undefined') do_boardlist();</script>";
