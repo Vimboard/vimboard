@@ -45,9 +45,17 @@ vimboard:
   # --------------------------------------------------------------------------
   all:
 
+    # How to display the URI of boards. Usually "/%{uri}/" (/b/, /mu/, etc).
+    # This doesn't change the URL. Find {@link #boardPath} if you wish to
+    # change the URL.
+    board-abbreviation: /%{uri}/
+
     # ------------------------------------------------------------------------
     # Directory/file settings
     # ------------------------------------------------------------------------
+
+    # Board directory, followed by a forward-slash (/).
+    board-path: %{uri}/
 
     # Name of index file.
     file-index: index.html

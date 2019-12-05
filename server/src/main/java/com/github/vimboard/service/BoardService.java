@@ -67,7 +67,7 @@ public class BoardService {
         }
 
         final StringBuilder sb = new StringBuilder();
-        buildBoardlistPart(sb, boards, securityService.isMod() ? "?/" : , enabledBoards);
+        buildBoardlistPart(sb, boards, securityService.isMod() ? "?/" : vimboardProperties.getAll().getRoot(), enabledBoards);
         final String body = sb.toString();
 
         // Message compact-boardlist.js faster, so that page looks less ugly during loading

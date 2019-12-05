@@ -1,3 +1,16 @@
+<#--
+  -- Template attributes:
+  --
+  -- body
+  -- config.defaultStylesheet[1]
+  -- config.version
+  -- page.boardlist.top
+  -- page.hideDashboardLink
+  -- page.mod
+  -- page.pm
+  -- page.subtitle
+  -- page.title
+  -->
 <#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html>

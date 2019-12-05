@@ -38,7 +38,8 @@ public class BoardListBeanTest {
                                     .setBoards(Map.ofEntries(
                                             entry("0", "a")
                                     )),
-                            "b", new BoardProperties()));
+                            "b", new BoardProperties()
+                                    .setBoards(null)));
             vimboardProperties.init();
 
             BoardListBean bean = new BoardListBean(vimboardProperties);
@@ -74,8 +75,13 @@ public class BoardListBeanTest {
                     .end());
         }
         {
+            final VimboardProperties vimboardProperties = new VimboardProperties()
+                    .setAll(new BoardProperties()
+                            .setBoards(null));
+            vimboardProperties.init();
+
+            BoardListBean bean = new BoardListBean(vimboardProperties);
+            assertNull(bean.get(""));
         }
     }
-
-
 }

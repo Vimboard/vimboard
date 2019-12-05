@@ -3,6 +3,7 @@ package com.github.vimboard.controller;
 import com.github.vimboard.config.VimboardProperties;
 import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.model.ConfigModel;
+import com.github.vimboard.model.DashboardModel;
 import com.github.vimboard.model.ModModel;
 import com.github.vimboard.model.PageModel;
 import com.github.vimboard.service.BoardService;
@@ -54,6 +55,8 @@ public class ModController extends AbstractController {
 
     private String dashboard(Model model) {
 
+        model.addAttribute("dashboard", new DashboardModel());
+
         //model.addAttribute("boards", boardService.list()); // todo
 
         //model.addAttribute("noticeboard",  // todo
@@ -84,8 +87,6 @@ public class ModController extends AbstractController {
                 .setTitle(pageTitle)
                 .setSubtitle(pageSubTitle)
                 );
-
-        model.addAttribute("boardlist", "<hr><h4>"+ vimboardProperties.getAll().getBoards()/*.getClass().getName()*/ + "</h4><hr>");
 
         model.addAttribute("body", bodyTemplate);
 

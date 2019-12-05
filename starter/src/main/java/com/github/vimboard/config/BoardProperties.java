@@ -5,7 +5,21 @@ import java.util.Map;
 
 public class BoardProperties {
 
+    // Board settings --------------------------------------------------------
+
+    /**
+     * How to display the URI of boards. Usually "/%{uri}/" (/b/, /mu/, etc).
+     * This doesn't change the URL. Find {@link #boardPath} if you wish to
+     * change the URL.
+     */
+    private String boardAbbreviation;
+
     // Directory/file settings -----------------------------------------------
+
+    /**
+     * Board directory, followed by a forward-slash (/).
+     */
+    private String boardPath;
 
     /**
      * Name of index file.
@@ -53,7 +67,21 @@ public class BoardProperties {
 
     static void init(final BoardProperties b, VimboardProperties v) {
 
+        // Board settings --------------------------------------------------------
+
+        if (b.boardAbbreviation == null) {} {
+            b.boardAbbreviation = (v == null
+                    ? "/%{uri}/"
+                    : v.getAll().boardAbbreviation);
+        }
+
         // Directory/file settings -------------------------------------------
+
+        if (b.boardPath == null) {} {
+            b.boardPath = (v == null
+                    ? "%{uri}/"
+                    : v.getAll().boardPath);
+        }
 
         if (b.fileIndex == null) {
             b.fileIndex = (v == null
@@ -101,6 +129,16 @@ public class BoardProperties {
     }
 
     // Getters and setters ---------------------------------------------------
+
+
+    public String getBoardPath() {
+        return boardPath;
+    }
+
+    public BoardProperties setBoardPath(String boardPath) {
+        this.boardPath = boardPath;
+        return this;
+    }
 
     public String getFileIndex() {
         return fileIndex;
