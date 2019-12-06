@@ -1,11 +1,13 @@
+<#ftl output_format="HTML">
 <#--
   -- Template attributes:
   --
-  -- board.uri
+  -- dashboard.boards
+  -- dashboard.boards - board.title
+  -- dashboard.boards - board.uri
   -- config.boardAbbreviation
   -- config.boardPath
   -- config.fileIndex
-  -- dashboard.boards
   -->
 <fieldset>
     <legend><@spring.message "dashboard.Boards"/></legend>
@@ -14,9 +16,8 @@
         <#list dashboard.boards as board>
         <li>
             <a href="?/${config.boardPath?replace("%{uri}", board.uri)}${config.fileIndex}">${config.boardAbbreviation?replace("%{uri}", board.uri)}</a>
-            <#-- TODO  break line -->
             -
-            {{ board.title|e }}
+            ${board.title}
             {% if board.subtitle %}
             <small>&mdash;
                 {% if config.allow_subtitle_html %}

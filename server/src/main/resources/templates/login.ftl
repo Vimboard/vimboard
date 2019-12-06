@@ -1,3 +1,4 @@
+<#ftl output_format="HTML">
 <c:url value="/login" var="loginUrl"/>
 <form action="/login.php" method="post">       1
     <c:if test="${param.error != null}">        2

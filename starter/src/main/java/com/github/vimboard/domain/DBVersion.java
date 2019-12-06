@@ -15,6 +15,8 @@ public class DBVersion {
      */
     private String serverVersion;
 
+    // Getters and setters ---------------------------------------------------
+
     /**
      * Getter for {@link #schemaVersion}.
      *

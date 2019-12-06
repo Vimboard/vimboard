@@ -2,10 +2,10 @@ package com.github.vimboard.controller;
 
 import com.github.vimboard.config.VimboardProperties;
 import com.github.vimboard.config.VimboardVersion;
-import com.github.vimboard.model.ConfigModel;
 import com.github.vimboard.model.DashboardModel;
 import com.github.vimboard.model.ModModel;
 import com.github.vimboard.model.PageModel;
+import com.github.vimboard.repository.BoardRepository;
 import com.github.vimboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -21,15 +21,18 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/mod.php")
 public class ModController extends AbstractController {
 
+    private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final VimboardProperties vimboardProperties;
 
     @Autowired
     public ModController(
             MessageSource messageSource,
+            BoardRepository boardRepository,
             BoardService boardService,
             VimboardProperties vimboardProperties) {
         super(messageSource);
+        this.boardRepository = boardRepository;
         this.boardService = boardService;
         this.vimboardProperties = vimboardProperties;
     }
@@ -55,9 +58,8 @@ public class ModController extends AbstractController {
 
     private String dashboard(Model model) {
 
-        model.addAttribute("dashboard", new DashboardModel());
-
-        //model.addAttribute("boards", boardService.list()); // todo
+        model.addAttribute("dashboard", new DashboardModel()
+                .setBoards(boardRepository.list()));
 
         //model.addAttribute("noticeboard",  // todo
 
@@ -73,19 +75,20 @@ public class ModController extends AbstractController {
     // TODO move
     private String modPage(String bodyTemplate, Model model, String pageTitle, String pageSubTitle) {
 
-        model.addAttribute("config", new ConfigModel()
-                .setDefaultStylesheet(new String[] {
-                        vimboardProperties.getAll().getDefaultStylesheet(),
-                        vimboardProperties.getAll().getStylesheets().get(vimboardProperties.getAll().getDefaultStylesheet())
-                })
-                .setVersion(VimboardVersion.get()));
+        String dataStylesheet  = vimboardProperties.getAll().getStylesheets()
+                .get(vimboardProperties.getAll().getDefaultStylesheet());
+        if (dataStylesheet == null || dataStylesheet.isEmpty()) {
+            dataStylesheet = "default"; // TODO: если нигде не используется, то можно перенести в загрузку конфига
+        }
 
         model.addAttribute("page", new PageModel()
                 .setBoardlist(boardService.buildBoardList())
+                .setDataStylesheet(dataStylesheet)
                 .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftl"))
                 .setMod(new ModModel()) // TODO
                 .setTitle(pageTitle)
                 .setSubtitle(pageSubTitle)
+                .setVersion(VimboardVersion.get())
                 );
 
         model.addAttribute("body", bodyTemplate);

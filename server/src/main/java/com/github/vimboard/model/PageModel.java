@@ -8,7 +8,19 @@ public class PageModel {
     private BoardListModel boardlist = null;
 
     /**
-     * If {@code true} then don't draw return to dashboard link.
+     * Page data stylesheet.
+     */
+//    {
+//        // TODO replace array in config.defaultStylesheet[1]. `0` value is used only in `main.js`
+//        new String[] {
+//                vimboardProperties.getAll().getDefaultStylesheet(),
+//                vimboardProperties.getAll().getStylesheets().get(vimboardProperties.getAll().getDefaultStylesheet())
+//        }
+//    }
+    private String dataStylesheet;
+
+    /**
+     * If {@code true} then don't draw "Return to dashboard" link.
      */
     private Boolean hideDashboardLink = false;
 
@@ -32,6 +44,11 @@ public class PageModel {
      */
     private String title;
 
+    /**
+     * Vimboard verstion.
+     */
+    private String version;
+
     // Getters and setters ---------------------------------------------------
 
     public BoardListModel getBoardlist() {
@@ -40,6 +57,15 @@ public class PageModel {
 
     public PageModel setBoardlist(BoardListModel boardlist) {
         this.boardlist = boardlist;
+        return this;
+    }
+
+    public String getDataStylesheet() {
+        return dataStylesheet;
+    }
+
+    public PageModel setDataStylesheet(String dataStylesheet) {
+        this.dataStylesheet = dataStylesheet;
         return this;
     }
 
@@ -85,6 +111,15 @@ public class PageModel {
 
     public PageModel setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public PageModel setVersion(String version) {
+        this.version = version;
         return this;
     }
 }

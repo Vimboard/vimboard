@@ -1,3 +1,4 @@
+<#ftl output_format="HTML">
     <link rel="stylesheet" media="screen" href="{{ config.url_stylesheet }}">
     {% if config.url_favicon %}<link rel="shortcut icon" href="{{ config.url_favicon }}">{% endif %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

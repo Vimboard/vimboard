@@ -8,7 +8,7 @@ public class BoardProperties {
     // Board settings --------------------------------------------------------
 
     /**
-     * How to display the URI of boards. Usually "/%{uri}/" (/b/, /mu/, etc).
+     * How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
      * This doesn't change the URL. Find {@link #boardPath} if you wish to
      * change the URL.
      */
@@ -71,7 +71,7 @@ public class BoardProperties {
 
         if (b.boardAbbreviation == null) {} {
             b.boardAbbreviation = (v == null
-                    ? "/%{uri}/"
+                    ? "/{uri}/"
                     : v.getAll().boardAbbreviation);
         }
 
@@ -79,7 +79,7 @@ public class BoardProperties {
 
         if (b.boardPath == null) {} {
             b.boardPath = (v == null
-                    ? "%{uri}/"
+                    ? "{uri}/"
                     : v.getAll().boardPath);
         }
 
@@ -130,6 +130,14 @@ public class BoardProperties {
 
     // Getters and setters ---------------------------------------------------
 
+    public String getBoardAbbreviation() {
+        return boardAbbreviation;
+    }
+
+    public BoardProperties setBoardAbbreviation(String boardAbbreviation) {
+        this.boardAbbreviation = boardAbbreviation;
+        return this;
+    }
 
     public String getBoardPath() {
         return boardPath;
