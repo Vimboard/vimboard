@@ -64,6 +64,13 @@ vimboard:
     # Examples: '/', 'http://boards.chan.org/', '/chan/'.
     root: /
 
+    # Website favicon.
+#    url-favicon: /favicon.gif
+
+    # Set custom location for stylesheetsfile. This can be used for load
+    # balancing across multiple servers or hostnames.
+#    url-stylesheet: http://static.example.org/style.css # main/base stylesheet
+
     # ------------------------------------------------------------------------
     # Display settings
     # ------------------------------------------------------------------------
@@ -74,8 +81,8 @@ vimboard:
     # social network profiles/pages.
     #
     # "Groups" in the boardlinks are marked with square brackets. Vimboard
-    # allows for infinite recursion with groups. Each array in boards
-    # porperty represents a new square bracket group.
+    # allows for infinite recursion with groups. Each array in {@link #boards}
+    # represents a new square bracket group.
     #
 #    boards:
 #      - General group:
@@ -110,7 +117,10 @@ vimboard:
 #      Futaba: futaba.css
 #      Dark: dark.css
 
-  # ==========================================================================
+    # The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
+#    uri-stylesheets: http://static.example.org/stylesheets/
+
+    # ==========================================================================
   # Separate configurations that overrides settings
   # of the common configuration for each board.
   # --------------------------------------------------------------------------

@@ -32,6 +32,17 @@ public class BoardProperties {
      */
     private String root;
 
+    /*
+     * Website favicon.
+     */
+    private String urlFavicon;
+
+    /*
+     * Set custom location for stylesheetsfile. This can be used for load
+     * balancing across multiple servers or hostnames.
+     */
+    private String urlStylesheet;
+
     // Display settings ------------------------------------------------------
 
     /**
@@ -41,8 +52,8 @@ public class BoardProperties {
      * social network profiles/pages.
      *
      * "Groups" in the boardlinks are marked with square brackets. Vimboard
-     * allows for infinite recursion with groups. Each array in boards
-     * porperty represents a new square bracket group.
+     * allows for infinite recursion with groups. Each array in {@link #boards}
+     * represents a new square bracket group.
      */
     private Map boards;
 
@@ -62,6 +73,12 @@ public class BoardProperties {
      * stylesheets (or create your own).
      */
     private Map<String, String> stylesheets;
+
+    /*
+     * The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
+    // $config['uri_stylesheets'] = 'http://static.example.org/stylesheets/';
+     */
+    private String uriStylesheets;
 
     // Init ------------------------------------------------------------------
 
@@ -95,6 +112,18 @@ public class BoardProperties {
                     : v.getAll().root);
         }
 
+        if (b.urlFavicon == null) {
+            b.urlFavicon = (v == null
+                    ? null
+                    : v.getAll().urlFavicon);
+        }
+
+        if (b.urlStylesheet == null) {
+            b.urlStylesheet = (v == null
+                    ? null
+                    : v.getAll().urlStylesheet);
+        }
+
         // Display settings --------------------------------------------------
 
         if (b.boards == null) {
@@ -125,6 +154,12 @@ public class BoardProperties {
             } else {
                 b.stylesheets = v.getAll().stylesheets;
             }
+        }
+
+        if (b.uriStylesheets == null) {
+            b.uriStylesheets = (v == null
+                    ? null
+                    : v.getAll().uriStylesheets);
         }
     }
 
@@ -166,6 +201,24 @@ public class BoardProperties {
         return this;
     }
 
+    public String getUrlFavicon() {
+        return urlFavicon;
+    }
+
+    public BoardProperties setUrlFavicon(String urlFavicon) {
+        this.urlFavicon = urlFavicon;
+        return this;
+    }
+
+    public String getUrlStylesheet() {
+        return urlStylesheet;
+    }
+
+    public BoardProperties setUrlStylesheet(String urlStylesheet) {
+        this.urlStylesheet = urlStylesheet;
+        return this;
+    }
+
     public Map getBoards() {
         return boards;
     }
@@ -199,6 +252,15 @@ public class BoardProperties {
 
     public BoardProperties setStylesheets(Map<String, String> stylesheets) {
         this.stylesheets = stylesheets;
+        return this;
+    }
+
+    public String getUriStylesheets() {
+        return uriStylesheets;
+    }
+
+    public BoardProperties setUriStylesheets(String uriStylesheets) {
+        this.uriStylesheets = uriStylesheets;
         return this;
     }
 }

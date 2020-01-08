@@ -1,6 +1,12 @@
 <#ftl output_format="HTML">
-    <link rel="stylesheet" media="screen" href="{{ config.url_stylesheet }}">
-    {% if config.url_favicon %}<link rel="shortcut icon" href="{{ config.url_favicon }}">{% endif %}
+<#--
+  -- Template attributes:
+  --
+  -- config.urlFavicon
+  -- config.urlStylesheet
+  -->
+    <link rel="stylesheet" media="screen" href="${config.urlStylesheet}">
+    <#if config.urlFavicon?has_content><link rel="shortcut icon" href="${config.urlFavicon}"></#if>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     {% if config.meta_keywords %}<meta name="keywords" content="{{ config.meta_keywords }}">{% endif %}
