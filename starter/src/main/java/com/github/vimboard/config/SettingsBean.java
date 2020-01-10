@@ -104,12 +104,10 @@ public class SettingsBean {
             s.setBoards(convertBoards(boardUri, p.getBoards()));
         }
 
-        if (p == null || p.getDefaultStylesheet() == null) {
-            s.setDefaultStylesheet(boardUri == null
-                    ? "Yotsuba B"
-                    : all.getDefaultStylesheet());
+        if (p == null || p.isCountryFlagsCondensed() == null) {
+            //
         } else {
-            s.setDefaultStylesheet(p.getDefaultStylesheet());
+
         }
 
         if (p == null || p.getFileIndex() == null) {
@@ -118,6 +116,30 @@ public class SettingsBean {
                     : all.getFileIndex());
         } else {
             s.setFileIndex(p.getFileIndex());
+        }
+
+        if (p == null || p.getFontAwesome() == null) {
+            s.setFontAwesome(boardUri == null
+                    ? true
+                    : all.getFontAwesome());
+        } else {
+            s.setFontAwesome(p.getFontAwesome());
+        }
+
+        if (p == null || p.getFontAwesomeCss() == null) {
+            s.setFontAwesomeCss(boardUri == null
+                    ? "stylesheets/font-awesome/css/font-awesome.min.css"
+                    : all.getFontAwesomeCss());
+        } else {
+            s.setFontAwesomeCss(p.getFontAwesomeCss());
+        }
+
+        if (p == null || p.getMetaKeywords() == null) {
+            s.setMetaKeywords(boardUri == null
+                    ? null
+                    : all.getMetaKeywords());
+        } else {
+            s.setMetaKeywords(p.getMetaKeywords());
         }
 
         if (p == null || p.getRoot() == null) {
@@ -152,6 +174,19 @@ public class SettingsBean {
         }
 
         // Settings with dependencies
+
+        if (p == null || p.getDefaultStylesheet() == null) {
+            s.setDefaultStylesheet(boardUri == null
+                    ? new String[] {
+                    "Yotsuba B",
+                    s.getStylesheets().get("Yotsuba B")
+            } : all.getDefaultStylesheet());
+        } else {
+            s.setDefaultStylesheet(new String[] {
+                    p.getDefaultStylesheet(),
+                    s.getStylesheets().get(p.getDefaultStylesheet())
+            });
+        }
 
         if (p == null || p.getUriStylesheets() == null) {
             s.setUriStylesheets(boardUri == null

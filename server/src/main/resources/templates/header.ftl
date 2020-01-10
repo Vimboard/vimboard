@@ -2,6 +2,12 @@
 <#--
   -- Template attributes:
   --
+  -- config.default_stylesheet[1]
+  -- config.fontAwesome
+  -- config.fontAwesomeCss
+  -- config.metaKeywords
+  -- config.root
+  -- config.uriStylesheets
   -- config.urlFavicon
   -- config.urlStylesheet
   -->
@@ -9,9 +15,9 @@
     <#if config.urlFavicon?has_content><link rel="shortcut icon" href="${config.urlFavicon}"></#if>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
-    {% if config.meta_keywords %}<meta name="keywords" content="{{ config.meta_keywords }}">{% endif %}
-    {% if config.default_stylesheet.1 != '' %}<link rel="stylesheet" type="text/css" id="stylesheet" href="{{ config.uri_stylesheets }}{{ config.default_stylesheet.1 }}">{% endif %}
-    {% if config.font_awesome %}<link rel="stylesheet" href="{{ config.root }}{{ config.font_awesome_css }}">{% endif %}
+    <#if config.metaKeywords?has_content><meta name="keywords" content="${config.metaKeywords}"></#if>
+    <#if config.defaultStylesheet[1]?has_content><link rel="stylesheet" type="text/css" id="stylesheet" href="${config.uriStylesheets}${config.defaultStylesheet[1]}"></#if>
+    <#if config.fontAwesome?has_content><link rel="stylesheet" href="${config.root}${config.fontAwesomeCss}"></#if>
     {% if config.country_flags_condensed %}<link rel="stylesheet" href="{{ config.root }}{{ config.country_flags_condensed_css }}">{% endif %}
     <script type="text/javascript">
         var configRoot="{{ config.root }}";

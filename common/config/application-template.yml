@@ -45,6 +45,20 @@ vimboard:
   # --------------------------------------------------------------------------
   all:
 
+    # ------------------------------------------------------------------------
+    # Post settings
+    # ------------------------------------------------------------------------
+
+    # Load all country flags from one file.
+    country-flags-condensed: true
+
+    # Country flags stylesheet.
+    country-flags-condensed-css: static/flags/flags.css
+
+    # ------------------------------------------------------------------------
+    # Board settings
+    # ------------------------------------------------------------------------
+
     # How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
     # This doesn't change the URL. Find {@link #boardPath} if you wish to
     # change the URL.
@@ -65,11 +79,11 @@ vimboard:
     root: /
 
     # Website favicon.
-#    url-favicon: /favicon.gif
+#   url-favicon: /favicon.gif
 
     # Set custom location for stylesheetsfile. This can be used for load
     # balancing across multiple servers or hostnames.
-#    url-stylesheet: http://static.example.org/style.css # main/base stylesheet
+#   url-stylesheet: http://static.example.org/style.css # main/base stylesheet
 
     # ------------------------------------------------------------------------
     # Display settings
@@ -84,28 +98,38 @@ vimboard:
     # allows for infinite recursion with groups. Each array in {@link #boards}
     # represents a new square bracket group.
     #
-#    boards:
-#      - General group:
-#        - a
-#        - b
-#      - Second group:
-#        - c
-#        - d
-#        - e: http://example.org/e
-#      - f
-#      - g
-#      - Recursive:
-#        - h
-#        - Inner:
-#          - i
-#          - j
-#      - status: http://example.org/status
+#   boards:
+#     - General group:
+#       - a
+#       - b
+#     - Second group:
+#       - c
+#       - d
+#       - e: http://example.org/e
+#     - f
+#     - g
+#     - Recursive:
+#       - h
+#       - Inner:
+#         - i
+#         - j
+#     - status: http://example.org/status
 
     # Whether or not to put brackets around the whole board list.
     boardlist-wrap-bracket: false
 
     # The default stylesheet to use.
     default-stylesheet: Yotsuba B
+
+    # Use Font-Awesome for displaying lock and pin icons, instead
+    # of the images in static/.
+    #
+    # http://fortawesome.github.io/Font-Awesome/icon/pushpin/
+    # http://fortawesome.github.io/Font-Awesome/icon/lock/
+    font-awesome: true
+
+    # Font-Awesome stylesheet.
+    font-awesome-css: stylesheets/font-awesome/css/font-awesome.min.css
 
     # Custom stylesheets available for the user to choose.
     # See the "stylesheets/" folder for a list of available
@@ -114,25 +138,32 @@ vimboard:
     stylesheets:
       Yotsuba B: ''
       Yotsuba: yotsuba.css
-#      Futaba: futaba.css
-#      Dark: dark.css
+#     Futaba: futaba.css
+#     Dark: dark.css
 
     # The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
-#    uri-stylesheets: http://static.example.org/stylesheets/
+#   uri-stylesheets: http://static.example.org/stylesheets/
 
-    # ==========================================================================
+    # ------------------------------------------------------------------------
+    # Other/uncategorized
+    # ------------------------------------------------------------------------
+
+    # Meta keywords. It's probably best to include these in
+    # per-board configurations.
+#   meta-keywords: 'chan,anonymous discussion,imageboard,tinyboard'
+
+  # ==========================================================================
   # Separate configurations that overrides settings
   # of the common configuration for each board.
   # --------------------------------------------------------------------------
-#  custom:
+# custom:
 
     # ========================================================================
     # /a/ board settings
     # ------------------------------------------------------------------------
-#    a: ... same as allBoards ...
-
+#   a: ... same as allBoards ...
 
     # ========================================================================
     # /b/ board settings
     # ------------------------------------------------------------------------
-#    b: ... same as allBoards ...
+#   b: ... same as allBoards ...

@@ -4,6 +4,11 @@ import java.util.Map;
 
 public class VimboardBoardSettings {
 
+    // Post settings ---------------------------------------------------------
+
+    private boolean countryFlagsCondensed;
+    private String countryFlagsCondensedCss;
+
     // Board settings --------------------------------------------------------
 
     private String boardAbbreviation;
@@ -20,11 +25,35 @@ public class VimboardBoardSettings {
 
     private Object[] boards;
     private Boolean boardlistWrapBracket;
-    private String defaultStylesheet;
+    private String[] defaultStylesheet;
+    private Boolean fontAwesome;
+    private String fontAwesomeCss;
     private Map<String, String> stylesheets;
     private String uriStylesheets;
 
+    // Other/uncategorized ---------------------------------------------------
+
+    private String metaKeywords;
+
     // Getters and setters ---------------------------------------------------
+
+    public boolean isCountryFlagsCondensed() {
+        return countryFlagsCondensed;
+    }
+
+    public VimboardBoardSettings setCountryFlagsCondensed(boolean countryFlagsCondensed) {
+        this.countryFlagsCondensed = countryFlagsCondensed;
+        return this;
+    }
+
+    public String getCountryFlagsCondensedCss() {
+        return countryFlagsCondensedCss;
+    }
+
+    public VimboardBoardSettings setCountryFlagsCondensedCss(String countryFlagsCondensedCss) {
+        this.countryFlagsCondensedCss = countryFlagsCondensedCss;
+        return this;
+    }
 
     public String getBoardAbbreviation() {
         return boardAbbreviation;
@@ -98,12 +127,30 @@ public class VimboardBoardSettings {
         return this;
     }
 
-    public String getDefaultStylesheet() {
+    public String[] getDefaultStylesheet() {
         return defaultStylesheet;
     }
 
-    public VimboardBoardSettings setDefaultStylesheet(String defaultStylesheet) {
+    public VimboardBoardSettings setDefaultStylesheet(String[] defaultStylesheet) {
         this.defaultStylesheet = defaultStylesheet;
+        return this;
+    }
+
+    public Boolean getFontAwesome() {
+        return fontAwesome;
+    }
+
+    public VimboardBoardSettings setFontAwesome(Boolean fontAwesome) {
+        this.fontAwesome = fontAwesome;
+        return this;
+    }
+
+    public String getFontAwesomeCss() {
+        return fontAwesomeCss;
+    }
+
+    public VimboardBoardSettings setFontAwesomeCss(String fontAwesomeCss) {
+        this.fontAwesomeCss = fontAwesomeCss;
         return this;
     }
 
@@ -122,6 +169,15 @@ public class VimboardBoardSettings {
 
     public VimboardBoardSettings setUriStylesheets(String uriStylesheets) {
         this.uriStylesheets = uriStylesheets;
+        return this;
+    }
+
+    public String getMetaKeywords() {
+        return metaKeywords;
+    }
+
+    public VimboardBoardSettings setMetaKeywords(String metaKeywords) {
+        this.metaKeywords = metaKeywords;
         return this;
     }
 }

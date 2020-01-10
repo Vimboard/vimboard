@@ -4,6 +4,18 @@ import java.util.Map;
 
 public class VimboardBoardProperties {
 
+    // Post settings ---------------------------------------------------------
+
+    /**
+     * Load all country flags from one file.
+     */
+    private boolean countryFlagsCondensed;
+
+    /**
+     * Country flags stylesheet.
+     */
+    private String countryFlagsCondensedCss;
+
     // Board settings --------------------------------------------------------
 
     /**
@@ -67,6 +79,20 @@ public class VimboardBoardProperties {
     private String defaultStylesheet;
 
     /**
+     * Use Font-Awesome for displaying lock and pin icons, instead
+     * of the images in static/.
+     *
+     * http://fortawesome.github.io/Font-Awesome/icon/pushpin/
+     * http://fortawesome.github.io/Font-Awesome/icon/lock/
+     */
+    private Boolean fontAwesome;
+
+    /**
+     * Font-Awesome stylesheet.
+     */
+    private String fontAwesomeCss;
+
+    /**
      * Custom stylesheets available for the user to choose.
      * See the "stylesheets/" folder for a list of available
      * stylesheets (or create your own).
@@ -79,7 +105,33 @@ public class VimboardBoardProperties {
      */
     private String uriStylesheets;
 
+    // Other/uncategorized ---------------------------------------------------
+
+    /**
+     * Meta keywords. It's probably best to include these in
+     * per-board configurations.
+     */
+    private String metaKeywords;
+
     // Getters and setters ---------------------------------------------------
+
+    public boolean isCountryFlagsCondensed() {
+        return countryFlagsCondensed;
+    }
+
+    public VimboardBoardProperties setCountryFlagsCondensed(boolean countryFlagsCondensed) {
+        this.countryFlagsCondensed = countryFlagsCondensed;
+        return this;
+    }
+
+    public String getCountryFlagsCondensedCss() {
+        return countryFlagsCondensedCss;
+    }
+
+    public VimboardBoardProperties setCountryFlagsCondensedCss(String countryFlagsCondensedCss) {
+        this.countryFlagsCondensedCss = countryFlagsCondensedCss;
+        return this;
+    }
 
     public String getBoardAbbreviation() {
         return boardAbbreviation;
@@ -162,6 +214,24 @@ public class VimboardBoardProperties {
         return this;
     }
 
+    public Boolean getFontAwesome() {
+        return fontAwesome;
+    }
+
+    public VimboardBoardProperties setFontAwesome(Boolean fontAwesome) {
+        this.fontAwesome = fontAwesome;
+        return this;
+    }
+
+    public String getFontAwesomeCss() {
+        return fontAwesomeCss;
+    }
+
+    public VimboardBoardProperties setFontAwesomeCss(String fontAwesomeCss) {
+        this.fontAwesomeCss = fontAwesomeCss;
+        return this;
+    }
+
     public Map<String, String> getStylesheets() {
         return stylesheets;
     }
@@ -177,6 +247,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setUriStylesheets(String uriStylesheets) {
         this.uriStylesheets = uriStylesheets;
+        return this;
+    }
+
+    public String getMetaKeywords() {
+        return metaKeywords;
+    }
+
+    public VimboardBoardProperties setMetaKeywords(String metaKeywords) {
+        this.metaKeywords = metaKeywords;
         return this;
     }
 }
