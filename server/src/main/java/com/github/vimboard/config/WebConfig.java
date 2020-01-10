@@ -26,11 +26,11 @@ public class WebConfig {
     @EnableWebMvc
     public static class WebMvcConfig implements WebMvcConfigurer {
 
-        private final VimboardProperties vimboardProperties;
+        private final SettingsBean settingsBean;
 
         @Autowired
-        public WebMvcConfig(VimboardProperties vimboardProperties) {
-            this.vimboardProperties = vimboardProperties;
+        public WebMvcConfig(SettingsBean settingsBean) {
+            this.settingsBean = settingsBean;
         }
 
         @Bean
@@ -59,7 +59,7 @@ public class WebConfig {
             registry
                 .addResourceHandler("/**")
                 .addResourceLocations(
-                        "file:" + vimboardProperties.getWww(),
+                        "file:" + settingsBean.get().getWww(),
                         "classpath:/static/");
         }
     }

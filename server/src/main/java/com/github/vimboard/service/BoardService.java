@@ -1,7 +1,6 @@
 package com.github.vimboard.service;
 
-import com.github.vimboard.config.BoardListBean;
-import com.github.vimboard.config.VimboardProperties;
+import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.model.BoardListModel;
 import com.github.vimboard.repository.BoardRepository;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.vimboard.config.VimboardProperties.props;
-
 /**
  * TODO
  * Board related functions.
@@ -21,20 +18,17 @@ import static com.github.vimboard.config.VimboardProperties.props;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final BoardListBean boardListBean;
     private final SecurityService securityService;
-    private final VimboardProperties vimboardProperties;
+    private final SettingsBean settingsBean;
 
     @Autowired
     public BoardService(
             BoardRepository boardRepository,
-            BoardListBean boardListBean,
             SecurityService securityService,
-            VimboardProperties vimboardProperties) {
+            SettingsBean settingsBean) {
         this.boardRepository = boardRepository;
-        this.boardListBean = boardListBean;
         this.securityService = securityService;
-        this.vimboardProperties = vimboardProperties;
+        this.settingsBean = settingsBean;
     }
 
     /**
@@ -53,7 +47,7 @@ public class BoardService {
      * @return the board list bar model.
      */
     public BoardListModel buildBoardList(String boardUri) {
-        final Object[] boards = boardListBean.get(boardUri);
+        final Object[] boards = settingsBean.getCustom(boardUri).getBoards();
 
         if (boards == null) {
             return new BoardListModel()
@@ -67,7 +61,13 @@ public class BoardService {
         }
 
         final StringBuilder sb = new StringBuilder();
-        buildBoardlistPart(sb, boards, securityService.isMod() ? "?/" : vimboardProperties.getAll().getRoot(), enabledBoards);
+        buildBoardlistPart(
+                sb,
+                boards,
+                securityService.isMod()
+                        ? "?/"
+                        : settingsBean.getAll().getRoot(),
+                enabledBoards);
         final String body = sb.toString();
 
         // Message compact-boardlist.js faster, so that page looks less ugly during loading
@@ -87,7 +87,11 @@ public class BoardService {
                     sb.append("<span class=\"sub\" data-description=\"")
                             .append((String) entry.getKey())
                             .append("\">[ ");
-                    buildBoardlistPart(sb, (Object[]) entry.getValue(), root, enabledBoards);
+                    buildBoardlistPart(
+                            sb,
+                            (Object[]) entry.getValue(),
+                            root,
+                            enabledBoards);
                     sb.append(" ]</span> ");
                 } else {
                     sb.append("<a href=\"")
@@ -106,7 +110,7 @@ public class BoardService {
                         .append(root)
                         .append(boardUri)
                         .append("/")
-                        .append(props(vimboardProperties, boardUri).getFileIndex())
+                        .append(settingsBean.getCustom(boardUri).getFileIndex())
                         .append("\"")
                         .append(titleAttr)
                         .append(">")

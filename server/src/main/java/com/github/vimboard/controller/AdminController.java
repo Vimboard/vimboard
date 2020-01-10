@@ -1,6 +1,7 @@
 package com.github.vimboard.controller;
 
-import com.github.vimboard.config.VimboardProperties;
+import com.github.vimboard.config.SettingsBean;
+import com.github.vimboard.config.VimboardSettings;
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.service.ICityService;
 import freemarker.template.Configuration;
@@ -30,18 +31,18 @@ public class AdminController {
     private final ApplicationContext applicationContext;
     private final ICityService cityService;
     private final Configuration freemarkerCfg;
-    private final VimboardProperties vimboardProperties;
+    private final SettingsBean settingsBean;
 
     @Autowired
     public AdminController(
             ApplicationContext applicationContext,
             ICityService cityService,
             Configuration freemarkerCfg,
-            VimboardProperties vimboardProperties) {
+            SettingsBean settingsBean) {
         this.applicationContext = applicationContext;
         this.cityService = cityService;
         this.freemarkerCfg = freemarkerCfg;
-        this.vimboardProperties = vimboardProperties;
+        this.settingsBean = settingsBean;
     }
 
     @GetMapping("/shutdown")
@@ -56,7 +57,7 @@ public class AdminController {
     @GetMapping("/write")
     @Deprecated
     String home() throws Exception {
-        Writer file = new FileWriter(new File(vimboardProperties.getWww() + "/index.html"));
+        Writer file = new FileWriter(new File(settingsBean.get().getWww() + "/index.html"));
         Template template = freemarkerCfg.getTemplate("write.ftl");
         template.process(null, file);
         file.flush();

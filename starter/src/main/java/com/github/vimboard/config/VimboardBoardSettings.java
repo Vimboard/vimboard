@@ -1,0 +1,127 @@
+package com.github.vimboard.config;
+
+import java.util.Map;
+
+public class VimboardBoardSettings {
+
+    // Board settings --------------------------------------------------------
+
+    private String boardAbbreviation;
+
+    // Directory/file settings -----------------------------------------------
+
+    private String boardPath;
+    private String fileIndex;
+    private String root;
+    private String urlFavicon;
+    private String urlStylesheet;
+
+    // Display settings ------------------------------------------------------
+
+    private Object[] boards;
+    private Boolean boardlistWrapBracket;
+    private String defaultStylesheet;
+    private Map<String, String> stylesheets;
+    private String uriStylesheets;
+
+    // Getters and setters ---------------------------------------------------
+
+    public String getBoardAbbreviation() {
+        return boardAbbreviation;
+    }
+
+    public VimboardBoardSettings setBoardAbbreviation(String boardAbbreviation) {
+        this.boardAbbreviation = boardAbbreviation;
+        return this;
+    }
+
+    public String getBoardPath() {
+        return boardPath;
+    }
+
+    public VimboardBoardSettings setBoardPath(String boardPath) {
+        this.boardPath = boardPath;
+        return this;
+    }
+
+    public String getFileIndex() {
+        return fileIndex;
+    }
+
+    public VimboardBoardSettings setFileIndex(String fileIndex) {
+        this.fileIndex = fileIndex;
+        return this;
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public VimboardBoardSettings setRoot(String root) {
+        this.root = root;
+        return this;
+    }
+
+    public String getUrlFavicon() {
+        return urlFavicon;
+    }
+
+    public VimboardBoardSettings setUrlFavicon(String urlFavicon) {
+        this.urlFavicon = urlFavicon;
+        return this;
+    }
+
+    public String getUrlStylesheet() {
+        return urlStylesheet;
+    }
+
+    public VimboardBoardSettings setUrlStylesheet(String urlStylesheet) {
+        this.urlStylesheet = urlStylesheet;
+        return this;
+    }
+
+    public Object[] getBoards() {
+        return boards;
+    }
+
+    public VimboardBoardSettings setBoards(Object[] boards) {
+        this.boards = boards;
+        return this;
+    }
+
+    public Boolean getBoardlistWrapBracket() {
+        return boardlistWrapBracket;
+    }
+
+    public VimboardBoardSettings setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
+        this.boardlistWrapBracket = boardlistWrapBracket;
+        return this;
+    }
+
+    public String getDefaultStylesheet() {
+        return defaultStylesheet;
+    }
+
+    public VimboardBoardSettings setDefaultStylesheet(String defaultStylesheet) {
+        this.defaultStylesheet = defaultStylesheet;
+        return this;
+    }
+
+    public Map<String, String> getStylesheets() {
+        return stylesheets;
+    }
+
+    public VimboardBoardSettings setStylesheets(Map<String, String> stylesheets) {
+        this.stylesheets = stylesheets;
+        return this;
+    }
+
+    public String getUriStylesheets() {
+        return uriStylesheets;
+    }
+
+    public VimboardBoardSettings setUriStylesheets(String uriStylesheets) {
+        this.uriStylesheets = uriStylesheets;
+        return this;
+    }
+}

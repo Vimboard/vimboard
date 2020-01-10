@@ -1,5 +1,6 @@
 package com.github.vimboard.controller;
 
+import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.config.VimboardProperties;
 import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.model.DashboardModel;
@@ -23,18 +24,18 @@ public class ModController extends AbstractController {
 
     private final BoardRepository boardRepository;
     private final BoardService boardService;
-    private final VimboardProperties vimboardProperties;
+    private final SettingsBean settingsBean;
 
     @Autowired
     public ModController(
             MessageSource messageSource,
             BoardRepository boardRepository,
             BoardService boardService,
-            VimboardProperties vimboardProperties) {
+            SettingsBean settingsBean) {
         super(messageSource);
         this.boardRepository = boardRepository;
         this.boardService = boardService;
-        this.vimboardProperties = vimboardProperties;
+        this.settingsBean = settingsBean;
     }
 
     @RequestMapping({"/", "/**"})
@@ -75,11 +76,13 @@ public class ModController extends AbstractController {
     // TODO move
     private String modPage(String bodyTemplate, Model model, String pageTitle, String pageSubTitle) {
 
-        String dataStylesheet  = vimboardProperties.getAll().getStylesheets()
-                .get(vimboardProperties.getAll().getDefaultStylesheet());
+        String dataStylesheet  = settingsBean.getAll().getStylesheets()
+                .get(settingsBean.getAll().getDefaultStylesheet());
         if (dataStylesheet == null || dataStylesheet.isEmpty()) {
             dataStylesheet = "default"; // TODO: если нигде не используется, то можно перенести в загрузку конфига
         }
+
+        model.addAttribute("config", settingsBean.getAll());
 
         model.addAttribute("page", new PageModel()
                 .setBoardlist(boardService.buildBoardList())

@@ -8,13 +8,13 @@ import static org.junit.Assert.*;
 import java.util.Map;
 import static java.util.Map.*;
 
-public class BoardListBeanTest {
+public class SettingsBeanTest {
 
     @Test
     public void getTest() {
         {
             final VimboardProperties vimboardProperties = new VimboardProperties()
-                    .setAll(new BoardProperties()
+                    .setAll(new VimboardBoardProperties()
                             .setBoards(Map.ofEntries(
                                     entry("0", Map.of("Foo", Map.ofEntries(
                                             entry("0", "a"),
@@ -34,20 +34,19 @@ public class BoardListBeanTest {
                                     )))
                             )))
                     .setCustom(Map.of(
-                            "a", new BoardProperties()
+                            "a", new VimboardBoardProperties()
                                     .setBoards(Map.ofEntries(
                                             entry("0", "a")
                                     )),
-                            "b", new BoardProperties()
+                            "b", new VimboardBoardProperties()
                                     .setBoards(null)));
-            vimboardProperties.init();
 
-            BoardListBean bean = new BoardListBean(vimboardProperties);
+            SettingsBean bean = new SettingsBean(vimboardProperties);
 
-            final Object[] all = bean.get("");
+            final Object[] all = bean.getCustom(null).getBoards();
 
-            assertNotSame(all, bean.get("a"));
-            assertSame(all, bean.get("b"));
+            assertNotSame(all, bean.getCustom("a").getBoards());
+            assertSame(all, bean.getCustom("b").getBoards());
 
             assertTrue(checkArray(all, Object[].class, 5)
                     .item(i -> assertTrue(checkEntry(i, "Foo")
@@ -70,18 +69,17 @@ public class BoardListBeanTest {
                                                     .item(i5 -> assertTrue(checkEntry(i5, "h", "http://example.org/h")))))))))
                     .end());
 
-            assertTrue(checkArray(bean.get("a"), Object.class, 1)
+            assertTrue(checkArray(bean.getCustom("a").getBoards(), Object.class, 1)
                     .item(i -> assertEquals("a", i))
                     .end());
         }
         {
             final VimboardProperties vimboardProperties = new VimboardProperties()
-                    .setAll(new BoardProperties()
+                    .setAll(new VimboardBoardProperties()
                             .setBoards(null));
-            vimboardProperties.init();
 
-            BoardListBean bean = new BoardListBean(vimboardProperties);
-            assertNull(bean.get(""));
+            SettingsBean bean = new SettingsBean(vimboardProperties);
+            assertNull(bean.getAll().getBoards());
         }
     }
 }

@@ -1,9 +1,8 @@
 package com.github.vimboard.config;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class BoardProperties {
+public class VimboardBoardProperties {
 
     // Board settings --------------------------------------------------------
 
@@ -80,96 +79,13 @@ public class BoardProperties {
      */
     private String uriStylesheets;
 
-    // Init ------------------------------------------------------------------
-
-    static void init(final BoardProperties b, VimboardProperties v) {
-
-        // Board settings --------------------------------------------------------
-
-        if (b.boardAbbreviation == null) {} {
-            b.boardAbbreviation = (v == null
-                    ? "/{uri}/"
-                    : v.getAll().boardAbbreviation);
-        }
-
-        // Directory/file settings -------------------------------------------
-
-        if (b.boardPath == null) {} {
-            b.boardPath = (v == null
-                    ? "{uri}/"
-                    : v.getAll().boardPath);
-        }
-
-        if (b.fileIndex == null) {
-            b.fileIndex = (v == null
-                    ? "index.html"
-                    : v.getAll().fileIndex);
-        }
-
-        if (b.root == null) {
-            b.root = (v == null
-                    ? "/"
-                    : v.getAll().root);
-        }
-
-        if (b.urlFavicon == null) {
-            b.urlFavicon = (v == null
-                    ? null
-                    : v.getAll().urlFavicon);
-        }
-
-        if (b.urlStylesheet == null) {
-            b.urlStylesheet = (v == null
-                    ? null
-                    : v.getAll().urlStylesheet);
-        }
-
-        // Display settings --------------------------------------------------
-
-        if (b.boards == null) {
-            b.boards = (v == null
-                    ? null
-                    : v.getAll().boards);
-        }
-
-        if (b.boardlistWrapBracket == null) {
-            b.boardlistWrapBracket = (v == null
-                    ? false
-                    : v.getAll().boardlistWrapBracket);
-        }
-
-        if (b.defaultStylesheet == null) {
-            b.defaultStylesheet = (v == null
-                    ? "Yotsuba B"
-                    : v.getAll().defaultStylesheet);
-        }
-
-        if (b.stylesheets == null) {
-            if (v == null) {
-                b.stylesheets = new HashMap<>(2);
-                b.stylesheets.put("Yotsuba B", ""); // Default; there is no additional/custom stylesheet for this.
-                b.stylesheets.put("Yotsuba", "yotsuba.css");
-                //b.stylesheets.put("Futaba", "futaba.css");
-                //b.stylesheets.put("Dark", "dark.css");
-            } else {
-                b.stylesheets = v.getAll().stylesheets;
-            }
-        }
-
-        if (b.uriStylesheets == null) {
-            b.uriStylesheets = (v == null
-                    ? null
-                    : v.getAll().uriStylesheets);
-        }
-    }
-
     // Getters and setters ---------------------------------------------------
 
     public String getBoardAbbreviation() {
         return boardAbbreviation;
     }
 
-    public BoardProperties setBoardAbbreviation(String boardAbbreviation) {
+    public VimboardBoardProperties setBoardAbbreviation(String boardAbbreviation) {
         this.boardAbbreviation = boardAbbreviation;
         return this;
     }
@@ -178,7 +94,7 @@ public class BoardProperties {
         return boardPath;
     }
 
-    public BoardProperties setBoardPath(String boardPath) {
+    public VimboardBoardProperties setBoardPath(String boardPath) {
         this.boardPath = boardPath;
         return this;
     }
@@ -187,7 +103,7 @@ public class BoardProperties {
         return fileIndex;
     }
 
-    public BoardProperties setFileIndex(String fileIndex) {
+    public VimboardBoardProperties setFileIndex(String fileIndex) {
         this.fileIndex = fileIndex;
         return this;
     }
@@ -196,7 +112,7 @@ public class BoardProperties {
         return root;
     }
 
-    public BoardProperties setRoot(String root) {
+    public VimboardBoardProperties setRoot(String root) {
         this.root = root;
         return this;
     }
@@ -205,7 +121,7 @@ public class BoardProperties {
         return urlFavicon;
     }
 
-    public BoardProperties setUrlFavicon(String urlFavicon) {
+    public VimboardBoardProperties setUrlFavicon(String urlFavicon) {
         this.urlFavicon = urlFavicon;
         return this;
     }
@@ -214,7 +130,7 @@ public class BoardProperties {
         return urlStylesheet;
     }
 
-    public BoardProperties setUrlStylesheet(String urlStylesheet) {
+    public VimboardBoardProperties setUrlStylesheet(String urlStylesheet) {
         this.urlStylesheet = urlStylesheet;
         return this;
     }
@@ -223,7 +139,7 @@ public class BoardProperties {
         return boards;
     }
 
-    public BoardProperties setBoards(Map boards) {
+    public VimboardBoardProperties setBoards(Map boards) {
         this.boards = boards;
         return this;
     }
@@ -232,7 +148,7 @@ public class BoardProperties {
         return boardlistWrapBracket;
     }
 
-    public BoardProperties setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
+    public VimboardBoardProperties setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
         this.boardlistWrapBracket = boardlistWrapBracket;
         return this;
     }
@@ -241,7 +157,7 @@ public class BoardProperties {
         return defaultStylesheet;
     }
 
-    public BoardProperties setDefaultStylesheet(String defaultStylesheet) {
+    public VimboardBoardProperties setDefaultStylesheet(String defaultStylesheet) {
         this.defaultStylesheet = defaultStylesheet;
         return this;
     }
@@ -250,7 +166,7 @@ public class BoardProperties {
         return stylesheets;
     }
 
-    public BoardProperties setStylesheets(Map<String, String> stylesheets) {
+    public VimboardBoardProperties setStylesheets(Map<String, String> stylesheets) {
         this.stylesheets = stylesheets;
         return this;
     }
@@ -259,7 +175,7 @@ public class BoardProperties {
         return uriStylesheets;
     }
 
-    public BoardProperties setUriStylesheets(String uriStylesheets) {
+    public VimboardBoardProperties setUriStylesheets(String uriStylesheets) {
         this.uriStylesheets = uriStylesheets;
         return this;
     }

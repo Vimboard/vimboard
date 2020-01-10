@@ -16,7 +16,7 @@ public class VimboardConfig {
     }
 
     @Bean
-    public BoardListBean getBoardList(VimboardProperties vimboardProperties) {
-        return new BoardListBean(vimboardProperties);
+    public SettingsBean getConfig(VimboardProperties vimboardProperties) {
+        return new SettingsBean(vimboardProperties);
     }
 }
