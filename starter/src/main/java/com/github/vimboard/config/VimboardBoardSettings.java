@@ -6,7 +6,7 @@ public class VimboardBoardSettings {
 
     // Post settings ---------------------------------------------------------
 
-    private boolean countryFlagsCondensed;
+    private Boolean countryFlagsCondensed;
     private String countryFlagsCondensedCss;
 
     // Board settings --------------------------------------------------------
@@ -17,8 +17,10 @@ public class VimboardBoardSettings {
 
     private String boardPath;
     private String fileIndex;
+    private String fileScript;
     private String root;
     private String urlFavicon;
+    private String urlJavascript;
     private String urlStylesheet;
 
     // Display settings ------------------------------------------------------
@@ -37,11 +39,11 @@ public class VimboardBoardSettings {
 
     // Getters and setters ---------------------------------------------------
 
-    public boolean isCountryFlagsCondensed() {
+    public Boolean getCountryFlagsCondensed() {
         return countryFlagsCondensed;
     }
 
-    public VimboardBoardSettings setCountryFlagsCondensed(boolean countryFlagsCondensed) {
+    public VimboardBoardSettings setCountryFlagsCondensed(Boolean countryFlagsCondensed) {
         this.countryFlagsCondensed = countryFlagsCondensed;
         return this;
     }
@@ -82,6 +84,15 @@ public class VimboardBoardSettings {
         return this;
     }
 
+    public String getFileScript() {
+        return fileScript;
+    }
+
+    public VimboardBoardSettings setFileScript(String fileScript) {
+        this.fileScript = fileScript;
+        return this;
+    }
+
     public String getRoot() {
         return root;
     }
@@ -97,6 +108,15 @@ public class VimboardBoardSettings {
 
     public VimboardBoardSettings setUrlFavicon(String urlFavicon) {
         this.urlFavicon = urlFavicon;
+        return this;
+    }
+
+    public String getUrlJavascript() {
+        return urlJavascript;
+    }
+
+    public VimboardBoardSettings setUrlJavascript(String urlJavascript) {
+        this.urlJavascript = urlJavascript;
         return this;
     }
 

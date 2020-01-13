@@ -71,8 +71,11 @@ vimboard:
     # Board directory, followed by a forward-slash (/).
     board-path: {uri}/
 
-    # Name of index file.
+    # Name of the index page file.
     file-index: index.html
+
+    # Name of the main script file.
+    file-script: main.js
 
     # The root directory, including the trailing slash,
     # Examples: '/', 'http://boards.chan.org/', '/chan/'.
@@ -81,7 +84,11 @@ vimboard:
     # Website favicon.
 #   url-favicon: /favicon.gif
 
-    # Set custom location for stylesheetsfile. This can be used for load
+    # Set custom location for the main script file. This can be used for load
+    # balancing across multiple servers or hostnames.
+#   url-javascript: http://static.example.org/main.js
+
+    # Set custom location for stylesheets file. This can be used for load
     # balancing across multiple servers or hostnames.
 #   url-stylesheet: http://static.example.org/style.css # main/base stylesheet
 

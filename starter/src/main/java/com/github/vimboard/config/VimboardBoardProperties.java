@@ -9,7 +9,7 @@ public class VimboardBoardProperties {
     /**
      * Load all country flags from one file.
      */
-    private boolean countryFlagsCondensed;
+    private Boolean countryFlagsCondensed;
 
     /**
      * Country flags stylesheet.
@@ -33,9 +33,14 @@ public class VimboardBoardProperties {
     private String boardPath;
 
     /**
-     * Name of index file.
+     * Name of the index page file.
      */
     private String fileIndex;
+
+    /**
+     * Name of the main script file.
+     */
+    private String fileScript;
 
     /**
      * The root directory, including the trailing slash,
@@ -48,8 +53,14 @@ public class VimboardBoardProperties {
      */
     private String urlFavicon;
 
+    /**
+     * Set custom location for the main script file. This can be used for load
+     * balancing across multiple servers or hostnames.
+     */
+    private String urlJavascript;
+
     /*
-     * Set custom location for stylesheetsfile. This can be used for load
+     * Set custom location for stylesheets file. This can be used for load
      * balancing across multiple servers or hostnames.
      */
     private String urlStylesheet;
@@ -115,11 +126,11 @@ public class VimboardBoardProperties {
 
     // Getters and setters ---------------------------------------------------
 
-    public boolean isCountryFlagsCondensed() {
+    public Boolean getCountryFlagsCondensed() {
         return countryFlagsCondensed;
     }
 
-    public VimboardBoardProperties setCountryFlagsCondensed(boolean countryFlagsCondensed) {
+    public VimboardBoardProperties setCountryFlagsCondensed(Boolean countryFlagsCondensed) {
         this.countryFlagsCondensed = countryFlagsCondensed;
         return this;
     }
@@ -160,6 +171,15 @@ public class VimboardBoardProperties {
         return this;
     }
 
+    public String getFileScript() {
+        return fileScript;
+    }
+
+    public VimboardBoardProperties setFileScript(String fileScript) {
+        this.fileScript = fileScript;
+        return this;
+    }
+
     public String getRoot() {
         return root;
     }
@@ -175,6 +195,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setUrlFavicon(String urlFavicon) {
         this.urlFavicon = urlFavicon;
+        return this;
+    }
+
+    public String getUrlJavascript() {
+        return urlJavascript;
+    }
+
+    public VimboardBoardProperties setUrlJavascript(String urlJavascript) {
+        this.urlJavascript = urlJavascript;
         return this;
     }
 

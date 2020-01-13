@@ -2,6 +2,8 @@
 <#--
   -- Template attributes:
   --
+  -- config.countryFlagsCondensed
+  -- config.countryFlagsCondensedCss
   -- config.default_stylesheet[1]
   -- config.fontAwesome
   -- config.fontAwesomeCss
@@ -9,7 +11,10 @@
   -- config.root
   -- config.uriStylesheets
   -- config.urlFavicon
+  -- config.urlJavascript
   -- config.urlStylesheet
+  -- page.mod
+  -- page.nojavascript
   -->
     <link rel="stylesheet" media="screen" href="${config.urlStylesheet}">
     <#if config.urlFavicon?has_content><link rel="shortcut icon" href="${config.urlFavicon}"></#if>
@@ -17,19 +22,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
     <#if config.metaKeywords?has_content><meta name="keywords" content="${config.metaKeywords}"></#if>
     <#if config.defaultStylesheet[1]?has_content><link rel="stylesheet" type="text/css" id="stylesheet" href="${config.uriStylesheets}${config.defaultStylesheet[1]}"></#if>
-    <#if config.fontAwesome?has_content><link rel="stylesheet" href="${config.root}${config.fontAwesomeCss}"></#if>
-    {% if config.country_flags_condensed %}<link rel="stylesheet" href="{{ config.root }}{{ config.country_flags_condensed_css }}">{% endif %}
+    <#if config.fontAwesome><link rel="stylesheet" href="${config.root}${config.fontAwesomeCss}"></#if>
+    <#if config.countryFlagsCondensed><link rel="stylesheet" href="${config.root}${config.countryFlagsCondensedCss}"></#if>
     <script type="text/javascript">
-        var configRoot="{{ config.root }}";
-        var inMod = {% if mod %}true{% else %}false{% endif %};
-        var modRoot="{{ config.root }}"+(inMod ? "mod.php?/" : "");
+        var configRoot="${config.root}";
+        var inMod = <#if page.mod??>true<#else>false</#if>;
+        var modRoot="${config.root}"+(inMod ? "mod.php?/" : "");
     </script>
-    {% if not nojavascript %}
-        <script type="text/javascript" src="{{ config.url_javascript }}"></script>
+    <#if !page.nojavascript>
+        <script type="text/javascript" src="${config.urlJavascript}"></script>
         {% if not config.additional_javascript_compile %}
         {% for javascript in config.additional_javascript %}<script type="text/javascript" src="{{ config.additional_javascript_url }}{{ javascript }}"></script>{% endfor %}
         {% endif %}
-    {% endif %}
+    </#if>
     {% if config.recaptcha %}<script src="//www.google.com/recaptcha/api.js"></script>
     <style type="text/css">{% raw %}
         #recaptcha_area {

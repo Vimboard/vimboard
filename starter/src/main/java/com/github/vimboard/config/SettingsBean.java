@@ -104,10 +104,20 @@ public class SettingsBean {
             s.setBoards(convertBoards(boardUri, p.getBoards()));
         }
 
-        if (p == null || p.isCountryFlagsCondensed() == null) {
-            //
+        if (p == null || p.getCountryFlagsCondensed() == null) {
+            s.setCountryFlagsCondensed(boardUri == null
+                    ? true
+                    : all.getCountryFlagsCondensed());
         } else {
+            s.setCountryFlagsCondensed(p.getCountryFlagsCondensed());
+        }
 
+        if (p == null || p.getCountryFlagsCondensedCss() == null) {
+            s.setCountryFlagsCondensedCss(boardUri == null
+                    ? "static/flags/flags.css"
+                    : all.getCountryFlagsCondensedCss());
+        } else {
+            s.setCountryFlagsCondensedCss(p.getCountryFlagsCondensedCss());
         }
 
         if (p == null || p.getFileIndex() == null) {
@@ -116,6 +126,14 @@ public class SettingsBean {
                     : all.getFileIndex());
         } else {
             s.setFileIndex(p.getFileIndex());
+        }
+
+        if (p == null || p.getFileScript() == null) {
+            s.setFileScript(boardUri == null
+                    ? "main.js"
+                    : all.getFileScript());
+        } else {
+            s.setFileScript(p.getFileScript());
         }
 
         if (p == null || p.getFontAwesome() == null) {
@@ -194,6 +212,14 @@ public class SettingsBean {
                     : all.getUriStylesheets());
         } else {
             s.setUriStylesheets(p.getUriStylesheets());
+        }
+
+        if (p == null || p.getUrlJavascript() == null) {
+            s.setUrlJavascript(boardUri == null
+                    ? s.getRoot() + s.getFileScript()
+                    : all.getUrlJavascript());
+        } else {
+            s.setUrlJavascript(p.getUrlJavascript());
         }
 
         if (p == null || p.getUrlStylesheet() == null) {

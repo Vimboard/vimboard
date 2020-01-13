@@ -30,6 +30,12 @@ public class PageModel {
     private ModModel mod = null;
 
     /**
+     * If {@code true} then don't include main script file
+     * {@code <board-config>.file-script}.
+     */
+    private boolean nojavascript = false;
+
+    /**
      * TODO
      */
     private PersonalMessageModel pm = null;
@@ -84,6 +90,15 @@ public class PageModel {
 
     public PageModel setMod(ModModel mod) {
         this.mod = mod;
+        return this;
+    }
+
+    public boolean isNojavascript() {
+        return nojavascript;
+    }
+
+    public PageModel setNojavascript(boolean nojavascript) {
+        this.nojavascript = nojavascript;
         return this;
     }
 
