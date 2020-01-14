@@ -112,9 +112,28 @@ public class VimboardBoardProperties {
 
     /*
      * The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
-    // $config['uri_stylesheets'] = 'http://static.example.org/stylesheets/';
      */
     private String uriStylesheets;
+
+    // Javascript ------------------------------------------------------------
+
+    /**
+     * Additional Javascript files to include on board index and thread pages.
+     * See "js/" for available scripts.
+     */
+    private String[] additionalJavascript;
+
+    /**
+     * Compile all additional scripts into one file ({@link #fileScript})
+     * instead of including them seperately.
+     */
+    private Boolean additionalJavascriptCompile;
+
+    /**
+     * Where these script files are located on the web. Defaults to {@link #root}.
+     */
+    // $config['additional_javascript_url'] = 'http://static.example.org/tinyboard-javascript-stuff/';
+    private String additionalJavascriptUrl;
 
     // Other/uncategorized ---------------------------------------------------
 
@@ -276,6 +295,33 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setUriStylesheets(String uriStylesheets) {
         this.uriStylesheets = uriStylesheets;
+        return this;
+    }
+
+    public String[] getAdditionalJavascript() {
+        return additionalJavascript;
+    }
+
+    public VimboardBoardProperties setAdditionalJavascript(String[] additionalJavascript) {
+        this.additionalJavascript = additionalJavascript;
+        return this;
+    }
+
+    public Boolean getAdditionalJavascriptCompile() {
+        return additionalJavascriptCompile;
+    }
+
+    public VimboardBoardProperties setAdditionalJavascriptCompile(Boolean additionalJavascriptCompile) {
+        this.additionalJavascriptCompile = additionalJavascriptCompile;
+        return this;
+    }
+
+    public String getAdditionalJavascriptUrl() {
+        return additionalJavascriptUrl;
+    }
+
+    public VimboardBoardProperties setAdditionalJavascriptUrl(String additionalJavascriptUrl) {
+        this.additionalJavascriptUrl = additionalJavascriptUrl;
         return this;
     }
 

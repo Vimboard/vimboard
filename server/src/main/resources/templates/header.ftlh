@@ -2,6 +2,9 @@
 <#--
   -- Template attributes:
   --
+  -- config.additionalJavascript
+  -- config.additionalJavascriptCompile
+  -- config.additionalJavascriptUrl
   -- config.countryFlagsCondensed
   -- config.countryFlagsCondensedCss
   -- config.default_stylesheet[1]
@@ -31,9 +34,11 @@
     </script>
     <#if !page.nojavascript>
         <script type="text/javascript" src="${config.urlJavascript}"></script>
-        {% if not config.additional_javascript_compile %}
-        {% for javascript in config.additional_javascript %}<script type="text/javascript" src="{{ config.additional_javascript_url }}{{ javascript }}"></script>{% endfor %}
-        {% endif %}
+        <#if !config.additionalJavascriptCompile>
+            <#list config.additionalJavascript as javascript>
+                <script type="text/javascript" src="${config.additionalJavascriptUrl}${javascript}"></script>
+            </#list>
+        </#if>
     </#if>
     {% if config.recaptcha %}<script src="//www.google.com/recaptcha/api.js"></script>
     <style type="text/css">{% raw %}

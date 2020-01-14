@@ -184,6 +184,13 @@ public class SettingsBean {
 
         SettingsReader sr = new SettingsReader(boardUri, p, a);
 
+        // Settings without dependencies
+
+        sr.put("additionalJavascript", new String[] {
+                "js/jquery.min.js",
+                "js/inline-expanding.js"
+        });
+        sr.put("additionalJavascriptCompile", false);
         sr.put("boardAbbreviation", "/{uri}/");
         sr.put("boardPath", "{uri}/");
         sr.put("boardlistWrapBracket", false);
@@ -207,10 +214,13 @@ public class SettingsBean {
 
         // Settings with dependencies
 
+        sr.put("additionalJavascriptUrl", root);
         sr.put("defaultStylesheet",
-                new String[] { "Yotsuba B", stylesheets.get("Yotsuba B") }, (reader, value) -> {
-                    return convertDefaultStylesheet(reader, value, stylesheets);
-                });
+                new String[] {
+                        "Yotsuba B",
+                        stylesheets.get("Yotsuba B")
+                },
+                (reader, value) -> convertDefaultStylesheet(reader, value, stylesheets));
         final String uriStylesheets = (String) sr.put("uriStylesheets", root + "stylesheets/");
         sr.put("urlJavascript", root + fileScript);
         sr.put("urlStylesheet", uriStylesheets + "style.css");

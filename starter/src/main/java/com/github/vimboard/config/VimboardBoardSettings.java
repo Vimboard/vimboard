@@ -33,6 +33,12 @@ public class VimboardBoardSettings {
     private Map<String, String> stylesheets;
     private String uriStylesheets;
 
+    // Javascript ------------------------------------------------------------
+
+    private String[] additionalJavascript;
+    private Boolean additionalJavascriptCompile;
+    private String additionalJavascriptUrl;
+
     // Other/uncategorized ---------------------------------------------------
 
     private String metaKeywords;
@@ -173,6 +179,30 @@ public class VimboardBoardSettings {
 
     public void setUriStylesheets(String uriStylesheets) {
         this.uriStylesheets = uriStylesheets;
+    }
+
+    public String[] getAdditionalJavascript() {
+        return additionalJavascript;
+    }
+
+    public void setAdditionalJavascript(String[] additionalJavascript) {
+        this.additionalJavascript = additionalJavascript;
+    }
+
+    public Boolean getAdditionalJavascriptCompile() {
+        return additionalJavascriptCompile;
+    }
+
+    public void setAdditionalJavascriptCompile(Boolean additionalJavascriptCompile) {
+        this.additionalJavascriptCompile = additionalJavascriptCompile;
+    }
+
+    public String getAdditionalJavascriptUrl() {
+        return additionalJavascriptUrl;
+    }
+
+    public void setAdditionalJavascriptUrl(String additionalJavascriptUrl) {
+        this.additionalJavascriptUrl = additionalJavascriptUrl;
     }
 
     public String getMetaKeywords() {
