@@ -58,7 +58,7 @@ public class AdminController {
     @Deprecated
     String home() throws Exception {
         Writer file = new FileWriter(new File(settingsBean.get().getWww() + "/index.html"));
-        Template template = freemarkerCfg.getTemplate("write.ftl");
+        Template template = freemarkerCfg.getTemplate("write.ftlh");
         template.process(null, file);
         file.flush();
         file.close();

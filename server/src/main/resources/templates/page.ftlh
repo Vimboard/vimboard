@@ -20,7 +20,7 @@
     <script type="text/javascript">
         var active_page = "page";
     </script>
-    <#include "header.ftl">
+    <#include "header.ftlh">
     <title>${page.title}</title>
 </head>
 <body class="8chan vichan <#if page.mod??>is-moderator<#else>is-not-moderator</#if> active-page" data-stylesheet="${page.dataStylesheet}">

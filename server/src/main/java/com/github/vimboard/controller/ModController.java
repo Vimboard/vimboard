@@ -70,7 +70,7 @@ public class ModController extends AbstractController {
 
         //model.addAttribute("logout_token", // todo
 
-        return modPage("mod/dashboard.ftl", model, i18n("page.Dashboard"), null);
+        return modPage("mod/dashboard.ftlh", model, i18n("page.Dashboard"), null);
     }
 
     // TODO move
@@ -87,7 +87,7 @@ public class ModController extends AbstractController {
         model.addAttribute("page", new PageModel()
                 .setBoardlist(boardService.buildBoardList())
                 .setDataStylesheet(dataStylesheet)
-                .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftl"))
+                .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftlh"))
                 .setMod(new ModModel()) // TODO
                 .setTitle(pageTitle)
                 .setSubtitle(pageSubTitle)
