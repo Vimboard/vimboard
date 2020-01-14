@@ -143,7 +143,7 @@ vimboard:
     # stylesheets (or create your own).
     #
     stylesheets:
-      Yotsuba B: ''
+      Yotsuba B: '' # Default; there is no additional/custom stylesheet for this.
       Yotsuba: yotsuba.css
 #     Futaba: futaba.css
 #     Dark: dark.css

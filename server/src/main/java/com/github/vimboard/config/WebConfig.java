@@ -88,7 +88,7 @@ public class WebConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-//                .csrf()                                                    2
+//                .csrf()
 //                    .and()
                 .authorizeRequests()
                     .antMatchers("/admin.php/**").hasRole("ADMIN")
