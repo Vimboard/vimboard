@@ -11,6 +11,7 @@
   -- config.fontAwesome
   -- config.fontAwesomeCss
   -- config.metaKeywords
+  -- config.recaptcha
   -- config.root
   -- config.uriStylesheets
   -- config.urlFavicon
@@ -40,8 +41,8 @@
             </#list>
         </#if>
     </#if>
-    {% if config.recaptcha %}<script src="//www.google.com/recaptcha/api.js"></script>
-    <style type="text/css">{% raw %}
+    <#if config.recaptcha><script src="//www.google.com/recaptcha/api.js"></script>
+    <style type="text/css"><#noparse>
         #recaptcha_area {
             float: none !important;
             padding: 0 !important;
@@ -69,4 +70,4 @@
         .recaptchatable, #recaptcha_area tr, #recaptcha_area td, #recaptcha_area th {
             padding: 0 !important;
         }
-    {% endraw %}</style>{% endif %}
+    </#noparse></style></#if>

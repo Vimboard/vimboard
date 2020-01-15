@@ -23,7 +23,9 @@ public class VimboardProperties {
       */
     private String www;
 
-    // Getters and setters ---------------------------------------------------
+    //------------------------------------------------------------------------
+    // Getters and setters
+    //------------------------------------------------------------------------
 
     public VimboardBoardProperties getAll() {
         return all;

@@ -46,6 +46,29 @@ vimboard:
   all:
 
     # ------------------------------------------------------------------------
+    # General/misc settings
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # Database settings
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # Cache, lock and queue settings
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # Cookie settings
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # Flood/spam settings
+    # ------------------------------------------------------------------------
+
+    # Enable reCaptcha to make spam even harder. Rarely necessary.
+    recaptcha: false
+
+    # ------------------------------------------------------------------------
     # Post settings
     # ------------------------------------------------------------------------
 
@@ -56,6 +79,18 @@ vimboard:
     country-flags-condensed-css: static/flags/flags.css
 
     # ------------------------------------------------------------------------
+    # Ban settings
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # Markup settings
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # Image settings
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
     # Board settings
     # ------------------------------------------------------------------------
 
@@ -63,6 +98,103 @@ vimboard:
     # This doesn't change the URL. Find {@link #boardPath} if you wish to
     # change the URL.
     board-abbreviation: /{uri}/
+
+    # ------------------------------------------------------------------------
+    # Display settings
+    # ------------------------------------------------------------------------
+
+    # For lack of a better name, “boardlinks” are those sets of navigational
+    # links that appear at the top and bottom of board pages. They can be a
+    # list of links to boards and/or other pages such as status blogs and
+    # social network profiles/pages.
+    #
+    # "Groups" in the boardlinks are marked with square brackets. Vimboard
+    # allows for infinite recursion with groups. Each array in {@link #boards}
+    # represents a new square bracket group.
+    #
+    #   boards:
+    #     - General group:
+    #       - a
+    #       - b
+    #     - Second group:
+    #       - c
+    #       - d
+    #       - e: http://example.org/e
+    #     - f
+    #     - g
+    #     - Recursive:
+    #       - h
+    #       - Inner:
+    #         - i
+    #         - j
+    #     - status: http://example.org/status
+
+    # Whether or not to put brackets around the whole board list.
+    boardlist-wrap-bracket: false
+
+    # The default stylesheet to use.
+    default-stylesheet: Yotsuba B
+
+    # Use Font-Awesome for displaying lock and pin icons, instead
+    # of the images in static/.
+    #
+    # http://fortawesome.github.io/Font-Awesome/icon/pushpin/
+    # http://fortawesome.github.io/Font-Awesome/icon/lock/
+    font-awesome: true
+
+    # Font-Awesome stylesheet.
+    font-awesome-css: stylesheets/font-awesome/css/font-awesome.min.css
+
+    # Custom stylesheets available for the user to choose.
+    # See the "stylesheets/" folder for a list of available
+    # stylesheets (or create your own).
+    #
+    stylesheets:
+      Yotsuba B: '' # Default; there is no additional/custom stylesheet for this.
+      Yotsuba: yotsuba.css
+    #     Futaba: futaba.css
+    #     Dark: dark.css
+
+    # The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
+    #   uri-stylesheets: http://static.example.org/stylesheets/
+
+    # ------------------------------------------------------------------------
+    # Javascript
+    # ------------------------------------------------------------------------
+
+    # Additional Javascript files to include on board index and thread pages.
+    # See "js/" for available scripts.
+    additional-javascript:
+      - js/jquery.min.js
+      - js/inline-expanding.js
+    #     - js/local-time.js
+    # Some scripts require jQuery. Check the comments in script files to see
+    # what's needed. When enabling jQuery, you should first empty the array so
+    # that "js/query.min.js" can be the first, and then re-add
+    # "js/inline-expanding.js" or else the inline-expanding script might not
+    # interact properly with other scripts.
+    #  additional_javascript:
+    #    - js/jquery.min.js
+    #    - js/inline-expanding.js
+    #    - js/auto-reload.js
+    #    - js/post-hover.js
+    #    - js/style-select.js
+    #    - js/captcha.js
+
+    # Compile all additional scripts into one file ({@link #fileScript})
+    # instead of including them seperately.
+    additional-javascript-compile: false
+
+    # Where these script files are located on the web. Defaults to {@link #root}.
+    #   additional-javascript-url: http://static.example.org/tinyboard-javascript-stuff/
+
+    # ------------------------------------------------------------------------
+    # Video embedding
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # Error messages
+    # ------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------
     # Directory/file settings
@@ -93,93 +225,32 @@ vimboard:
 #   url-stylesheet: http://static.example.org/style.css # main/base stylesheet
 
     # ------------------------------------------------------------------------
-    # Display settings
+    # Advanced build
     # ------------------------------------------------------------------------
 
-    # For lack of a better name, “boardlinks” are those sets of navigational
-    # links that appear at the top and bottom of board pages. They can be a
-    # list of links to boards and/or other pages such as status blogs and
-    # social network profiles/pages.
-    #
-    # "Groups" in the boardlinks are marked with square brackets. Vimboard
-    # allows for infinite recursion with groups. Each array in {@link #boards}
-    # represents a new square bracket group.
-    #
-#   boards:
-#     - General group:
-#       - a
-#       - b
-#     - Second group:
-#       - c
-#       - d
-#       - e: http://example.org/e
-#     - f
-#     - g
-#     - Recursive:
-#       - h
-#       - Inner:
-#         - i
-#         - j
-#     - status: http://example.org/status
-
-    # Whether or not to put brackets around the whole board list.
-    boardlist-wrap-bracket: false
-
-    # The default stylesheet to use.
-    default-stylesheet: Yotsuba B
-
-    # Use Font-Awesome for displaying lock and pin icons, instead
-    # of the images in static/.
-    #
-    # http://fortawesome.github.io/Font-Awesome/icon/pushpin/
-    # http://fortawesome.github.io/Font-Awesome/icon/lock/
-    font-awesome: true
-
-    # Font-Awesome stylesheet.
-    font-awesome-css: stylesheets/font-awesome/css/font-awesome.min.css
-
-    # Custom stylesheets available for the user to choose.
-    # See the "stylesheets/" folder for a list of available
-    # stylesheets (or create your own).
-    #
-    stylesheets:
-      Yotsuba B: '' # Default; there is no additional/custom stylesheet for this.
-      Yotsuba: yotsuba.css
-#     Futaba: futaba.css
-#     Dark: dark.css
-
-    # The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
-#   uri-stylesheets: http://static.example.org/stylesheets/
-
     # ------------------------------------------------------------------------
-    # Javascript
+    # Mod settings
     # ------------------------------------------------------------------------
 
-    # Additional Javascript files to include on board index and thread pages.
-    # See "js/" for available scripts.
-    additional-javascript:
-      - js/jquery.min.js
-      - js/inline-expanding.js
-#     - js/local-time.js
-    # Some scripts require jQuery. Check the comments in script files to see
-    # what's needed. When enabling jQuery, you should first empty the array so
-    # that "js/query.min.js" can be the first, and then re-add
-    # "js/inline-expanding.js" or else the inline-expanding script might not
-    # interact properly with other scripts.
- #  additional_javascript:
- #    - js/jquery.min.js
- #    - js/inline-expanding.js
- #    - js/auto-reload.js
- #    - js/post-hover.js
- #    - js/style-select.js
- #    - js/captcha.js
+    # ------------------------------------------------------------------------
+    # Mod permissions
+    # ------------------------------------------------------------------------
 
-    # Compile all additional scripts into one file ({@link #fileScript})
-    # instead of including them seperately.
-    additional-javascript-compile: false
+    # ------------------------------------------------------------------------
+    # Public pages
+    # ------------------------------------------------------------------------
 
-    # Where these script files are located on the web. Defaults to {@link #root}.
-#   additional-javascript-url: http://static.example.org/tinyboard-javascript-stuff/
+    # ------------------------------------------------------------------------
+    # Events (PHP 5.3.0+)
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # API settings
+    # ------------------------------------------------------------------------
+
+    # ------------------------------------------------------------------------
+    # NNTPChan settings
+    # ------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------
     # Other/uncategorized

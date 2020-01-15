@@ -4,7 +4,34 @@ import java.util.Map;
 
 public class VimboardBoardProperties {
 
-    // Post settings ---------------------------------------------------------
+    //------------------------------------------------------------------------
+    // General/misc settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Database settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Cache, lock and queue settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Cookie settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Flood/spam settings
+    //------------------------------------------------------------------------
+
+    /**
+     * Enable reCaptcha to make spam even harder. Rarely necessary.
+     */
+    private Boolean recaptcha;
+
+    //------------------------------------------------------------------------
+    // Post settings
+    //------------------------------------------------------------------------
 
     /**
      * Load all country flags from one file.
@@ -16,7 +43,21 @@ public class VimboardBoardProperties {
      */
     private String countryFlagsCondensedCss;
 
-    // Board settings --------------------------------------------------------
+    //------------------------------------------------------------------------
+    // Ban settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Markup settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Image settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Board settings
+    //------------------------------------------------------------------------
 
     /**
      * How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
@@ -25,47 +66,9 @@ public class VimboardBoardProperties {
      */
     private String boardAbbreviation;
 
-    // Directory/file settings -----------------------------------------------
-
-    /**
-     * Board directory, followed by a forward-slash (/).
-     */
-    private String boardPath;
-
-    /**
-     * Name of the index page file.
-     */
-    private String fileIndex;
-
-    /**
-     * Name of the main script file.
-     */
-    private String fileScript;
-
-    /**
-     * The root directory, including the trailing slash,
-     * Examples: '/', 'http://boards.chan.org/', '/chan/'.
-     */
-    private String root;
-
-    /*
-     * Website favicon.
-     */
-    private String urlFavicon;
-
-    /**
-     * Set custom location for the main script file. This can be used for load
-     * balancing across multiple servers or hostnames.
-     */
-    private String urlJavascript;
-
-    /*
-     * Set custom location for stylesheets file. This can be used for load
-     * balancing across multiple servers or hostnames.
-     */
-    private String urlStylesheet;
-
-    // Display settings ------------------------------------------------------
+    //------------------------------------------------------------------------
+    // Display settings
+    //------------------------------------------------------------------------
 
     /**
      * For lack of a better name, “boardlinks” are those sets of navigational
@@ -115,7 +118,9 @@ public class VimboardBoardProperties {
      */
     private String uriStylesheets;
 
-    // Javascript ------------------------------------------------------------
+    //------------------------------------------------------------------------
+    // Javascript
+    //------------------------------------------------------------------------
 
     /**
      * Additional Javascript files to include on board index and thread pages.
@@ -132,10 +137,89 @@ public class VimboardBoardProperties {
     /**
      * Where these script files are located on the web. Defaults to {@link #root}.
      */
-    // $config['additional_javascript_url'] = 'http://static.example.org/tinyboard-javascript-stuff/';
     private String additionalJavascriptUrl;
 
-    // Other/uncategorized ---------------------------------------------------
+    //------------------------------------------------------------------------
+    // Video embedding
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Error messages
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Directory/file settings
+    //------------------------------------------------------------------------
+
+    /**
+     * Board directory, followed by a forward-slash (/).
+     */
+    private String boardPath;
+
+    /**
+     * Name of the index page file.
+     */
+    private String fileIndex;
+
+    /**
+     * Name of the main script file.
+     */
+    private String fileScript;
+
+    /**
+     * The root directory, including the trailing slash,
+     * Examples: '/', 'http://boards.chan.org/', '/chan/'.
+     */
+    private String root;
+
+    /*
+     * Website favicon.
+     */
+    private String urlFavicon;
+
+    /**
+     * Set custom location for the main script file. This can be used for load
+     * balancing across multiple servers or hostnames.
+     */
+    private String urlJavascript;
+
+    /*
+     * Set custom location for stylesheets file. This can be used for load
+     * balancing across multiple servers or hostnames.
+     */
+    private String urlStylesheet;
+
+    //------------------------------------------------------------------------
+    // Advanced build
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Mod settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Mod permissions
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Public pages
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Events (PHP 5.3.0+)
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // API settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // NNTPChan settings
+    //------------------------------------------------------------------------
+
+    //------------------------------------------------------------------------
+    // Other/uncategorized
+    //------------------------------------------------------------------------
 
     /**
      * Meta keywords. It's probably best to include these in
@@ -143,7 +227,18 @@ public class VimboardBoardProperties {
      */
     private String metaKeywords;
 
-    // Getters and setters ---------------------------------------------------
+    //------------------------------------------------------------------------
+    // Getters and setters
+    //------------------------------------------------------------------------
+
+    public Boolean getRecaptcha() {
+        return recaptcha;
+    }
+
+    public VimboardBoardProperties setRecaptcha(Boolean recaptcha) {
+        this.recaptcha = recaptcha;
+        return this;
+    }
 
     public Boolean getCountryFlagsCondensed() {
         return countryFlagsCondensed;
@@ -169,69 +264,6 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setBoardAbbreviation(String boardAbbreviation) {
         this.boardAbbreviation = boardAbbreviation;
-        return this;
-    }
-
-    public String getBoardPath() {
-        return boardPath;
-    }
-
-    public VimboardBoardProperties setBoardPath(String boardPath) {
-        this.boardPath = boardPath;
-        return this;
-    }
-
-    public String getFileIndex() {
-        return fileIndex;
-    }
-
-    public VimboardBoardProperties setFileIndex(String fileIndex) {
-        this.fileIndex = fileIndex;
-        return this;
-    }
-
-    public String getFileScript() {
-        return fileScript;
-    }
-
-    public VimboardBoardProperties setFileScript(String fileScript) {
-        this.fileScript = fileScript;
-        return this;
-    }
-
-    public String getRoot() {
-        return root;
-    }
-
-    public VimboardBoardProperties setRoot(String root) {
-        this.root = root;
-        return this;
-    }
-
-    public String getUrlFavicon() {
-        return urlFavicon;
-    }
-
-    public VimboardBoardProperties setUrlFavicon(String urlFavicon) {
-        this.urlFavicon = urlFavicon;
-        return this;
-    }
-
-    public String getUrlJavascript() {
-        return urlJavascript;
-    }
-
-    public VimboardBoardProperties setUrlJavascript(String urlJavascript) {
-        this.urlJavascript = urlJavascript;
-        return this;
-    }
-
-    public String getUrlStylesheet() {
-        return urlStylesheet;
-    }
-
-    public VimboardBoardProperties setUrlStylesheet(String urlStylesheet) {
-        this.urlStylesheet = urlStylesheet;
         return this;
     }
 
@@ -322,6 +354,69 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setAdditionalJavascriptUrl(String additionalJavascriptUrl) {
         this.additionalJavascriptUrl = additionalJavascriptUrl;
+        return this;
+    }
+
+    public String getBoardPath() {
+        return boardPath;
+    }
+
+    public VimboardBoardProperties setBoardPath(String boardPath) {
+        this.boardPath = boardPath;
+        return this;
+    }
+
+    public String getFileIndex() {
+        return fileIndex;
+    }
+
+    public VimboardBoardProperties setFileIndex(String fileIndex) {
+        this.fileIndex = fileIndex;
+        return this;
+    }
+
+    public String getFileScript() {
+        return fileScript;
+    }
+
+    public VimboardBoardProperties setFileScript(String fileScript) {
+        this.fileScript = fileScript;
+        return this;
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public VimboardBoardProperties setRoot(String root) {
+        this.root = root;
+        return this;
+    }
+
+    public String getUrlFavicon() {
+        return urlFavicon;
+    }
+
+    public VimboardBoardProperties setUrlFavicon(String urlFavicon) {
+        this.urlFavicon = urlFavicon;
+        return this;
+    }
+
+    public String getUrlJavascript() {
+        return urlJavascript;
+    }
+
+    public VimboardBoardProperties setUrlJavascript(String urlJavascript) {
+        this.urlJavascript = urlJavascript;
+        return this;
+    }
+
+    public String getUrlStylesheet() {
+        return urlStylesheet;
+    }
+
+    public VimboardBoardProperties setUrlStylesheet(String urlStylesheet) {
+        this.urlStylesheet = urlStylesheet;
         return this;
     }
 

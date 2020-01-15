@@ -8,6 +8,10 @@ public class VimboardSettings {
     private Map<String, VimboardBoardSettings> custom;
     private String www;
 
+    //------------------------------------------------------------------------
+    // Getters and setters
+    //------------------------------------------------------------------------
+
     public VimboardBoardSettings getAll() {
         return all;
     }

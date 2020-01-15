@@ -4,26 +4,34 @@ import java.util.Map;
 
 public class VimboardBoardSettings {
 
-    // Post settings ---------------------------------------------------------
+    // General/misc settings
+
+    // Database settings
+
+    // Cache, lock and queue settings
+
+    // Cookie settings
+
+    // Flood/spam settings
+
+    private Boolean recaptcha;
+
+    // Post settings
 
     private Boolean countryFlagsCondensed;
     private String countryFlagsCondensedCss;
 
-    // Board settings --------------------------------------------------------
+    // Ban settings
+
+    // Markup settings
+
+    // Image settings
+
+    // Board settings
 
     private String boardAbbreviation;
 
-    // Directory/file settings -----------------------------------------------
-
-    private String boardPath;
-    private String fileIndex;
-    private String fileScript;
-    private String root;
-    private String urlFavicon;
-    private String urlJavascript;
-    private String urlStylesheet;
-
-    // Display settings ------------------------------------------------------
+    // Display settings
 
     private Object[] boards;
     private Boolean boardlistWrapBracket;
@@ -33,17 +41,55 @@ public class VimboardBoardSettings {
     private Map<String, String> stylesheets;
     private String uriStylesheets;
 
-    // Javascript ------------------------------------------------------------
+    // Javascript
 
     private String[] additionalJavascript;
     private Boolean additionalJavascriptCompile;
     private String additionalJavascriptUrl;
 
-    // Other/uncategorized ---------------------------------------------------
+    // Video embedding
+
+    // Error messages
+
+    // Directory/file settings
+
+    private String boardPath;
+    private String fileIndex;
+    private String fileScript;
+    private String root;
+    private String urlFavicon;
+    private String urlJavascript;
+    private String urlStylesheet;
+
+    // Advanced build
+
+    // Mod settings
+
+    // Mod permissions
+
+    // Public pages
+
+    // Events (PHP 5.3.0+)
+
+    // API settings
+
+    // NNTPChan settings
+
+    // Other/uncategorized
 
     private String metaKeywords;
 
-    // Getters and setters (setters must return void) ------------------------
+    //------------------------------------------------------------------------
+    // Getters and setters (setters must return void)
+    //------------------------------------------------------------------------
+
+    public Boolean getRecaptcha() {
+        return recaptcha;
+    }
+
+    public void setRecaptcha(Boolean recaptcha) {
+        this.recaptcha = recaptcha;
+    }
 
     public Boolean getCountryFlagsCondensed() {
         return countryFlagsCondensed;
@@ -67,62 +113,6 @@ public class VimboardBoardSettings {
 
     public void setBoardAbbreviation(String boardAbbreviation) {
         this.boardAbbreviation = boardAbbreviation;
-    }
-
-    public String getBoardPath() {
-        return boardPath;
-    }
-
-    public void setBoardPath(String boardPath) {
-        this.boardPath = boardPath;
-    }
-
-    public String getFileIndex() {
-        return fileIndex;
-    }
-
-    public void setFileIndex(String fileIndex) {
-        this.fileIndex = fileIndex;
-    }
-
-    public String getFileScript() {
-        return fileScript;
-    }
-
-    public void setFileScript(String fileScript) {
-        this.fileScript = fileScript;
-    }
-
-    public String getRoot() {
-        return root;
-    }
-
-    public void setRoot(String root) {
-        this.root = root;
-    }
-
-    public String getUrlFavicon() {
-        return urlFavicon;
-    }
-
-    public void setUrlFavicon(String urlFavicon) {
-        this.urlFavicon = urlFavicon;
-    }
-
-    public String getUrlJavascript() {
-        return urlJavascript;
-    }
-
-    public void setUrlJavascript(String urlJavascript) {
-        this.urlJavascript = urlJavascript;
-    }
-
-    public String getUrlStylesheet() {
-        return urlStylesheet;
-    }
-
-    public void setUrlStylesheet(String urlStylesheet) {
-        this.urlStylesheet = urlStylesheet;
     }
 
     public Object[] getBoards() {
@@ -203,6 +193,62 @@ public class VimboardBoardSettings {
 
     public void setAdditionalJavascriptUrl(String additionalJavascriptUrl) {
         this.additionalJavascriptUrl = additionalJavascriptUrl;
+    }
+
+    public String getBoardPath() {
+        return boardPath;
+    }
+
+    public void setBoardPath(String boardPath) {
+        this.boardPath = boardPath;
+    }
+
+    public String getFileIndex() {
+        return fileIndex;
+    }
+
+    public void setFileIndex(String fileIndex) {
+        this.fileIndex = fileIndex;
+    }
+
+    public String getFileScript() {
+        return fileScript;
+    }
+
+    public void setFileScript(String fileScript) {
+        this.fileScript = fileScript;
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
+    }
+
+    public String getUrlFavicon() {
+        return urlFavicon;
+    }
+
+    public void setUrlFavicon(String urlFavicon) {
+        this.urlFavicon = urlFavicon;
+    }
+
+    public String getUrlJavascript() {
+        return urlJavascript;
+    }
+
+    public void setUrlJavascript(String urlJavascript) {
+        this.urlJavascript = urlJavascript;
+    }
+
+    public String getUrlStylesheet() {
+        return urlStylesheet;
+    }
+
+    public void setUrlStylesheet(String urlStylesheet) {
+        this.urlStylesheet = urlStylesheet;
     }
 
     public String getMetaKeywords() {

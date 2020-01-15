@@ -15,7 +15,9 @@ public class BoardListModel {
      */
     private String bottom;
 
-    // Getters and setters ---------------------------------------------------
+    //------------------------------------------------------------------------
+    // Getters and setters
+    //------------------------------------------------------------------------
 
     public String getTop() {
         return top;

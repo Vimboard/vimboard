@@ -55,7 +55,9 @@ public class PageModel {
      */
     private String version;
 
-    // Getters and setters ---------------------------------------------------
+    //------------------------------------------------------------------------
+    // Getters and setters
+    //------------------------------------------------------------------------
 
     public BoardListModel getBoardlist() {
         return boardlist;

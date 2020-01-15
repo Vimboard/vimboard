@@ -8,7 +8,9 @@ public class DashboardModel {
 
     List<Board> boards;
 
-    // Getters and setters ---------------------------------------------------
+    //------------------------------------------------------------------------
+    // Getters and setters
+    //------------------------------------------------------------------------
 
     public List<Board> getBoards() {
         return boards;

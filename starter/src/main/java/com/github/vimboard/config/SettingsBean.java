@@ -202,6 +202,7 @@ public class SettingsBean {
         sr.put("fontAwesome", true);
         sr.put("fontAwesomeCss", "stylesheets/font-awesome/css/font-awesome.min.css");
         sr.put("metaKeywords", null);
+        sr.put("recaptcha", false);
         final String root = (String) sr.put("root", "/");
         final Map<String, String> stylesheets;
         {

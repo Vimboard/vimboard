@@ -8,6 +8,10 @@ public class PersonalMessageModel {
     // TODO
     private long waiting;
 
+    //------------------------------------------------------------------------
+    // Getters and setters
+    //------------------------------------------------------------------------
+
     public long getId() {
         return id;
     }
