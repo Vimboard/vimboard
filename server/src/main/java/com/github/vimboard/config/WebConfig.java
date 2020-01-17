@@ -67,36 +67,32 @@ public class WebConfig {
     @EnableWebSecurity
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        private final DataSource dataSource;
-
-        @Autowired
-        public WebSecurityConfig(DataSource dataSource) {
-            this.dataSource = dataSource;
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                .jdbcAuthentication()
-                    .dataSource(dataSource)
-                    .usersByUsernameQuery("SELECT username, password, enabled FROM vmb.sec_users_by_username(?)")
-                    .authoritiesByUsernameQuery("SELECT username, authority FROM vmb.sec_authorities_by_username(?)")
-                    .passwordEncoder(passwordEncoder())
-            ;
-        }
+//        private final DataSource dataSource;
+//
+//        @Autowired
+//        public WebSecurityConfig(DataSource dataSource) {
+//            this.dataSource = dataSource;
+//        }
+//
+//        @Override
+//        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//            auth
+//                .jdbcAuthentication()
+//                    .dataSource(dataSource)
+//                    .usersByUsernameQuery("SELECT username, password, enabled FROM vmb.sec_users_by_username(?)")
+//                    .authoritiesByUsernameQuery("SELECT username, authority FROM vmb.sec_authorities_by_username(?)")
+//                    .passwordEncoder(passwordEncoder());
+//        }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-//                .csrf()
-//                    .and()
-                .authorizeRequests()
-                    .antMatchers("/admin.php/**").hasRole("ADMIN")
-                    .antMatchers("/mod.php/**").hasRole("MOD")
-                    .and()
-                .formLogin()
-//                    .loginPage("/my-login-page")
-            ;
+                .authorizeRequests(authorizeRequests ->
+                    authorizeRequests
+                        .antMatchers("/admin.php/**").hasRole("ADMIN")
+                        .antMatchers("/mod.php/**").access("hasRole('JANITOR') and hasRole('MOD') and hasRole('ADMIN')")
+                )
+                .formLogin();
         }
 
         @Bean

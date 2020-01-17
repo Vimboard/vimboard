@@ -37,6 +37,11 @@ public class UserRepository {
     @Transactional
     public User drop(String username) {
         userMapper().drop(username);
+        return userMapper().findByName(username); // TODO: is null ??
+    }
+
+    @Transactional(readOnly = true)
+    public User findByName(String username) {
         return userMapper().findByName(username);
     }
 

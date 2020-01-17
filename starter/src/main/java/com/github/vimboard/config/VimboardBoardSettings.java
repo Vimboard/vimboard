@@ -29,6 +29,7 @@ public class VimboardBoardSettings {
 
     // Board settings
 
+    private Boolean allowSubtitleHtml;
     private String boardAbbreviation;
 
     // Display settings
@@ -105,6 +106,14 @@ public class VimboardBoardSettings {
 
     public void setCountryFlagsCondensedCss(String countryFlagsCondensedCss) {
         this.countryFlagsCondensedCss = countryFlagsCondensedCss;
+    }
+
+    public Boolean getAllowSubtitleHtml() {
+        return allowSubtitleHtml;
+    }
+
+    public void setAllowSubtitleHtml(Boolean allowSubtitleHtml) {
+        this.allowSubtitleHtml = allowSubtitleHtml;
     }
 
     public String getBoardAbbreviation() {

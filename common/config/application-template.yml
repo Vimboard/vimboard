@@ -94,6 +94,10 @@ vimboard:
     # Board settings
     # ------------------------------------------------------------------------
 
+    # Allow unfiltered HTML in board subtitle.
+    # This is useful for placing icons and links.
+    allowSubtitleHtml: false
+
     # How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
     # This doesn't change the URL. Find {@link #boardPath} if you wish to
     # change the URL.

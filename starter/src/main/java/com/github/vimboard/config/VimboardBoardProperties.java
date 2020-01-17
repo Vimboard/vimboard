@@ -60,6 +60,12 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
 
     /**
+     * Allow unfiltered HTML in board subtitle.
+     * This is useful for placing icons and links.
+     */
+    private Boolean allowSubtitleHtml;
+
+    /**
      * How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
      * This doesn't change the URL. Find {@link #boardPath} if you wish to
      * change the URL.
@@ -255,6 +261,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setCountryFlagsCondensedCss(String countryFlagsCondensedCss) {
         this.countryFlagsCondensedCss = countryFlagsCondensedCss;
+        return this;
+    }
+
+    public Boolean getAllowSubtitleHtml() {
+        return allowSubtitleHtml;
+    }
+
+    public VimboardBoardProperties setAllowSubtitleHtml(Boolean allowSubtitleHtml) {
+        this.allowSubtitleHtml = allowSubtitleHtml;
         return this;
     }
 

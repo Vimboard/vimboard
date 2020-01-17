@@ -5,6 +5,7 @@
   -- dashboard.boards
   -- dashboard.boards - board.title
   -- dashboard.boards - board.uri
+  -- config.allowSubtitleHtml
   -- config.boardAbbreviation
   -- config.boardPath
   -- config.fileIndex
@@ -18,15 +19,15 @@
             <a href="?/${config.boardPath?replace("%{uri}", board.uri)}${config.fileIndex}">${config.boardAbbreviation?replace("%{uri}", board.uri)}</a>
             -
             ${board.title}
-            {% if board.subtitle %}
+            <#if board.subtitle?has_content>
             <small>&mdash;
-                {% if config.allow_subtitle_html %}
-                {{ board.subtitle }}
-                {% else %}
-                {{ board.subtitle|e }}
-                {% endif %}
+                <#if config.allowSubtitleHtml>
+                ${board.subtitle?no_esc}
+                <#else>
+                ${board.subtitle}
+                </#if>
             </small>
-            {% endif %}
+            </#if>
             {% if mod|hasPermission(config.mod.manageboards) %}
             <a href="?/edit/{{ board.uri }}"><small>[{% trans 'edit' %}]</small></a>
             {% endif %}

@@ -191,6 +191,7 @@ public class SettingsBean {
                 "js/inline-expanding.js"
         });
         sr.put("additionalJavascriptCompile", false);
+        sr.put("allowSubtitleHtml", false);
         sr.put("boardAbbreviation", "/{uri}/");
         sr.put("boardPath", "{uri}/");
         sr.put("boardlistWrapBracket", false);
