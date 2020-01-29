@@ -1,11 +1,13 @@
 package com.github.vimboard.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+
 /**
  * Probably best not to change this unless you are smart enough to figure out
  * what you're doing. If you decide to change it, remember that it is
  * impossible to redefinite/overwrite groups; you may only add new ones.
  */
-public enum Group {
+public enum Group implements GrantedAuthority {
 
     JANITOR((short) 10),
 
@@ -29,5 +31,19 @@ public enum Group {
 
     public short getType() {
         return type;
+    }
+
+    public static Group valueOf(short type) {
+        for (Group g : Group.values()) {
+            if (g.getType() == type) {
+                return g;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getAuthority() {
+        return "ROLE_" + toString();
     }
 }

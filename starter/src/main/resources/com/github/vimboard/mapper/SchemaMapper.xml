@@ -41,6 +41,7 @@
             username         varchar(100) NOT NULL,
             password         varchar(1000) NOT NULL,
             type             smallint NOT NULL,
+            boards           text NOT NULL,
             PRIMARY KEY(id),
             UNIQUE(username)
         );
@@ -91,34 +92,6 @@
             UNIQUE(version)
         );
         INSERT INTO vmb.version (version) VALUES (#{version});
-
-
-
-        ----------------------------------------------------------------------
-        -- FUNCTIONS
-        ----------------------------------------------------------------------
-
-        CREATE FUNCTION vmb.sec_authorities_by_username(IN in_username varchar(100))
-        RETURNS TABLE (username varchar, authority varchar) AS $$
-        SELECT in_username,
-               CASE type
-                   WHEN 10 THEN 'ROLE_JANITOR'
-                   WHEN 20 THEN 'ROLE_MOD'
-                   WHEN 30 THEN 'ROLE_ADMIN'
-                   WHEN 99 THEN 'ROLE_DISABLED'
-               END
-            FROM vmb.mod
-            WHERE username = in_username
-        $$ LANGUAGE sql;
-
-        ----------------------------------------------------------------------
-
-        CREATE FUNCTION vmb.sec_users_by_username(IN in_username varchar(100))
-        RETURNS TABLE (username varchar, password VARCHAR, enabled boolean) AS $$
-            SELECT username, password, TRUE
-            FROM vmb.mod
-            WHERE username = in_username
-        $$ LANGUAGE sql;
 
     </update>
 

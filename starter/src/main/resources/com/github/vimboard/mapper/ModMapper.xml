@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.github.vimboard.mapper.UserMapper">
+<mapper namespace="com.github.vimboard.mapper.ModMapper">
+
+    <resultMap id="result" type="com.github.vimboard.domain.Mod">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="type" column="type" typeHandler="com.github.vimboard.mapper.GroupTypeHandler"/>
+        <result property="boards" column="boards" typeHandler="com.github.vimboard.mapper.ModBoardsTypeHandler"/>
+    </resultMap>
 
     <update id="alter">
         UPDATE vmb.mod
         SET password = #{password},
-            type = #{type},
-            boards = #{boards}
+            type = #{type, typeHandler=com.github.vimboard.mapper.GroupTypeHandler},
+            boards = #{boards, typeHandler=com.github.vimboard.mapper.ModBoardsTypeHandler}
         WHERE username = #{username}
     </update>
 
     <insert id="create">
-        INSERT INTO vmb.mod(username, password)
-        VALUES (#{username}, #{password})
+        INSERT INTO vmb.mod(username, password, type, boards)
+        VALUES (#{username},
+                #{password},
+                #{type, typeHandler=com.github.vimboard.mapper.GroupTypeHandler},
+                #{boards, typeHandler=com.github.vimboard.mapper.ModBoardsTypeHandler})
     </insert>
 
     <delete id="drop">
         DELETE FROM vmb.mod WHERE username = #{username}
     </delete>
 
-    <select id="findByName" resultType="com.github.vimboard.domain.User"><!--resultMap="userResult"-->
-        SELECT id, username, password FROM vmb.mod WHERE username = #{username} LIMIT 1
+    <select id="findByName" resultMap="result">
+        SELECT id, username, password, type, boards FROM vmb.mod WHERE username = #{username} LIMIT 1
     </select>
 
-    <select id="list" resultType="com.github.vimboard.domain.User">
-        SELECT id, username, password FROM vmb.mod
+    <select id="list" resultMap="result">
+        SELECT id, username, password, type, boards FROM vmb.mod
     </select>
 
 </mapper>
