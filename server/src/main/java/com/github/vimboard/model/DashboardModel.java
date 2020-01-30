@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DashboardModel {
 
-    List<Board> boards;
+    private List<Board> boards;
 
     //------------------------------------------------------------------------
     // Getters and setters

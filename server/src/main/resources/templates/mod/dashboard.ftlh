@@ -1,6 +1,9 @@
 <#ftl output_format="HTML">
 <#--
   -- Template attributes:
+
+todo  noticeboard#${post.id}
+
   --
   -- dashboard.boards
   -- dashboard.boards - board.title
@@ -9,6 +12,9 @@
   -- config.boardAbbreviation
   -- config.boardPath
   -- config.fileIndex
+  -- mod.hasPermission["edit_pages"]
+  -- mod.hasPermission["manageboards"]
+  -- mod.hasPermission["newboard"]
   -->
 <fieldset>
     <legend><@spring.message "dashboard.Boards"/></legend>
@@ -16,7 +22,7 @@
     <ul>
         <#list dashboard.boards as board>
         <li>
-            <a href="?/${config.boardPath?replace("%{uri}", board.uri)}${config.fileIndex}">${config.boardAbbreviation?replace("%{uri}", board.uri)}</a>
+            <a href="?/${config.boardPath?replace("{uri}", board.uri)}${config.fileIndex}">${config.boardAbbreviation?replace("{uri}", board.uri)}</a>
             -
             ${board.title}
             <#if board.subtitle?has_content>
@@ -28,23 +34,23 @@
                 </#if>
             </small>
             </#if>
-            {% if mod|hasPermission(config.mod.manageboards) %}
-            <a href="?/edit/{{ board.uri }}"><small>[{% trans 'edit' %}]</small></a>
-            {% endif %}
-            {% if mod|hasPermission(config.mod.edit_pages) %}
-            <a href="?/edit_pages/{{ board.uri }}"><small>[{% trans 'pages' %}]</small></a>
-            {% endif %}
+            <#if (mod.hasPermission["manageboards"])!false>
+                <a href="?/edit/${board.uri}"><small>[<@spring.message "dashboard.edit"/>]</small></a>
+            </#if>
+            <#if (mod.hasPermission["edit_pages"])!false>
+                <a href="?/edit_pages/${board.uri}"><small>[<@spring.message "dashboard.pages"/>]</small></a>
+            </#if>
         </li>
         </#list>
 
-        {% if mod|hasPermission(config.mod.newboard) %}
-        <li style="margin-top:15px"><a href="?/new-board"><strong>{% trans 'Create new board' %}</strong></a></li>
-        {% endif %}
+        <#if (mod.hasPermission["newboard"])!false>
+            <li style="margin-top:15px"><a href="?/new-board"><strong><@spring.message "dashboard.Create_new_board"/></strong></a></li>
+        </#if>
     </ul>
 </fieldset>
 
 <fieldset>
-    <legend>{% trans 'Messages' %}</legend>
+    <legend><@spring.message "dashboard.Messages"/></legend>
     <ul>
         {% if mod|hasPermission(config.mod.noticeboard) %}
         {% if noticeboard|count > 0 %}
@@ -53,7 +59,7 @@
             <ul>
                 {% for post in noticeboard %}
                 <li>
-                    <a href="?/noticeboard#{{ post.id }}">
+                    <a href="?/noticeboard#${post.id}">
                         {% if post.subject %}
                         {{ post.subject|e }}
                         {% else %}
