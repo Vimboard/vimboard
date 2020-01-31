@@ -46,4 +46,14 @@ public enum Group implements GrantedAuthority {
     public String getAuthority() {
         return "ROLE_" + toString();
     }
+
+    /**
+     * TODO
+     *
+     * @param role
+     * @return
+     */
+    public boolean hasRole(Group role) {
+        return this.ordinal() >= role.ordinal();
+    }
 }

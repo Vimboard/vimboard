@@ -17,7 +17,7 @@
   -- config.urlFavicon
   -- config.urlJavascript
   -- config.urlStylesheet
-  -- page.mod
+  -- mod
   -- page.nojavascript
   -->
     <link rel="stylesheet" media="screen" href="${config.urlStylesheet}">
@@ -30,7 +30,7 @@
     <#if config.countryFlagsCondensed><link rel="stylesheet" href="${config.root}${config.countryFlagsCondensedCss}"></#if>
     <script type="text/javascript">
         var configRoot="${config.root}";
-        var inMod = <#if page.mod??>true<#else>false</#if>;
+        var inMod = <#if mod??>true<#else>false</#if>;
         var modRoot="${config.root}"+(inMod ? "mod.php?/" : "");
     </script>
     <#if !page.nojavascript>

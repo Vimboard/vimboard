@@ -236,6 +236,17 @@ vimboard:
     # Mod settings
     # ------------------------------------------------------------------------
 
+    mod:
+
+      # Create pages.
+      edit-pages: MOD
+
+      # Manage existing boards (change title, etc).
+      manageboards: ADMIN
+
+      # Create a new board.
+      newboard: ADMIN
+
     # ------------------------------------------------------------------------
     # Mod permissions
     # ------------------------------------------------------------------------

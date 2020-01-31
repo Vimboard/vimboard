@@ -1,13 +1,12 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
-import com.github.vimboard.config.VimboardProperties;
 import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.model.DashboardModel;
-import com.github.vimboard.model.ModModel;
 import com.github.vimboard.model.PageModel;
 import com.github.vimboard.repository.BoardRepository;
 import com.github.vimboard.service.BoardService;
+import com.github.vimboard.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,7 @@ public class ModController extends AbstractController {
 
     private final BoardRepository boardRepository;
     private final BoardService boardService;
+    private final SecurityService securityService;
     private final SettingsBean settingsBean;
 
     @Autowired
@@ -31,10 +31,12 @@ public class ModController extends AbstractController {
             MessageSource messageSource,
             BoardRepository boardRepository,
             BoardService boardService,
+            SecurityService securityService,
             SettingsBean settingsBean) {
         super(messageSource);
         this.boardRepository = boardRepository;
         this.boardService = boardService;
+        this.securityService = securityService;
         this.settingsBean = settingsBean;
     }
 
@@ -84,15 +86,15 @@ public class ModController extends AbstractController {
 
         model.addAttribute("config", settingsBean.getAll());
 
+        model.addAttribute("mod", securityService.getMod());
+
         model.addAttribute("page", new PageModel()
                 .setBoardlist(boardService.buildBoardList())
                 .setDataStylesheet(dataStylesheet)
                 .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftlh"))
-                .setMod(new ModModel()) // TODO
                 .setTitle(pageTitle)
                 .setSubtitle(pageSubTitle)
-                .setVersion(VimboardVersion.get())
-                );
+                .setVersion(VimboardVersion.get()));
 
         model.addAttribute("body", bodyTemplate);
 

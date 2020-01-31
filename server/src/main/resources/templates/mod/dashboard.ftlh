@@ -12,9 +12,9 @@ todo  noticeboard#${post.id}
   -- config.boardAbbreviation
   -- config.boardPath
   -- config.fileIndex
-  -- mod.hasPermission["edit_pages"]
-  -- mod.hasPermission["manageboards"]
-  -- mod.hasPermission["newboard"]
+  -- mod.hasPermission.editPages
+  -- mod.hasPermission.manageboards
+  -- mod.hasPermission.newboard
   -->
 <fieldset>
     <legend><@spring.message "dashboard.Boards"/></legend>
@@ -34,21 +34,21 @@ todo  noticeboard#${post.id}
                 </#if>
             </small>
             </#if>
-            <#if (mod.hasPermission["manageboards"])!false>
+            <#if (mod.hasPermission.manageboards)!false>
                 <a href="?/edit/${board.uri}"><small>[<@spring.message "dashboard.edit"/>]</small></a>
             </#if>
-            <#if (mod.hasPermission["edit_pages"])!false>
+            <#if (mod.hasPermission.editPages)!false>
                 <a href="?/edit_pages/${board.uri}"><small>[<@spring.message "dashboard.pages"/>]</small></a>
             </#if>
         </li>
         </#list>
 
-        <#if (mod.hasPermission["newboard"])!false>
+        <#if (mod.hasPermission.newboard)!false>
             <li style="margin-top:15px"><a href="?/new-board"><strong><@spring.message "dashboard.Create_new_board"/></strong></a></li>
         </#if>
     </ul>
 </fieldset>
-
+<#--
 <fieldset>
     <legend><@spring.message "dashboard.Messages"/></legend>
     <ul>
@@ -195,3 +195,4 @@ todo  noticeboard#${post.id}
     </ul>
 </fieldset>
 
+-->

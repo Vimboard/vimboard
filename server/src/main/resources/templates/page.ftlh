@@ -3,10 +3,10 @@
   -- Template attributes:
   --
   -- body
+  -- mod
   -- page.boardlist.top
   -- page.dataStylesheet
   -- page.hideDashboardLink
-  -- page.mod
   -- page.pm
   -- page.subtitle
   -- page.title
@@ -23,7 +23,7 @@
     <#include "header.ftlh">
     <title>${page.title}</title>
 </head>
-<body class="8chan vichan <#if page.mod??>is-moderator<#else>is-not-moderator</#if> active-page" data-stylesheet="${page.dataStylesheet}">
+<body class="8chan vichan <#if mod??>is-moderator<#else>is-not-moderator</#if> active-page" data-stylesheet="${page.dataStylesheet}">
 ${page.boardlist.top?no_esc}
 
 <#if page.pm??><div class="top_notice"><@spring.message "page.You_have"/> <a href="?/PM/${page.pm.id?string["0"]}"><@spring.message "page.An_unread_PM"/></a><#if page.pm.waiting gt 0 ><@spring.messageArgs "page.Plus_{count}_more_waiting", [ page.pm.waiting ]/></#if>.</div><hr></#if>
@@ -31,7 +31,7 @@ ${page.boardlist.top?no_esc}
     <h1>${page.title}</h1>
     <div class="subtitle">
         <#if page.subtitle?has_content>${page.subtitle}</#if>
-        <#if page.mod?? && !page.hideDashboardLink><p><a href="?/"><@spring.message "page.Return_to_dashboard"/></a></p></#if>
+        <#if mod?? && !page.hideDashboardLink><p><a href="?/"><@spring.message "page.Return_to_dashboard"/></a></p></#if>
     </div>
 </header>
 <#include body>

@@ -1,5 +1,7 @@
 package com.github.vimboard.config;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 import java.util.Map;
 
 public class VimboardBoardProperties {
@@ -202,6 +204,9 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
     // Mod settings
     //------------------------------------------------------------------------
+
+    @NestedConfigurationProperty
+    private VimboardModProperties mod;
 
     //------------------------------------------------------------------------
     // Mod permissions
@@ -432,6 +437,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setUrlStylesheet(String urlStylesheet) {
         this.urlStylesheet = urlStylesheet;
+        return this;
+    }
+
+    public VimboardModProperties getMod() {
+        return mod;
+    }
+
+    public VimboardBoardProperties setMod(VimboardModProperties mod) {
+        this.mod = mod;
         return this;
     }
 

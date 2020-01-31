@@ -66,7 +66,11 @@ public class VimboardBoardSettings {
 
     // Mod settings
 
+    private VimboardModSettings mod;
+
     // Mod permissions
+
+    // Create pages
 
     // Public pages
 
@@ -258,6 +262,14 @@ public class VimboardBoardSettings {
 
     public void setUrlStylesheet(String urlStylesheet) {
         this.urlStylesheet = urlStylesheet;
+    }
+
+    public VimboardModSettings getMod() {
+        return mod;
+    }
+
+    public void setMod(VimboardModSettings mod) {
+        this.mod = mod;
     }
 
     public String getMetaKeywords() {

@@ -1,23 +1,21 @@
 package com.github.vimboard.model;
 
-import java.util.Map;
-
 public class ModModel {
 
     /**
      * TODO
      */
-    private Map<String, Boolean> hasPermission;
+    private ModPermissionsModel hasPermission = new ModPermissionsModel();
 
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
 
-    public Map<String, Boolean> getHasPermission() {
+    public ModPermissionsModel getHasPermission() {
         return hasPermission;
     }
 
-    public ModModel setHasPermission(Map<String, Boolean> hasPermission) {
+    public ModModel setHasPermission(ModPermissionsModel hasPermission) {
         this.hasPermission = hasPermission;
         return this;
     }

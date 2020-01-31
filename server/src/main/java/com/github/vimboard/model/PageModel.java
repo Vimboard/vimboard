@@ -25,11 +25,6 @@ public class PageModel {
     private Boolean hideDashboardLink = false;
 
     /**
-     * If not {@code null} then user has mod privileies.
-     */
-    private ModModel mod = null;
-
-    /**
      * If {@code true} then don't include main script file
      * {@code <board-config>.file-script}.
      */
@@ -83,15 +78,6 @@ public class PageModel {
 
     public PageModel setHideDashboardLink(Boolean hideDashboardLink) {
         this.hideDashboardLink = hideDashboardLink;
-        return this;
-    }
-
-    public ModModel getMod() {
-        return mod;
-    }
-
-    public PageModel setMod(ModModel mod) {
-        this.mod = mod;
         return this;
     }
 
