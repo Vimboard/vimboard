@@ -1,5 +1,7 @@
 package com.github.vimboard.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,8 @@ import java.util.Locale;
 
 @Configuration
 public class WebConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(WebConfig.class);
 
     @EnableWebMvc
     public static class WebMvcConfig implements WebMvcConfigurer {
@@ -54,6 +58,7 @@ public class WebConfig {
 
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            logger.info(settingsBean.get().getWww()); // todo del
             registry
                 .addResourceHandler("/**")
                 .addResourceLocations(
@@ -73,6 +78,7 @@ public class WebConfig {
                         .antMatchers("/admin.php/**").hasRole("ADMIN")
                         .antMatchers("/mod.php/**").access("hasRole('JANITOR') or hasRole('MOD') or hasRole('ADMIN')")
                 )
+
                 .formLogin();
         }
 

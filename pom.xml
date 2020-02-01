@@ -63,7 +63,7 @@
                                 <resource>
                                     <directory>${basedir}/common</directory>
                                     <includes>
-                                        <include>static/**</include>
+                                        <include>public/**</include>
                                     </includes>
                                 </resource>
                             </resources>

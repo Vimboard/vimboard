@@ -8,20 +8,20 @@ Static content description
 
 ### `error/`
 
-[`error/*`](static/error) - custom Spring error pages folder
+[`error/*`](public/error) - custom Spring error pages folder
 
 ### `js/`
 
-[`js/inline-expanding.js`](static/js/inline-expanding.js) - ???, see `<board-config>.additional_javascript`
+[`js/inline-expanding.js`](public/js/inline-expanding.js) - ???, see `<board-config>.additional_javascript`
 
-[`js/jquery.min.js`](static/js/jquery.min.js) - jQuery, see `<board-config>.additional_javascript` 
+[`js/jquery.min.js`](public/js/jquery.min.js) - jQuery, see `<board-config>.additional_javascript` 
 
 ### `static/`
 
-[`static/flags/*`](static/static/flags) - see `<board-config>.country-flags-condensed`
+[`static/flags/*`](public/static/flags) - see `<board-config>.country-flags-condensed`
 
 ### `stylesheets/`
 
-[`stylesheets/font-awesome/*`](static/stylesheets/font-awesome) - see `<board-config>.font-awesome`
+[`stylesheets/font-awesome/*`](public/stylesheets/font-awesome) - see `<board-config>.font-awesome`
 
-[`stylesheets/style.css`](static/stylesheets/style.css)- default style, see `<board-config>.stylesheets`
+[`stylesheets/style.css`](public/stylesheets/style.css)- default style, see `<board-config>.stylesheets`
