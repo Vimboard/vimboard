@@ -66,6 +66,9 @@ public class SecurityService {
                 if (group.hasRole(modSettings.getNewboard())) {
                     permissionModel.setNewboard(true);
                 }
+                if (group.hasRole(modSettings.getNoticeboard())) {
+                    permissionModel.setNoticeboard(true);
+                }
             }
         }
         return modModel;

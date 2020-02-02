@@ -238,6 +238,17 @@ vimboard:
 
     mod:
 
+      # ----------------------------------------------------------------------
+      # Mod settings
+      # ----------------------------------------------------------------------
+
+      # Number of entries to summarize and display on the dashboard.
+      noticeboard-dashboard: 5
+
+      # ----------------------------------------------------------------------
+      # Mod permissions
+      # ----------------------------------------------------------------------
+
       # Create pages.
       edit-pages: MOD
 
@@ -246,6 +257,9 @@ vimboard:
 
       # Create a new board.
       newboard: ADMIN
+
+      # Read the moderator noticeboard.
+      noticeboard: JANITOR
 
     # ------------------------------------------------------------------------
     # Mod permissions

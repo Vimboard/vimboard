@@ -5,6 +5,7 @@ public class ModPermissionsModel {
     private boolean editPages = false;
     private boolean manageboards = false;
     private boolean newboard = false;
+    private boolean noticeboard = false;
 
     //------------------------------------------------------------------------
     // Getters and setters
@@ -34,6 +35,15 @@ public class ModPermissionsModel {
 
     public ModPermissionsModel setNewboard(boolean newboard) {
         this.newboard = newboard;
+        return this;
+    }
+
+    public boolean isNoticeboard() {
+        return noticeboard;
+    }
+
+    public ModPermissionsModel setNoticeboard(boolean noticeboard) {
+        this.noticeboard = noticeboard;
         return this;
     }
 }

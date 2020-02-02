@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.vimboard.mapper.NoticeboardMapper">
+
+    <select id="preview" resultType="com.github.vimboard.domain.Noticeboard">
+        SELECT n.id,
+               n.mod,
+               n.time,
+               n.subject,
+               n.body,
+               m.username
+        FROM vmb.noticeboard n
+        LEFT JOIN vmb.mod m ON m.id = n.mod
+        ORDER BY n.id DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>

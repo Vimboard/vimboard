@@ -4,6 +4,20 @@ import com.github.vimboard.domain.Group;
 
 public class VimboardModProperties {
 
+    //------------------------------------------------------------------------
+    // Mod settings
+    //------------------------------------------------------------------------
+
+    /**
+     * Number of entries to summarize and display on the dashboard.
+     */
+    //$config['mod']['noticeboard_dashboard'] = 5;
+    private Long noticeboardDashboard;
+
+    //------------------------------------------------------------------------
+    // Mod permissions
+    //------------------------------------------------------------------------
+
     /**
      * Create pages.
      */
@@ -19,9 +33,24 @@ public class VimboardModProperties {
      */
     private Group newboard;
 
+    /**
+     * Read the moderator noticeboard.
+     */
+    //$config['mod']['noticeboard'] = JANITOR;
+    private Group noticeboard;
+
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
+
+    public Long getNoticeboardDashboard() {
+        return noticeboardDashboard;
+    }
+
+    public VimboardModProperties setNoticeboardDashboard(Long noticeboardDashboard) {
+        this.noticeboardDashboard = noticeboardDashboard;
+        return this;
+    }
 
     public Group getEditPages() {
         return editPages;
@@ -47,6 +76,15 @@ public class VimboardModProperties {
 
     public VimboardModProperties setNewboard(Group newboard) {
         this.newboard = newboard;
+        return this;
+    }
+
+    public Group getNoticeboard() {
+        return noticeboard;
+    }
+
+    public VimboardModProperties setNoticeboard(Group noticeboard) {
+        this.noticeboard = noticeboard;
         return this;
     }
 }

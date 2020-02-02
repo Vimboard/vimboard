@@ -48,6 +48,18 @@
 
         ----------------------------------------------------------------------
 
+        CREATE TABLE vmb.noticeboard (
+            id               bigserial NOT NULL,
+            mod              int NOT NULL,
+            time             timestamp NOT NULL,
+            subject          text NOT NULL,
+            body             text NOT NULL,
+            PRIMARY KEY(id)
+        );
+        CREATE INDEX ON vmb.noticeboard(time);
+
+        ----------------------------------------------------------------------
+
         CREATE TABLE vmb.post (
             board            int NOT NULL,
             id               bigint NOT NULL, --

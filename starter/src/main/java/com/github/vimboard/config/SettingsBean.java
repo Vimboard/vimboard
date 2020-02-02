@@ -143,6 +143,8 @@ public class SettingsBean {
         sb.put("editPages", Group.MOD);
         sb.put("manageboards", Group.ADMIN);
         sb.put("newboard", Group.ADMIN);
+        sb.put("noticeboard", Group.JANITOR);
+        sb.put("noticeboardDashboard", 5L);
 
         // Settings with dependencies
 

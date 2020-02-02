@@ -32,7 +32,7 @@
     </delete>
 
     <select id="findByName" resultMap="result">
-        SELECT id, username, password, type, boards FROM vmb.mod WHERE username = #{username} LIMIT 1
+        SELECT id, username, password, type, boards FROM vmb.mod WHERE username = #{username} /* LIMIT 1 */
     </select>
 
     <select id="list" resultMap="result">

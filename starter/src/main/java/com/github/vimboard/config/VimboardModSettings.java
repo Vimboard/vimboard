@@ -4,13 +4,28 @@ import com.github.vimboard.domain.Group;
 
 public class VimboardModSettings {
 
+    // Mod settings
+
+    private Long noticeboardDashboard;
+
+    // Mod permissions
+
     private Group editPages;
     private Group manageboards;
     private Group newboard;
+    private Group noticeboard;
 
     //------------------------------------------------------------------------
     // Getters and setters (setters must return void)
     //------------------------------------------------------------------------
+
+    public Long getNoticeboardDashboard() {
+        return noticeboardDashboard;
+    }
+
+    public void setNoticeboardDashboard(Long noticeboardDashboard) {
+        this.noticeboardDashboard = noticeboardDashboard;
+    }
 
     public Group getEditPages() {
         return editPages;
@@ -34,5 +49,13 @@ public class VimboardModSettings {
 
     public void setNewboard(Group newboard) {
         this.newboard = newboard;
+    }
+
+    public Group getNoticeboard() {
+        return noticeboard;
+    }
+
+    public void setNoticeboard(Group noticeboard) {
+        this.noticeboard = noticeboard;
     }
 }

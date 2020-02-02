@@ -8,6 +8,7 @@ todo  noticeboard#${post.id}
   -- dashboard.boards
   -- dashboard.boards - board.title
   -- dashboard.boards - board.uri
+  -- dashboard.noticeboard
   -- config.allowSubtitleHtml
   -- config.boardAbbreviation
   -- config.boardPath
@@ -15,32 +16,33 @@ todo  noticeboard#${post.id}
   -- mod.hasPermission.editPages
   -- mod.hasPermission.manageboards
   -- mod.hasPermission.newboard
+  -- mod.hasPermission.noticeboard
   -->
 <fieldset>
     <legend><@spring.message "dashboard.Boards"/></legend>
 
     <ul>
         <#list dashboard.boards as board>
-        <li>
-            <a href="?/${config.boardPath?replace("{uri}", board.uri)}${config.fileIndex}">${config.boardAbbreviation?replace("{uri}", board.uri)}</a>
-            -
-            ${board.title}
-            <#if board.subtitle?has_content>
-            <small>&mdash;
-                <#if config.allowSubtitleHtml>
-                ${board.subtitle?no_esc}
-                <#else>
-                ${board.subtitle}
+            <li>
+                <a href="?/${config.boardPath?replace("{uri}", board.uri)}${config.fileIndex}">${config.boardAbbreviation?replace("{uri}", board.uri)}</a>
+                    -
+                ${board.title}
+                <#if board.subtitle?has_content>
+                    <small>&mdash;
+                        <#if config.allowSubtitleHtml>
+                            ${board.subtitle?no_esc}
+                        <#else>
+                            ${board.subtitle}
+                        </#if>
+                    </small>
                 </#if>
-            </small>
-            </#if>
-            <#if (mod.hasPermission.manageboards)!false>
-                <a href="?/edit/${board.uri}"><small>[<@spring.message "dashboard.edit"/>]</small></a>
-            </#if>
-            <#if (mod.hasPermission.editPages)!false>
-                <a href="?/edit_pages/${board.uri}"><small>[<@spring.message "dashboard.pages"/>]</small></a>
-            </#if>
-        </li>
+                <#if (mod.hasPermission.manageboards)!false>
+                    <a href="?/edit/${board.uri}"><small>[<@spring.message "dashboard.edit"/>]</small></a>
+                </#if>
+                <#if (mod.hasPermission.editPages)!false>
+                    <a href="?/edit_pages/${board.uri}"><small>[<@spring.message "dashboard.pages"/>]</small></a>
+                </#if>
+            </li>
         </#list>
 
         <#if (mod.hasPermission.newboard)!false>
@@ -48,41 +50,41 @@ todo  noticeboard#${post.id}
         </#if>
     </ul>
 </fieldset>
-<#--
+
 <fieldset>
     <legend><@spring.message "dashboard.Messages"/></legend>
     <ul>
-        {% if mod|hasPermission(config.mod.noticeboard) %}
-        {% if noticeboard|count > 0 %}
-        <li>
-            {% trans 'Noticeboard' %}:
-            <ul>
-                {% for post in noticeboard %}
+        <#if (mod.hasPermission.noticeboard)!false>
+            <#if dashboard.noticeboard?size gt 0>
                 <li>
-                    <a href="?/noticeboard#${post.id}">
-                        {% if post.subject %}
-                        {{ post.subject|e }}
-                        {% else %}
-                        <em>{% trans 'no subject' %}</em>
-                        {% endif %}
-                    </a>
-                    <small class="unimportant">
-                        &mdash; by
-                        {% if post.username %}
-                        {{ post.username|e }}
-                        {% else %}
-                        <em>deleted?</em>
-                        {% endif %}
-                        at
-                        {{ post.time|date(config.post_date) }}
-                    </small>
+                    <@spring.message "dashboard.Noticeboard"/>:
+                    <ul>
+                        {% for post in noticeboard %}
+                        <li>
+                            <a href="?/noticeboard#${post.id}">
+                                {% if post.subject %}
+                                {{ post.subject|e }}
+                                {% else %}
+                                <em>{% trans 'no subject' %}</em>
+                                {% endif %}
+                            </a>
+                            <small class="unimportant">
+                                &mdash; by
+                                {% if post.username %}
+                                {{ post.username|e }}
+                                {% else %}
+                                <em>deleted?</em>
+                                {% endif %}
+                                at
+                                {{ post.time|date(config.post_date) }}
+                            </small>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% endif %}
-        <li><a href="?/noticeboard">{% trans 'View all noticeboard entries' %}</a></li>
-        {% endif %}
+            </#if>
+            <li><a href="?/noticeboard">{% trans 'View all noticeboard entries' %}</a></li>
+        </#if>
         <li><a href="?/edit_news">{% trans 'News' %}</a></li>
         <li>
             <a href="?/inbox">
@@ -195,4 +197,3 @@ todo  noticeboard#${post.id}
     </ul>
 </fieldset>
 
--->

@@ -5,6 +5,7 @@ import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.model.DashboardModel;
 import com.github.vimboard.model.PageModel;
 import com.github.vimboard.repository.BoardRepository;
+import com.github.vimboard.repository.NoticeboardRepository;
 import com.github.vimboard.service.BoardService;
 import com.github.vimboard.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class ModController extends AbstractController {
 
     private final BoardRepository boardRepository;
     private final BoardService boardService;
+    private final NoticeboardRepository noticeboardRepository;
     private final SecurityService securityService;
     private final SettingsBean settingsBean;
 
@@ -31,11 +33,13 @@ public class ModController extends AbstractController {
             MessageSource messageSource,
             BoardRepository boardRepository,
             BoardService boardService,
+            NoticeboardRepository noticeboardRepository,
             SecurityService securityService,
             SettingsBean settingsBean) {
         super(messageSource);
         this.boardRepository = boardRepository;
         this.boardService = boardService;
+        this.noticeboardRepository = noticeboardRepository;
         this.securityService = securityService;
         this.settingsBean = settingsBean;
     }
@@ -62,9 +66,8 @@ public class ModController extends AbstractController {
     private String dashboard(Model model) {
 
         model.addAttribute("dashboard", new DashboardModel()
-                .setBoards(boardRepository.list()));
-
-        //model.addAttribute("noticeboard",  // todo
+                .setBoards(boardRepository.list())
+                .setNoticeboard(noticeboardRepository.preview()));
 
         //model.addAttribute("unread_pms", // todo
 
