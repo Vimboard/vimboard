@@ -18,15 +18,9 @@ public class VimboardModProperties {
     // Mod permissions
     //------------------------------------------------------------------------
 
-    /**
-     * Create pages.
-     */
-    private Group editPages;
+    // Post Controls ---------------------------------------------------------
 
-    /**
-     * Manage existing boards (change title, etc).
-     */
-    private Group manageboards;
+    // Administration --------------------------------------------------------
 
     /**
      * Create a new board.
@@ -34,10 +28,20 @@ public class VimboardModProperties {
     private Group newboard;
 
     /**
+     * Manage existing boards (change title, etc).
+     */
+    private Group manageboards;
+
+    /**
      * Read the moderator noticeboard.
      */
     //$config['mod']['noticeboard'] = JANITOR;
     private Group noticeboard;
+
+    /**
+     * Create pages.
+     */
+    private Group editPages;
 
     //------------------------------------------------------------------------
     // Getters and setters
@@ -52,12 +56,12 @@ public class VimboardModProperties {
         return this;
     }
 
-    public Group getEditPages() {
-        return editPages;
+    public Group getNewboard() {
+        return newboard;
     }
 
-    public VimboardModProperties setEditPages(Group editPages) {
-        this.editPages = editPages;
+    public VimboardModProperties setNewboard(Group newboard) {
+        this.newboard = newboard;
         return this;
     }
 
@@ -70,21 +74,21 @@ public class VimboardModProperties {
         return this;
     }
 
-    public Group getNewboard() {
-        return newboard;
-    }
-
-    public VimboardModProperties setNewboard(Group newboard) {
-        this.newboard = newboard;
-        return this;
-    }
-
     public Group getNoticeboard() {
         return noticeboard;
     }
 
     public VimboardModProperties setNoticeboard(Group noticeboard) {
         this.noticeboard = noticeboard;
+        return this;
+    }
+
+    public Group getEditPages() {
+        return editPages;
+    }
+
+    public VimboardModProperties setEditPages(Group editPages) {
+        this.editPages = editPages;
         return this;
     }
 }

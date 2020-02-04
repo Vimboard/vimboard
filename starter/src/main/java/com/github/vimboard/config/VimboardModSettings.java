@@ -10,10 +10,10 @@ public class VimboardModSettings {
 
     // Mod permissions
 
-    private Group editPages;
-    private Group manageboards;
     private Group newboard;
+    private Group manageboards;
     private Group noticeboard;
+    private Group editPages;
 
     //------------------------------------------------------------------------
     // Getters and setters (setters must return void)
@@ -27,12 +27,12 @@ public class VimboardModSettings {
         this.noticeboardDashboard = noticeboardDashboard;
     }
 
-    public Group getEditPages() {
-        return editPages;
+    public Group getNewboard() {
+        return newboard;
     }
 
-    public void setEditPages(Group editPages) {
-        this.editPages = editPages;
+    public void setNewboard(Group newboard) {
+        this.newboard = newboard;
     }
 
     public Group getManageboards() {
@@ -43,19 +43,19 @@ public class VimboardModSettings {
         this.manageboards = manageboards;
     }
 
-    public Group getNewboard() {
-        return newboard;
-    }
-
-    public void setNewboard(Group newboard) {
-        this.newboard = newboard;
-    }
-
     public Group getNoticeboard() {
         return noticeboard;
     }
 
     public void setNoticeboard(Group noticeboard) {
         this.noticeboard = noticeboard;
+    }
+
+    public Group getEditPages() {
+        return editPages;
+    }
+
+    public void setEditPages(Group editPages) {
+        this.editPages = editPages;
     }
 }

@@ -9,10 +9,15 @@ todo  noticeboard#${post.id}
   -- dashboard.boards - board.title
   -- dashboard.boards - board.uri
   -- dashboard.noticeboard
+  -- dashboard.noticeboard - id
+  -- dashboard.noticeboard - subject
+  -- dashboard.noticeboard - time
+  -- dashboard.noticeboard - username
   -- config.allowSubtitleHtml
   -- config.boardAbbreviation
   -- config.boardPath
   -- config.fileIndex
+  -- config.postDate
   -- mod.hasPermission.editPages
   -- mod.hasPermission.manageboards
   -- mod.hasPermission.newboard
@@ -59,37 +64,37 @@ todo  noticeboard#${post.id}
                 <li>
                     <@spring.message "dashboard.Noticeboard"/>:
                     <ul>
-                        {% for post in noticeboard %}
-                        <li>
-                            <a href="?/noticeboard#${post.id}">
-                                {% if post.subject %}
-                                {{ post.subject|e }}
-                                {% else %}
-                                <em>{% trans 'no subject' %}</em>
-                                {% endif %}
-                            </a>
-                            <small class="unimportant">
-                                &mdash; by
-                                {% if post.username %}
-                                {{ post.username|e }}
-                                {% else %}
-                                <em>deleted?</em>
-                                {% endif %}
-                                at
-                                {{ post.time|date(config.post_date) }}
-                            </small>
-                        </li>
-                        {% endfor %}
+                        <#list dashboard.noticeboard as post>
+                            <li>
+                                <a href="?/noticeboard#${post.id}">
+                                    <#if post.subject?has_content>
+                                        ${post.subject}
+                                    <#else>
+                                        <em><@spring.message "dashboard.no_subject"/></em>
+                                    </#if>
+                                </a>
+                                <small class="unimportant">
+                                    &mdash; <@spring.message "dashboard.by"/>
+                                    <#if post.username?has_content>
+                                        ${post.username}
+                                    <#else>
+                                        <em><@spring.message "dashboard.deleted"/>?</em>
+                                    </#if>
+                                    <@spring.message "dashboard.at"/>
+                                    ${post.time?string[config.postDate]}
+                                </small>
+                            </li>
+                        </#list>
                     </ul>
                 </li>
             </#if>
-            <li><a href="?/noticeboard">{% trans 'View all noticeboard entries' %}</a></li>
+            <li><a href="?/noticeboard"><@spring.message "dashboard.View_all_noticeboard_entries"/></a></li>
         </#if>
-        <li><a href="?/edit_news">{% trans 'News' %}</a></li>
+        <li><a href="?/edit_news"><@spring.message "dashboard.News"/></a></li>
         <li>
             <a href="?/inbox">
-                {% trans 'PM inbox' %}
-                {% if unread_pms > 0 %}<strong>{%endif %}({{ unread_pms }} unread){% if unread_pms > 0 %}</strong>{%endif %}
+                <@spring.message "dashboard.PM_inbox"/>
+                <#if dashboard.unreadPms gt 0><strong></#if>(${dashboard.unreadPms} <@spring.message "dashboard.unread"/>)<#if dashboard.unreadPms gt 0></strong></#if>
             </a>
         </li>
     </ul>

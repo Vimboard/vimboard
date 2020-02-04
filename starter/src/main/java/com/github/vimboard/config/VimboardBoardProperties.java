@@ -62,38 +62,39 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
 
     /**
-     * Allow unfiltered HTML in board subtitle.
-     * This is useful for placing icons and links.
-     */
-    private Boolean allowSubtitleHtml;
-
-    /**
      * How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
      * This doesn't change the URL. Find {@link #boardPath} if you wish to
      * change the URL.
      */
     private String boardAbbreviation;
 
+    /**
+     * Allow unfiltered HTML in board subtitle.
+     * This is useful for placing icons and links.
+     */
+    private Boolean allowSubtitleHtml;
+
     //------------------------------------------------------------------------
     // Display settings
     //------------------------------------------------------------------------
 
     /**
-     * For lack of a better name, “boardlinks” are those sets of navigational
-     * links that appear at the top and bottom of board pages. They can be a
-     * list of links to boards and/or other pages such as status blogs and
-     * social network profiles/pages.
-     *
-     * "Groups" in the boardlinks are marked with square brackets. Vimboard
-     * allows for infinite recursion with groups. Each array in {@link #boards}
-     * represents a new square bracket group.
+     * The format string passed to string built-in for displaying dates.
+     * https://freemarker.apache.org/docs/ref_builtins_date.html
      */
-    private Map boards;
+    private String postDate;
 
     /**
-     * Whether or not to put brackets around the whole board list.
+     * Custom stylesheets available for the user to choose.
+     * See the "stylesheets/" folder for a list of available
+     * stylesheets (or create your own).
      */
-    private Boolean boardlistWrapBracket;
+    private Map<String, String> stylesheets;
+
+    /**
+     * The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
+     */
+    private String uriStylesheets;
 
     /**
      * The default stylesheet to use.
@@ -115,16 +116,21 @@ public class VimboardBoardProperties {
     private String fontAwesomeCss;
 
     /**
-     * Custom stylesheets available for the user to choose.
-     * See the "stylesheets/" folder for a list of available
-     * stylesheets (or create your own).
+     * For lack of a better name, “boardlinks” are those sets of navigational
+     * links that appear at the top and bottom of board pages. They can be a
+     * list of links to boards and/or other pages such as status blogs and
+     * social network profiles/pages.
+     *
+     * "Groups" in the boardlinks are marked with square brackets. Vimboard
+     * allows for infinite recursion with groups. Each array in {@link #boards}
+     * represents a new square bracket group.
      */
-    private Map<String, String> stylesheets;
+    private Map boards;
 
-    /*
-     * The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
+    /**
+     * Whether or not to put brackets around the whole board list.
      */
-    private String uriStylesheets;
+    private Boolean boardlistWrapBracket;
 
     //------------------------------------------------------------------------
     // Javascript
@@ -137,15 +143,15 @@ public class VimboardBoardProperties {
     private String[] additionalJavascript;
 
     /**
+     * Where these script files are located on the web. Defaults to {@link #root}.
+     */
+    private String additionalJavascriptUrl;
+
+    /**
      * Compile all additional scripts into one file ({@link #fileScript})
      * instead of including them seperately.
      */
     private Boolean additionalJavascriptCompile;
-
-    /**
-     * Where these script files are located on the web. Defaults to {@link #root}.
-     */
-    private String additionalJavascriptUrl;
 
     //------------------------------------------------------------------------
     // Video embedding
@@ -160,9 +166,10 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
 
     /**
-     * Board directory, followed by a forward-slash (/).
+     * The root directory, including the trailing slash,
+     * Examples: '/', 'http://boards.chan.org/', '/chan/'.
      */
-    private String boardPath;
+    private String root;
 
     /**
      * Name of the index page file.
@@ -175,15 +182,15 @@ public class VimboardBoardProperties {
     private String fileScript;
 
     /**
-     * The root directory, including the trailing slash,
-     * Examples: '/', 'http://boards.chan.org/', '/chan/'.
+     * Board directory, followed by a forward-slash (/).
      */
-    private String root;
+    private String boardPath;
 
     /*
-     * Website favicon.
+     * Set custom location for stylesheets file. This can be used for load
+     * balancing across multiple servers or hostnames.
      */
-    private String urlFavicon;
+    private String urlStylesheet;
 
     /**
      * Set custom location for the main script file. This can be used for load
@@ -192,10 +199,9 @@ public class VimboardBoardProperties {
     private String urlJavascript;
 
     /*
-     * Set custom location for stylesheets file. This can be used for load
-     * balancing across multiple servers or hostnames.
+     * Website favicon.
      */
-    private String urlStylesheet;
+    private String urlFavicon;
 
     //------------------------------------------------------------------------
     // Advanced build
@@ -269,15 +275,6 @@ public class VimboardBoardProperties {
         return this;
     }
 
-    public Boolean getAllowSubtitleHtml() {
-        return allowSubtitleHtml;
-    }
-
-    public VimboardBoardProperties setAllowSubtitleHtml(Boolean allowSubtitleHtml) {
-        this.allowSubtitleHtml = allowSubtitleHtml;
-        return this;
-    }
-
     public String getBoardAbbreviation() {
         return boardAbbreviation;
     }
@@ -287,21 +284,39 @@ public class VimboardBoardProperties {
         return this;
     }
 
-    public Map getBoards() {
-        return boards;
+    public Boolean getAllowSubtitleHtml() {
+        return allowSubtitleHtml;
     }
 
-    public VimboardBoardProperties setBoards(Map boards) {
-        this.boards = boards;
+    public VimboardBoardProperties setAllowSubtitleHtml(Boolean allowSubtitleHtml) {
+        this.allowSubtitleHtml = allowSubtitleHtml;
         return this;
     }
 
-    public Boolean getBoardlistWrapBracket() {
-        return boardlistWrapBracket;
+    public String getPostDate() {
+        return postDate;
     }
 
-    public VimboardBoardProperties setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
-        this.boardlistWrapBracket = boardlistWrapBracket;
+    public VimboardBoardProperties setPostDate(String postDate) {
+        this.postDate = postDate;
+        return this;
+    }
+
+    public Map<String, String> getStylesheets() {
+        return stylesheets;
+    }
+
+    public VimboardBoardProperties setStylesheets(Map<String, String> stylesheets) {
+        this.stylesheets = stylesheets;
+        return this;
+    }
+
+    public String getUriStylesheets() {
+        return uriStylesheets;
+    }
+
+    public VimboardBoardProperties setUriStylesheets(String uriStylesheets) {
+        this.uriStylesheets = uriStylesheets;
         return this;
     }
 
@@ -332,21 +347,21 @@ public class VimboardBoardProperties {
         return this;
     }
 
-    public Map<String, String> getStylesheets() {
-        return stylesheets;
+    public Map getBoards() {
+        return boards;
     }
 
-    public VimboardBoardProperties setStylesheets(Map<String, String> stylesheets) {
-        this.stylesheets = stylesheets;
+    public VimboardBoardProperties setBoards(Map boards) {
+        this.boards = boards;
         return this;
     }
 
-    public String getUriStylesheets() {
-        return uriStylesheets;
+    public Boolean getBoardlistWrapBracket() {
+        return boardlistWrapBracket;
     }
 
-    public VimboardBoardProperties setUriStylesheets(String uriStylesheets) {
-        this.uriStylesheets = uriStylesheets;
+    public VimboardBoardProperties setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
+        this.boardlistWrapBracket = boardlistWrapBracket;
         return this;
     }
 
@@ -359,15 +374,6 @@ public class VimboardBoardProperties {
         return this;
     }
 
-    public Boolean getAdditionalJavascriptCompile() {
-        return additionalJavascriptCompile;
-    }
-
-    public VimboardBoardProperties setAdditionalJavascriptCompile(Boolean additionalJavascriptCompile) {
-        this.additionalJavascriptCompile = additionalJavascriptCompile;
-        return this;
-    }
-
     public String getAdditionalJavascriptUrl() {
         return additionalJavascriptUrl;
     }
@@ -377,12 +383,21 @@ public class VimboardBoardProperties {
         return this;
     }
 
-    public String getBoardPath() {
-        return boardPath;
+    public Boolean getAdditionalJavascriptCompile() {
+        return additionalJavascriptCompile;
     }
 
-    public VimboardBoardProperties setBoardPath(String boardPath) {
-        this.boardPath = boardPath;
+    public VimboardBoardProperties setAdditionalJavascriptCompile(Boolean additionalJavascriptCompile) {
+        this.additionalJavascriptCompile = additionalJavascriptCompile;
+        return this;
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public VimboardBoardProperties setRoot(String root) {
+        this.root = root;
         return this;
     }
 
@@ -404,21 +419,21 @@ public class VimboardBoardProperties {
         return this;
     }
 
-    public String getRoot() {
-        return root;
+    public String getBoardPath() {
+        return boardPath;
     }
 
-    public VimboardBoardProperties setRoot(String root) {
-        this.root = root;
+    public VimboardBoardProperties setBoardPath(String boardPath) {
+        this.boardPath = boardPath;
         return this;
     }
 
-    public String getUrlFavicon() {
-        return urlFavicon;
+    public String getUrlStylesheet() {
+        return urlStylesheet;
     }
 
-    public VimboardBoardProperties setUrlFavicon(String urlFavicon) {
-        this.urlFavicon = urlFavicon;
+    public VimboardBoardProperties setUrlStylesheet(String urlStylesheet) {
+        this.urlStylesheet = urlStylesheet;
         return this;
     }
 
@@ -431,12 +446,12 @@ public class VimboardBoardProperties {
         return this;
     }
 
-    public String getUrlStylesheet() {
-        return urlStylesheet;
+    public String getUrlFavicon() {
+        return urlFavicon;
     }
 
-    public VimboardBoardProperties setUrlStylesheet(String urlStylesheet) {
-        this.urlStylesheet = urlStylesheet;
+    public VimboardBoardProperties setUrlFavicon(String urlFavicon) {
+        this.urlFavicon = urlFavicon;
         return this;
     }
 

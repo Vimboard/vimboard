@@ -11,6 +11,8 @@ public class DashboardModel {
 
     private List<Noticeboard> noticeboard;
 
+    private long unreadPms = 0;
+
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
@@ -30,6 +32,15 @@ public class DashboardModel {
 
     public DashboardModel setNoticeboard(List<Noticeboard> noticeboard) {
         this.noticeboard = noticeboard;
+        return this;
+    }
+
+    public long getUnreadPms() {
+        return unreadPms;
+    }
+
+    public DashboardModel setUnreadPms(long unreadPms) {
+        this.unreadPms = unreadPms;
         return this;
     }
 }

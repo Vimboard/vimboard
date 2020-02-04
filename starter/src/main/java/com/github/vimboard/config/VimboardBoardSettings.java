@@ -29,24 +29,25 @@ public class VimboardBoardSettings {
 
     // Board settings
 
-    private Boolean allowSubtitleHtml;
     private String boardAbbreviation;
+    private Boolean allowSubtitleHtml;
 
     // Display settings
 
-    private Object[] boards;
-    private Boolean boardlistWrapBracket;
+    private String postDate;
+    private Map<String, String> stylesheets;
+    private String uriStylesheets;
     private String[] defaultStylesheet;
     private Boolean fontAwesome;
     private String fontAwesomeCss;
-    private Map<String, String> stylesheets;
-    private String uriStylesheets;
+    private Object[] boards;
+    private Boolean boardlistWrapBracket;
 
     // Javascript
 
     private String[] additionalJavascript;
-    private Boolean additionalJavascriptCompile;
     private String additionalJavascriptUrl;
+    private Boolean additionalJavascriptCompile;
 
     // Video embedding
 
@@ -54,13 +55,13 @@ public class VimboardBoardSettings {
 
     // Directory/file settings
 
-    private String boardPath;
+    private String root;
     private String fileIndex;
     private String fileScript;
-    private String root;
-    private String urlFavicon;
-    private String urlJavascript;
+    private String boardPath;
     private String urlStylesheet;
+    private String urlJavascript;
+    private String urlFavicon;
 
     // Advanced build
 
@@ -112,14 +113,6 @@ public class VimboardBoardSettings {
         this.countryFlagsCondensedCss = countryFlagsCondensedCss;
     }
 
-    public Boolean getAllowSubtitleHtml() {
-        return allowSubtitleHtml;
-    }
-
-    public void setAllowSubtitleHtml(Boolean allowSubtitleHtml) {
-        this.allowSubtitleHtml = allowSubtitleHtml;
-    }
-
     public String getBoardAbbreviation() {
         return boardAbbreviation;
     }
@@ -128,20 +121,36 @@ public class VimboardBoardSettings {
         this.boardAbbreviation = boardAbbreviation;
     }
 
-    public Object[] getBoards() {
-        return boards;
+    public Boolean getAllowSubtitleHtml() {
+        return allowSubtitleHtml;
     }
 
-    public void setBoards(Object[] boards) {
-        this.boards = boards;
+    public void setAllowSubtitleHtml(Boolean allowSubtitleHtml) {
+        this.allowSubtitleHtml = allowSubtitleHtml;
     }
 
-    public Boolean getBoardlistWrapBracket() {
-        return boardlistWrapBracket;
+    public String getPostDate() {
+        return postDate;
     }
 
-    public void setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
-        this.boardlistWrapBracket = boardlistWrapBracket;
+    public void setPostDate(String postDate) {
+        this.postDate = postDate;
+    }
+
+    public Map<String, String> getStylesheets() {
+        return stylesheets;
+    }
+
+    public void setStylesheets(Map<String, String> stylesheets) {
+        this.stylesheets = stylesheets;
+    }
+
+    public String getUriStylesheets() {
+        return uriStylesheets;
+    }
+
+    public void setUriStylesheets(String uriStylesheets) {
+        this.uriStylesheets = uriStylesheets;
     }
 
     public String[] getDefaultStylesheet() {
@@ -168,20 +177,20 @@ public class VimboardBoardSettings {
         this.fontAwesomeCss = fontAwesomeCss;
     }
 
-    public Map<String, String> getStylesheets() {
-        return stylesheets;
+    public Object[] getBoards() {
+        return boards;
     }
 
-    public void setStylesheets(Map<String, String> stylesheets) {
-        this.stylesheets = stylesheets;
+    public void setBoards(Object[] boards) {
+        this.boards = boards;
     }
 
-    public String getUriStylesheets() {
-        return uriStylesheets;
+    public Boolean getBoardlistWrapBracket() {
+        return boardlistWrapBracket;
     }
 
-    public void setUriStylesheets(String uriStylesheets) {
-        this.uriStylesheets = uriStylesheets;
+    public void setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
+        this.boardlistWrapBracket = boardlistWrapBracket;
     }
 
     public String[] getAdditionalJavascript() {
@@ -192,14 +201,6 @@ public class VimboardBoardSettings {
         this.additionalJavascript = additionalJavascript;
     }
 
-    public Boolean getAdditionalJavascriptCompile() {
-        return additionalJavascriptCompile;
-    }
-
-    public void setAdditionalJavascriptCompile(Boolean additionalJavascriptCompile) {
-        this.additionalJavascriptCompile = additionalJavascriptCompile;
-    }
-
     public String getAdditionalJavascriptUrl() {
         return additionalJavascriptUrl;
     }
@@ -208,12 +209,20 @@ public class VimboardBoardSettings {
         this.additionalJavascriptUrl = additionalJavascriptUrl;
     }
 
-    public String getBoardPath() {
-        return boardPath;
+    public Boolean getAdditionalJavascriptCompile() {
+        return additionalJavascriptCompile;
     }
 
-    public void setBoardPath(String boardPath) {
-        this.boardPath = boardPath;
+    public void setAdditionalJavascriptCompile(Boolean additionalJavascriptCompile) {
+        this.additionalJavascriptCompile = additionalJavascriptCompile;
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
     }
 
     public String getFileIndex() {
@@ -232,20 +241,20 @@ public class VimboardBoardSettings {
         this.fileScript = fileScript;
     }
 
-    public String getRoot() {
-        return root;
+    public String getBoardPath() {
+        return boardPath;
     }
 
-    public void setRoot(String root) {
-        this.root = root;
+    public void setBoardPath(String boardPath) {
+        this.boardPath = boardPath;
     }
 
-    public String getUrlFavicon() {
-        return urlFavicon;
+    public String getUrlStylesheet() {
+        return urlStylesheet;
     }
 
-    public void setUrlFavicon(String urlFavicon) {
-        this.urlFavicon = urlFavicon;
+    public void setUrlStylesheet(String urlStylesheet) {
+        this.urlStylesheet = urlStylesheet;
     }
 
     public String getUrlJavascript() {
@@ -256,12 +265,12 @@ public class VimboardBoardSettings {
         this.urlJavascript = urlJavascript;
     }
 
-    public String getUrlStylesheet() {
-        return urlStylesheet;
+    public String getUrlFavicon() {
+        return urlFavicon;
     }
 
-    public void setUrlStylesheet(String urlStylesheet) {
-        this.urlStylesheet = urlStylesheet;
+    public void setUrlFavicon(String urlFavicon) {
+        this.urlFavicon = urlFavicon;
     }
 
     public VimboardModSettings getMod() {

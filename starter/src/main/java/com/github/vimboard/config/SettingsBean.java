@@ -97,6 +97,7 @@ public class SettingsBean {
         sb.put("fontAwesomeCss", "stylesheets/font-awesome/css/font-awesome.min.css");
         sb.put("metaKeywords", null);
         sb.put("mod", buildModSettings(null, boardUri), this::convertMod);
+        sb.put("postDate", "MM/dd/yy (EEE) HH:mm:ss");
         sb.put("recaptcha", false);
         final String root = (String) sb.put("root", "/");
         final Map<String, String> stylesheets;
