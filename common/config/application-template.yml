@@ -82,6 +82,9 @@ vimboard:
     # Ban settings
     # ------------------------------------------------------------------------
 
+    # Allow users to appeal bans through Vimboard.
+    ban-appeals: false
+
     # ------------------------------------------------------------------------
     # Markup settings
     # ------------------------------------------------------------------------
@@ -253,14 +256,35 @@ vimboard:
       # Mod permissions
       # ----------------------------------------------------------------------
 
+      # View the report queue.
+      reports: JANITOR
+
+      # View list of bans.
+      viewBanlist: MOD
+
       # Create a new board.
       newboard: ADMIN
 
       # Manage existing boards (change title, etc).
       manageboards: ADMIN
 
+      # List/manage users.
+      manageusers: MOD
+
+      # Change user's own password.
+      change-password: JANITOR
+
       # Read the moderator noticeboard.
       noticeboard: JANITOR
+
+      # Execute un-filtered SQL queries on the database (?/debug/sql).
+      debug-sql: DISABLED
+
+      # Edit the current configuration (via web interface).
+      edit-config: ADMIN
+
+      # View ban appeals.
+      view-ban-appeals: MOD
 
       # Create pages.
       edit-pages: MOD

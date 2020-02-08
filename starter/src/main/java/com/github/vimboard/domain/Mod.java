@@ -6,6 +6,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * TODO
+ */
 public class Mod implements UserDetails {
 
     /**
@@ -68,93 +71,50 @@ public class Mod implements UserDetails {
     // Getters and setters
     //------------------------------------------------------------------------
 
-    /**
-     * Getter for {@link #id}.
-     *
-     * @return {@link #id}.
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * Setter for {@link #id}.
-     *
-     * @param id {@link #id}.
-     */
-    public void setId(int id) {
+    public Mod setId(int id) {
         this.id = id;
+        return this;
     }
 
-    /**
-     * Getter for {@link #username}.
-     *
-     * @return {@link #username}.
-     */
+    @Override
     public String getUsername() {
         return username;
     }
 
-    /**
-     * Setter for {@link #username}.
-     *
-     * @param username {@link #username}.
-     */
-    public void setUsername(String username) {
+    public Mod setUsername(String username) {
         this.username = username;
+        return this;
     }
 
-    /**
-     * Getter for {@link #password}.
-     *
-     * @return {@link #password}.
-     */
+    @Override
     public String getPassword() {
         return password;
     }
 
-    /**
-     * Setter for {@link #password}.
-     *
-     * @param password {@link #password}.
-     */
-    public void setPassword(String password) {
+    public Mod setPassword(String password) {
         this.password = password;
+        return this;
     }
 
-    /**
-     * Getter for {@link #type}.
-     *
-     * @return {@link #type}.
-     */
     public Group getType() {
         return type;
     }
 
-    /**
-     * Setter for {@link #type}.
-     *
-     * @param type {@link #type}.
-     */
-    public void setType(Group type) {
+    public Mod setType(Group type) {
         this.type = type;
+        return this;
     }
 
-    /**
-     * Getter for {@link #boards}.
-     *
-     * @return {@link #boards}.
-     */
     public String[] getBoards() {
         return boards;
     }
 
-    /**
-     * Setter for {@link #boards}.
-     *
-     * @param boards {@link #boards}.
-     */
-    public void setBoards(String[] boards) {
+    public Mod setBoards(String[] boards) {
         this.boards = boards;
+        return this;
     }
 }

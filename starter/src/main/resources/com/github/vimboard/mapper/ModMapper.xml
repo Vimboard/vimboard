@@ -12,7 +12,7 @@
     </resultMap>
 
     <update id="alter">
-        UPDATE vmb.mod
+        UPDATE vmb.mods
         SET password = #{password},
             type = #{type, typeHandler=com.github.vimboard.mapper.GroupTypeHandler},
             boards = #{boards, typeHandler=com.github.vimboard.mapper.ModBoardsTypeHandler}
@@ -20,7 +20,7 @@
     </update>
 
     <insert id="create">
-        INSERT INTO vmb.mod(username, password, type, boards)
+        INSERT INTO vmb.mods(username, password, type, boards)
         VALUES (#{username},
                 #{password},
                 #{type, typeHandler=com.github.vimboard.mapper.GroupTypeHandler},
@@ -28,15 +28,15 @@
     </insert>
 
     <delete id="drop">
-        DELETE FROM vmb.mod WHERE username = #{username}
+        DELETE FROM vmb.mods WHERE username = #{username}
     </delete>
 
     <select id="findByName" resultMap="result">
-        SELECT id, username, password, type, boards FROM vmb.mod WHERE username = #{username} /* LIMIT 1 */
+        SELECT id, username, password, type, boards FROM vmb.mods WHERE username = #{username} /* LIMIT 1 */
     </select>
 
     <select id="list" resultMap="result">
-        SELECT id, username, password, type, boards FROM vmb.mod
+        SELECT id, username, password, type, boards FROM vmb.mods
     </select>
 
 </mapper>

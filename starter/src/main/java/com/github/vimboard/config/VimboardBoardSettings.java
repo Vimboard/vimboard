@@ -23,6 +23,8 @@ public class VimboardBoardSettings {
 
     // Ban settings
 
+    private Boolean banAppeals;
+
     // Markup settings
 
     // Image settings
@@ -111,6 +113,14 @@ public class VimboardBoardSettings {
 
     public void setCountryFlagsCondensedCss(String countryFlagsCondensedCss) {
         this.countryFlagsCondensedCss = countryFlagsCondensedCss;
+    }
+
+    public Boolean getBanAppeals() {
+        return banAppeals;
+    }
+
+    public void setBanAppeals(Boolean banAppeals) {
+        this.banAppeals = banAppeals;
     }
 
     public String getBoardAbbreviation() {

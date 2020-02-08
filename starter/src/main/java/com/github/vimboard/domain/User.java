@@ -1,5 +1,8 @@
 package com.github.vimboard.domain;
 
+/**
+ * TODO
+ */
 public class User {
 
     /**
@@ -21,57 +24,30 @@ public class User {
     // Getters and setters
     //------------------------------------------------------------------------
 
-    /**
-     * Getter for {@link #id}.
-     *
-     * @return {@link #id}.
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * Setter for {@link #id}.
-     *
-     * @param id {@link #id}.
-     */
-    public void setId(int id) {
+    public User setId(int id) {
         this.id = id;
+        return this;
     }
 
-    /**
-     * Getter for {@link #username}.
-     *
-     * @return {@link #username}.
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * Setter for {@link #username}.
-     *
-     * @param username {@link #username}.
-     */
-    public void setUsername(String username) {
+    public User setUsername(String username) {
         this.username = username;
+        return this;
     }
 
-    /**
-     * Getter for {@link #password}.
-     *
-     * @return {@link #password}.
-     */
     public String getPassword() {
         return password;
     }
 
-    /**
-     * Setter for {@link #password}.
-     *
-     * @param password {@link #password}.
-     */
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 }

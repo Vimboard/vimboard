@@ -24,6 +24,7 @@ public class BoardRepository {
         boardMapper().create(uri, title, subtitle);
     }
 
+    @Transactional(readOnly = true)
     public List<Board> list() {
         return boardMapper().list();
     }

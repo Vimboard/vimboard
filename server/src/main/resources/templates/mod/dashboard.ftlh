@@ -13,15 +13,31 @@ todo  noticeboard#${post.id}
   -- dashboard.noticeboard - subject
   -- dashboard.noticeboard - time
   -- dashboard.noticeboard - username
+  -- dashboard.reports
+  -- dashboard.unreadPms
   -- config.allowSubtitleHtml
+  -- config.banAppeals
   -- config.boardAbbreviation
   -- config.boardPath
   -- config.fileIndex
   -- config.postDate
+  -- mod.hasPermission.changePassword
+  -- mod.hasPermission.debugSql
+  -- mod.hasPermission.editConfig
   -- mod.hasPermission.editPages
   -- mod.hasPermission.manageboards
+  -- mod.hasPermission.manageusers
+  -- mod.hasPermission.modlog ---------------
   -- mod.hasPermission.newboard
   -- mod.hasPermission.noticeboard
+  -- mod.hasPermission.rebuild
+  -- mod.hasPermission.recent ---------------
+  -- mod.hasPermission.reports
+  -- mod.hasPermission.search ---------------
+  -- mod.hasPermission.themes ---------------
+  -- mod.hasPermission.viewBanAppeals
+  -- mod.hasPermission.viewBanlist
+  -- mod.id
   -->
 <fieldset>
     <legend><@spring.message "dashboard.Boards"/></legend>
@@ -101,60 +117,60 @@ todo  noticeboard#${post.id}
 </fieldset>
 
 <fieldset>
-    <legend>{% trans 'Administration' %}</legend>
+    <legend><@spring.message "dashboard.Administration"/></legend>
 
     <ul>
-        {% if mod|hasPermission(config.mod.reports) %}
-        <li>
-            {% if reports > 0 %}<strong>{% endif %}
-                <a href="?/reports">{% trans 'Report queue' %} ({{ reports }})</a>
-                {% if reports > 0 %}</strong>{% endif %}
-        </li>
-        {% endif %}
-        {% if mod|hasPermission(config.mod.view_banlist) %}
-        <li><a href="?/bans">{% trans 'Ban list' %}</a></li>
-        {% endif %}
-        {% if config.ban_appeals and mod|hasPermission(config.mod.view_ban_appeals) %}
-        <li><a href="?/ban-appeals">{% trans 'Ban appeals' %}</a></li>
-        {% endif %}
-        {% if mod|hasPermission(config.mod.manageusers) %}
-        <li><a href="?/users">{% trans 'Manage users' %}</a></li>
-        {% elseif mod|hasPermission(config.mod.change_password) %}
-        <li><a href="?/users/{{ mod.id }}">{% trans 'Change password' %}</a></li>
-        {% endif %}
-        {% if mod|hasPermission(config.mod.themes) %}
-        <li><a href="?/themes">{% trans 'Manage themes' %}</a></li>
-        {% endif %}
-        {% if mod|hasPermission(config.mod.modlog) %}
-        <li><a href="?/log">{% trans 'Moderation log' %}</a></li>
-        {% endif %}
-        {% if mod|hasPermission(config.mod.edit_pages) %}
-        <li><a href="?/edit_pages">{% trans 'Global static pages' %}</a></li>
-        {% endif %}
-        {% if mod|hasPermission(config.mod.recent) %}
-        <li><a href="?/recent/25">{% trans 'Recent posts' %}</a></li>
-        {% endif %}
-        {% if mod|hasPermission(config.mod.rebuild) %}
-        <li><a href="?/rebuild">{% trans 'Rebuild' %}</a></li>
-        {% endif %}
-        {% if mod|hasPermission(config.mod.edit_config) %}
-        <li><a href="?/config">{% trans 'Configuration' %}</a></li>
-        {% endif %}
+        <#if (mod.hasPermission.reports)!false>
+            <li>
+                <#if dashboard.reports gt 0><strong></#if>
+                    <a href="?/reports"><@spring.message "dashboard.Report_queue"/> (${dashboard.reports})</a>
+                <#if dashboard.reports gt 0></strong></#if>
+            </li>
+        </#if>
+        <#if (mod.hasPermission.viewBanlist)!false>
+            <li><a href="?/bans"><@spring.message "dashboard.Ban_list"/></a></li>
+        </#if>
+        <#if config.banAppeals && (mod.hasPermission.viewBanAppeals)!false>
+            <li><a href="?/ban-appeals"><@spring.message "dashboard.Ban_appeals"/></a></li>
+        </#if>
+        <#if (mod.hasPermission.manageusers)!false>
+            <li><a href="?/users"><@spring.message "dashboard.Manage_users"/></a></li>
+        <#elseif (mod.hasPermission.changePassword)!false>
+            <li><a href="?/users/${mod.id}"><@spring.message "dashboard.Change_password"/></a></li>
+        </#if>
+        <#if (mod.hasPermission.themes)!false>
+            <li><a href="?/themes"><@spring.message "dashboard.Manage_themes"/></a></li>
+        </#if>
+        <#if (mod.hasPermission.modlog)!false>
+            <li><a href="?/log"><@spring.message "dashboard.Moderation_log"/></a></li>
+        </#if>
+        <#if (mod.hasPermission.editPages)!false>
+            <li><a href="?/edit_pages"><@spring.message "dashboard.Global_static_pages"/></a></li>
+        </#if>
+        <#if (mod.hasPermission.recent)!false>
+            <li><a href="?/recent/25"><@spring.message "dashboard.Recent_posts"/></a></li>
+        </#if>
+        <#if (mod.hasPermission.rebuild)!false>
+            <li><a href="?/rebuild"><@spring.message "dashboard.Rebuild"/></a></li>
+        </#if>
+        <#if (mod.hasPermission.editConfig)!false>
+            <li><a href="?/config"><@spring.message "dashboard.Configuration"/></a></li>
+        </#if>
 
     </ul>
 </fieldset>
 
-{% if mod|hasPermission(config.mod.search) %}
-<fieldset>
-    <legend>{% trans 'Search' %}</legend>
+<#if (mod.hasPermission.search)!false>
+    <fieldset>
+        <legend><@spring.message "dashboard.Search"/></legend>
 
-    <ul>
-        <li>
-            {% include 'mod/search_form.html' %}
-        </li>
-    </ul>
-</fieldset>
-{%  endif %}
+        <ul>
+            <li>
+                {% include 'mod/search_form.html' %}<#-- TODO -->
+            </li>
+        </ul>
+    </fieldset>
+</#if>
 
 {% if config.mod.dashboard_links and config.mod.dashboard_links|count %}
 <fieldset>
@@ -174,7 +190,7 @@ todo  noticeboard#${post.id}
     <ul>
         <li><a href="?/debug/antispam">{% trans 'Anti-spam' %}</a></li>
         <li><a href="?/debug/recent">{% trans 'Recent posts' %}</a></li>
-        {% if mod|hasPermission(config.mod.debug_sql) %}
+        {% if (mod.hasPermission.debugSql)!false %}
         <li><a href="?/debug/sql">{% trans 'SQL' %}</a></li>
         {% endif %}
     </ul>

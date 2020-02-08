@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.vimboard.mapper.ReportMapper">
+
+    <select id="list" resultType="com.github.vimboard.domain.Report">
+        SELECT id, time, ip, board, post, reason FROM vmb.reports
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT count(*) FROM vmb.reports
+    </select>
+
+</mapper>

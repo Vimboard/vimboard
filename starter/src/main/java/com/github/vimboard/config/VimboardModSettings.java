@@ -10,9 +10,16 @@ public class VimboardModSettings {
 
     // Mod permissions
 
+    private Group reports;
+    private Group viewBanlist;
     private Group newboard;
     private Group manageboards;
+    private Group manageusers;
+    private Group changePassword;
     private Group noticeboard;
+    private Group debugSql;
+    private Group editConfig;
+    private Group viewBanAppeals;
     private Group editPages;
 
     //------------------------------------------------------------------------
@@ -25,6 +32,22 @@ public class VimboardModSettings {
 
     public void setNoticeboardDashboard(Long noticeboardDashboard) {
         this.noticeboardDashboard = noticeboardDashboard;
+    }
+
+    public Group getReports() {
+        return reports;
+    }
+
+    public void setReports(Group reports) {
+        this.reports = reports;
+    }
+
+    public Group getViewBanlist() {
+        return viewBanlist;
+    }
+
+    public void setViewBanlist(Group viewBanlist) {
+        this.viewBanlist = viewBanlist;
     }
 
     public Group getNewboard() {
@@ -43,6 +66,14 @@ public class VimboardModSettings {
         this.manageboards = manageboards;
     }
 
+    public Group getManageusers() {
+        return manageusers;
+    }
+
+    public void setManageusers(Group manageusers) {
+        this.manageusers = manageusers;
+    }
+
     public Group getNoticeboard() {
         return noticeboard;
     }
@@ -51,11 +82,43 @@ public class VimboardModSettings {
         this.noticeboard = noticeboard;
     }
 
+    public Group getDebugSql() {
+        return debugSql;
+    }
+
+    public void setDebugSql(Group debugSql) {
+        this.debugSql = debugSql;
+    }
+
+    public Group getEditConfig() {
+        return editConfig;
+    }
+
+    public void setEditConfig(Group editConfig) {
+        this.editConfig = editConfig;
+    }
+
+    public Group getViewBanAppeals() {
+        return viewBanAppeals;
+    }
+
+    public void setViewBanAppeals(Group viewBanAppeals) {
+        this.viewBanAppeals = viewBanAppeals;
+    }
+
     public Group getEditPages() {
         return editPages;
     }
 
     public void setEditPages(Group editPages) {
         this.editPages = editPages;
+    }
+
+    public Group getChangePassword() {
+        return changePassword;
+    }
+
+    public void setChangePassword(Group changePassword) {
+        this.changePassword = changePassword;
     }
 }

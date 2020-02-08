@@ -49,6 +49,11 @@ public class VimboardBoardProperties {
     // Ban settings
     //------------------------------------------------------------------------
 
+    /**
+     * Allow users to appeal bans through Vimboard.
+     */
+    private Boolean banAppeals;
+
     //------------------------------------------------------------------------
     // Markup settings
     //------------------------------------------------------------------------
@@ -272,6 +277,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setCountryFlagsCondensedCss(String countryFlagsCondensedCss) {
         this.countryFlagsCondensedCss = countryFlagsCondensedCss;
+        return this;
+    }
+
+    public Boolean getBanAppeals() {
+        return banAppeals;
+    }
+
+    public VimboardBoardProperties setBanAppeals(Boolean banAppeals) {
+        this.banAppeals = banAppeals;
         return this;
     }
 

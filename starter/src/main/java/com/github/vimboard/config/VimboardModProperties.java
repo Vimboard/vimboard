@@ -23,6 +23,16 @@ public class VimboardModProperties {
     // Administration --------------------------------------------------------
 
     /**
+     * View the report queue.
+     */
+    private Group reports;
+
+    /**
+     * View list of bans.
+     */
+    private Group viewBanlist;
+
+    /**
      * Create a new board.
      */
     private Group newboard;
@@ -33,10 +43,35 @@ public class VimboardModProperties {
     private Group manageboards;
 
     /**
+     * List/manage users.
+     */
+    private Group manageusers;
+
+    /**
+     * Change user's own password.
+     */
+    private Group changePassword;
+
+    /**
      * Read the moderator noticeboard.
      */
     //$config['mod']['noticeboard'] = JANITOR;
     private Group noticeboard;
+
+    /**
+     * Execute un-filtered SQL queries on the database (?/debug/sql).
+     */
+    private Group debugSql;
+
+    /**
+     * Edit the current configuration (via web interface).
+     */
+    private Group editConfig;
+
+    /**
+     * View ban appeals.
+     */
+    private Group viewBanAppeals;
 
     /**
      * Create pages.
@@ -53,6 +88,24 @@ public class VimboardModProperties {
 
     public VimboardModProperties setNoticeboardDashboard(Long noticeboardDashboard) {
         this.noticeboardDashboard = noticeboardDashboard;
+        return this;
+    }
+
+    public Group getReports() {
+        return reports;
+    }
+
+    public VimboardModProperties setReports(Group reports) {
+        this.reports = reports;
+        return this;
+    }
+
+    public Group getViewBanlist() {
+        return viewBanlist;
+    }
+
+    public VimboardModProperties setViewBanlist(Group viewBanlist) {
+        this.viewBanlist = viewBanlist;
         return this;
     }
 
@@ -74,12 +127,57 @@ public class VimboardModProperties {
         return this;
     }
 
+    public Group getManageusers() {
+        return manageusers;
+    }
+
+    public VimboardModProperties setManageusers(Group manageusers) {
+        this.manageusers = manageusers;
+        return this;
+    }
+
+    public Group getChangePassword() {
+        return changePassword;
+    }
+
+    public VimboardModProperties setChangePassword(Group changePassword) {
+        this.changePassword = changePassword;
+        return this;
+    }
+
     public Group getNoticeboard() {
         return noticeboard;
     }
 
     public VimboardModProperties setNoticeboard(Group noticeboard) {
         this.noticeboard = noticeboard;
+        return this;
+    }
+
+    public Group getDebugSql() {
+        return debugSql;
+    }
+
+    public VimboardModProperties setDebugSql(Group debugSql) {
+        this.debugSql = debugSql;
+        return this;
+    }
+
+    public Group getEditConfig() {
+        return editConfig;
+    }
+
+    public VimboardModProperties setEditConfig(Group editConfig) {
+        this.editConfig = editConfig;
+        return this;
+    }
+
+    public Group getViewBanAppeals() {
+        return viewBanAppeals;
+    }
+
+    public VimboardModProperties setViewBanAppeals(Group viewBanAppeals) {
+        this.viewBanAppeals = viewBanAppeals;
         return this;
     }
 

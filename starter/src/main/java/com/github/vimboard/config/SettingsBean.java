@@ -85,6 +85,7 @@ public class SettingsBean {
         });
         sb.put("additionalJavascriptCompile", false);
         sb.put("allowSubtitleHtml", false);
+        sb.put("banAppeals", false);
         sb.put("boardAbbreviation", "/{uri}/");
         sb.put("boardPath", "{uri}/");
         sb.put("boardlistWrapBracket", false);
@@ -141,11 +142,19 @@ public class SettingsBean {
 
         // Settings without dependencies
 
+        sb.put("noticeboardDashboard", 5L);
+        // Mod permissions
+        sb.put("changePassword", Group.JANITOR);
+        sb.put("debugSql", Group.DISABLED);
+        sb.put("editConfig", Group.ADMIN);
         sb.put("editPages", Group.MOD);
         sb.put("manageboards", Group.ADMIN);
+        sb.put("manageusers", Group.MOD);
         sb.put("newboard", Group.ADMIN);
         sb.put("noticeboard", Group.JANITOR);
-        sb.put("noticeboardDashboard", 5L);
+        sb.put("reports", Group.JANITOR);
+        sb.put("viewBanAppeals", Group.MOD);
+        sb.put("viewBanlist", Group.MOD);
 
         // Settings with dependencies
 

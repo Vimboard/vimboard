@@ -4,12 +4,12 @@
 <mapper namespace="com.github.vimboard.mapper.BoardMapper">
 
     <insert id="create">
-        INSERT INTO vmb.board(uri, title, subtitle)
+        INSERT INTO vmb.boards(uri, title, subtitle)
         VALUES (#{uri}, #{title}, #{subtitle})
     </insert>
 
     <select id="list" resultType="com.github.vimboard.domain.Board">
-        SELECT id, uri, title, subtitle FROM vmb.board
+        SELECT uri, title, subtitle FROM vmb.boards
     </select>
 
 </mapper>

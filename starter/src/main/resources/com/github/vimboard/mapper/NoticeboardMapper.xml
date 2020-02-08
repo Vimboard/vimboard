@@ -11,7 +11,7 @@
                n.body,
                m.username
         FROM vmb.noticeboard n
-        LEFT JOIN vmb.mod m ON m.id = n.mod
+        LEFT JOIN vmb.mods m ON m.id = n.mod
         ORDER BY n.id DESC
         LIMIT #{limit}
     </select>

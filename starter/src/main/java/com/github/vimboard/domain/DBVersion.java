@@ -19,39 +19,21 @@ public class DBVersion {
     // Getters and setters
     //------------------------------------------------------------------------
 
-    /**
-     * Getter for {@link #schemaVersion}.
-     *
-     * @return {@link #schemaVersion}.
-     */
     public String getSchemaVersion() {
         return schemaVersion;
     }
 
-    /**
-     * Setter for {@link #schemaVersion}.
-     *
-     * @param schemaVersion {@link #schemaVersion}.
-     */
-    public void setSchemaVersion(String schemaVersion) {
+    public DBVersion setSchemaVersion(String schemaVersion) {
         this.schemaVersion = schemaVersion;
+        return this;
     }
 
-    /**
-     * Getter for {@link #serverVersion}.
-     *
-     * @return {@link #serverVersion}.
-     */
     public String getServerVersion() {
         return serverVersion;
     }
 
-    /**
-     * Setter for {@link #serverVersion}.
-     *
-     * @param serverVersion {@link #serverVersion}.
-     */
-    public void setServerVersion(String serverVersion) {
+    public DBVersion setServerVersion(String serverVersion) {
         this.serverVersion = serverVersion;
+        return this;
     }
 }

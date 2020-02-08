@@ -11,7 +11,9 @@ public class DashboardModel {
 
     private List<Noticeboard> noticeboard;
 
-    private long unreadPms = 0;
+    private long unreadPms = 0L;
+
+    private long reports = 0L;
 
     //------------------------------------------------------------------------
     // Getters and setters
@@ -32,6 +34,15 @@ public class DashboardModel {
 
     public DashboardModel setNoticeboard(List<Noticeboard> noticeboard) {
         this.noticeboard = noticeboard;
+        return this;
+    }
+
+    public long getReports() {
+        return reports;
+    }
+
+    public DashboardModel setReports(long reports) {
+        this.reports = reports;
         return this;
     }
 

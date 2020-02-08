@@ -6,6 +6,8 @@ import com.github.vimboard.model.DashboardModel;
 import com.github.vimboard.model.PageModel;
 import com.github.vimboard.repository.BoardRepository;
 import com.github.vimboard.repository.NoticeboardRepository;
+import com.github.vimboard.repository.PmsRepository;
+import com.github.vimboard.repository.ReportRepository;
 import com.github.vimboard.service.BoardService;
 import com.github.vimboard.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class ModController extends AbstractController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final NoticeboardRepository noticeboardRepository;
+    private final PmsRepository pmsRepository;
+    private final ReportRepository reportRepository;
     private final SecurityService securityService;
     private final SettingsBean settingsBean;
 
@@ -34,12 +38,16 @@ public class ModController extends AbstractController {
             BoardRepository boardRepository,
             BoardService boardService,
             NoticeboardRepository noticeboardRepository,
+            PmsRepository pmsRepository,
+            ReportRepository reportRepository,
             SecurityService securityService,
             SettingsBean settingsBean) {
         super(messageSource);
         this.boardRepository = boardRepository;
         this.boardService = boardService;
         this.noticeboardRepository = noticeboardRepository;
+        this.pmsRepository = pmsRepository;
+        this.reportRepository = reportRepository;
         this.securityService = securityService;
         this.settingsBean = settingsBean;
     }
@@ -67,11 +75,9 @@ public class ModController extends AbstractController {
 
         model.addAttribute("dashboard", new DashboardModel()
                 .setBoards(boardRepository.list())
-                .setNoticeboard(noticeboardRepository.preview()));
-
-        //model.addAttribute("unread_pms", // todo
-
-        //model.addAttribute("reports", // todo
+                .setNoticeboard(noticeboardRepository.preview())
+                .setReports(reportRepository.count())
+                .setUnreadPms(pmsRepository.count()));
 
         //model.addAttribute("logout_token", // todo
 

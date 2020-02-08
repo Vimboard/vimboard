@@ -1,5 +1,8 @@
 package com.github.vimboard.domain;
 
+/**
+ * TODO
+ */
 public class Board {
 
     /**
@@ -27,75 +30,39 @@ public class Board {
     // Getters and setters
     //------------------------------------------------------------------------
 
-    /**
-     * Getter for {@link #id}.
-     *
-     * @return {@link #id}.
-     */
     public int getId() {
         return id;
     }
 
-    /**
-     * Setter for {@link #id}.
-     *
-     * @param id {@link #id}.
-     */
-    public void setId(int id) {
+    public Board setId(int id) {
         this.id = id;
+        return this;
     }
 
-    /**
-     * Getter for {@link #uri}.
-     *
-     * @return {@link #uri}.
-     */
     public String getUri() {
         return uri;
     }
 
-    /**
-     * Setter for {@link #uri}.
-     *
-     * @param uri {@link #uri}.
-     */
-    public void setUri(String uri) {
+    public Board setUri(String uri) {
         this.uri = uri;
+        return this;
     }
 
-    /**
-     * Getter for {@link #title}.
-     *
-     * @return {@link #title}.
-     */
     public String getTitle() {
         return title;
     }
 
-    /**
-     * Setter for {@link #title}.
-     *
-     * @param title {@link #title}.
-     */
-    public void setTitle(String title) {
+    public Board setTitle(String title) {
         this.title = title;
+        return this;
     }
 
-    /**
-     * Getter for {@link #subtitle}.
-     *
-     * @return {@link #subtitle}.
-     */
     public String getSubtitle() {
         return subtitle;
     }
 
-    /**
-     * Setter for {@link #subtitle}.
-     *
-     * @param subtitle {@link #subtitle}.
-     */
-    public void setSubtitle(String subtitle) {
+    public Board setSubtitle(String subtitle) {
         this.subtitle = subtitle;
+        return this;
     }
 }

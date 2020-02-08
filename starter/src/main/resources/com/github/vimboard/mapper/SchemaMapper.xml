@@ -13,35 +13,34 @@
         -- TABLES
         ----------------------------------------------------------------------
 
-        CREATE TABLE vmb.board (
-            id          serial NOT NULL,
+        CREATE TABLE vmb.boards (
             uri         varchar(58) NOT NULL,
             title       text NOT NULL,
             subtitle    text,
             PRIMARY KEY(uri)
         );
-        CREATE INDEX ON vmb.board(uri);
+        CREATE INDEX ON vmb.boards(uri);
 
         ----------------------------------------------------------------------
 
-        CREATE TABLE vmb.cite (
-            board           int NOT NULL,
-            post            bigint NOT NULL,
-            target_board    int NOT NULL,
-            target_post     bigint NOT NULL,
-            UNIQUE(board, post, target_board, target_post)
-        );
-        CREATE INDEX ON vmb.cite(board, post);
-        CREATE INDEX ON vmb.cite(target_board, target_post);
+--         CREATE TABLE vmb.cites (
+--             board           int NOT NULL,
+--             post            bigint NOT NULL,
+--             target_board    int NOT NULL,
+--             target_post     bigint NOT NULL,
+--             UNIQUE(boards, post, target_board, target_post)
+--         );
+--         CREATE INDEX ON vmb.cites(board, post);
+--         CREATE INDEX ON vmb.cites(target_board, target_post);
 
         ----------------------------------------------------------------------
 
-        CREATE TABLE vmb.mod (
-            id               serial NOT NULL,
-            username         varchar(100) NOT NULL,
-            password         varchar(1000) NOT NULL,
-            type             smallint NOT NULL,
-            boards           text NOT NULL,
+        CREATE TABLE vmb.mods (
+            id          serial NOT NULL,
+            username    varchar(100) NOT NULL,
+            password    varchar(1000) NOT NULL,
+            type        smallint NOT NULL,
+            boards      text NOT NULL,
             PRIMARY KEY(id),
             UNIQUE(username)
         );
@@ -49,53 +48,78 @@
         ----------------------------------------------------------------------
 
         CREATE TABLE vmb.noticeboard (
-            id               bigserial NOT NULL,
-            mod              int NOT NULL,
-            time             timestamp NOT NULL,
-            subject          text NOT NULL,
-            body             text NOT NULL,
+            id         bigserial NOT NULL,
+            mod        int NOT NULL,
+            time       timestamp NOT NULL,
+            subject    text NOT NULL,
+            body       text NOT NULL,
             PRIMARY KEY(id)
         );
         CREATE INDEX ON vmb.noticeboard(time);
 
         ----------------------------------------------------------------------
 
-        CREATE TABLE vmb.post (
-            board            int NOT NULL,
-            id               bigint NOT NULL, --
-            thread           bigint DEFAULT NULL,
-            subject          varchar(100) DEFAULT NULL,
-            email            varchar(30) DEFAULT NULL,
-            name             varchar(35) DEFAULT NULL,
-            trip             varchar(15) DEFAULT NULL,
-            capcode          varchar(50) DEFAULT NULL,
-            body             text NOT NULL,
-            body_nomarkup    text,
-            time             bigint NOT NULL,
-            bump             bigint DEFAULT NULL,
-            files            text DEFAULT NULL,
-            num_files        smallint DEFAULT 0,
-            filehash         text,
-            password         varchar(20) DEFAULT NULL,
-            ip               varchar(39) NOT NULL,
-            sticky           boolean NOT NULL,
-            locked           boolean NOT NULL,
-            cycle            boolean NOT NULL,
-            sage             boolean NOT NULL,
-            embed            text,
-            slug             varchar(256) DEFAULT NULL
-        ) PARTITION BY LIST(board);
+        CREATE TABLE vmb.pms (
+            id         bigserial NOT NULL,
+            sender     bigint NOT NULL,
+            "to"       bigint NOT NULL,
+            message    text NOT NULL,
+            time       timestamp NOT NULL,
+            unread     boolean NOT NULL,
+            PRIMARY KEY (id)
+        );
+        CREATE INDEX ON vmb.pms("to", unread);
 
         ----------------------------------------------------------------------
 
-        CREATE TABLE vmb.resource (
-            board       int NOT NULL,
-            post        bigint NOT NULL,
-            filename    varchar(20) NOT NULL,
-            UNIQUE(board, post, filename)
+--         CREATE TABLE vmb.posts (
+--             board            int NOT NULL,
+--             id               bigint NOT NULL, --
+--             thread           bigint DEFAULT NULL,
+--             subject          varchar(100) DEFAULT NULL,
+--             email            varchar(30) DEFAULT NULL,
+--             name             varchar(35) DEFAULT NULL,
+--             trip             varchar(15) DEFAULT NULL,
+--             capcode          varchar(50) DEFAULT NULL,
+--             body             text NOT NULL,
+--             body_nomarkup    text,
+--             time             bigint NOT NULL,
+--             bump             bigint DEFAULT NULL,
+--             files            text DEFAULT NULL,
+--             num_files        smallint DEFAULT 0,
+--             filehash         text,
+--             password         varchar(20) DEFAULT NULL,
+--             ip               varchar(39) NOT NULL,
+--             sticky           boolean NOT NULL,
+--             locked           boolean NOT NULL,
+--             cycle            boolean NOT NULL,
+--             sage             boolean NOT NULL,
+--             embed            text,
+--             slug             varchar(256) DEFAULT NULL
+--         ) PARTITION BY LIST(boards);
+
+        ----------------------------------------------------------------------
+
+        CREATE TABLE vmb.reports (
+            id               bigserial NOT NULL,
+            time             timestamp NOT NULL,
+            ip               varchar(39) NOT NULL,
+            board            varchar(58) DEFAULT NULL,
+            post             bigint NOT NULL,
+            reason           text NOT NULL,
+            PRIMARY KEY (id)
         );
-        CREATE INDEX ON vmb.resource(board, post);
-        CREATE INDEX ON vmb.resource(filename);
+
+        ----------------------------------------------------------------------
+
+--         CREATE TABLE vmb.resource (
+--             board       int NOT NULL,
+--             post        bigint NOT NULL,
+--             filename    varchar(20) NOT NULL,
+--             UNIQUE(boards, post, filename)
+--         );
+--         CREATE INDEX ON vmb.resource(board, post);
+--         CREATE INDEX ON vmb.resource(filename);
 
         ----------------------------------------------------------------------
 
