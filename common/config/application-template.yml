@@ -274,8 +274,17 @@ vimboard:
       # Change user's own password.
       change-password: JANITOR
 
+      # View the moderation log.
+      modlog: ADMIN
+
+      # Search through posts, IP address notes and bans.
+      search: JANITOR
+
       # Read the moderator noticeboard.
       noticeboard: JANITOR
+
+      # Manage and install themes for homepage.
+      themes: ADMIN
 
       # Execute un-filtered SQL queries on the database (?/debug/sql).
       debug-sql: DISABLED
@@ -285,6 +294,9 @@ vimboard:
 
       # View ban appeals.
       view-ban-appeals: MOD
+
+      # View the recent posts page.
+      recent: MOD
 
       # Create pages.
       edit-pages: MOD

@@ -53,11 +53,11 @@ public class SecurityService {
         final Authentication auth = SecurityContextHolder.getContext()
                 .getAuthentication();
 
-        final Object userDetails = auth.getDetails();
-        if (!(userDetails instanceof Mod)) {
+        final Object principal = auth.getPrincipal();
+        if (!(principal instanceof Mod)) {
             return null;
         }
-        final Mod mod = (Mod) userDetails;
+        final Mod mod = (Mod) principal;
 
         if (!isMod(auth)) {
             return null;
@@ -94,14 +94,26 @@ public class SecurityService {
                 if (group.hasRole(modSettings.getManageusers())) {
                     permissionModel.setManageusers(true);
                 }
+                if (group.hasRole(modSettings.getModlog())) {
+                    permissionModel.setModlog(true);
+                }
                 if (group.hasRole(modSettings.getNewboard())) {
                     permissionModel.setNewboard(true);
                 }
                 if (group.hasRole(modSettings.getNoticeboard())) {
                     permissionModel.setNoticeboard(true);
                 }
+                if (group.hasRole(modSettings.getRecent())) {
+                    permissionModel.setRecent(true);
+                }
                 if (group.hasRole(modSettings.getReports())) {
                     permissionModel.setReports(true);
+                }
+                if (group.hasRole(modSettings.getSearch())) {
+                    permissionModel.setSearch(true);
+                }
+                if (group.hasRole(modSettings.getThemes())) {
+                    permissionModel.setThemes(true);
                 }
                 if (group.hasRole(modSettings.getViewBanAppeals())) {
                     permissionModel.setViewBanAppeals(true);

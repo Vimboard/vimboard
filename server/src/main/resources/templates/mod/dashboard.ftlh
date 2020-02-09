@@ -27,14 +27,14 @@ todo  noticeboard#${post.id}
   -- mod.hasPermission.editPages
   -- mod.hasPermission.manageboards
   -- mod.hasPermission.manageusers
-  -- mod.hasPermission.modlog ---------------
+  -- mod.hasPermission.modlog
   -- mod.hasPermission.newboard
   -- mod.hasPermission.noticeboard
   -- mod.hasPermission.rebuild
-  -- mod.hasPermission.recent ---------------
+  -- mod.hasPermission.recent
   -- mod.hasPermission.reports
-  -- mod.hasPermission.search ---------------
-  -- mod.hasPermission.themes ---------------
+  -- mod.hasPermission.search
+  -- mod.hasPermission.themes
   -- mod.hasPermission.viewBanAppeals
   -- mod.hasPermission.viewBanlist
   -- mod.id
@@ -166,7 +166,7 @@ todo  noticeboard#${post.id}
 
         <ul>
             <li>
-                {% include 'mod/search_form.html' %}<#-- TODO -->
+                <#include "search_form.ftlh">
             </li>
         </ul>
     </fieldset>

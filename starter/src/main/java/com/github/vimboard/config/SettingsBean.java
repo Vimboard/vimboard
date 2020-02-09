@@ -150,9 +150,13 @@ public class SettingsBean {
         sb.put("editPages", Group.MOD);
         sb.put("manageboards", Group.ADMIN);
         sb.put("manageusers", Group.MOD);
+        sb.put("modlog", Group.ADMIN);
         sb.put("newboard", Group.ADMIN);
         sb.put("noticeboard", Group.JANITOR);
+        sb.put("recent", Group.MOD);
         sb.put("reports", Group.JANITOR);
+        sb.put("search", Group.JANITOR);
+        sb.put("themes", Group.ADMIN);
         sb.put("viewBanAppeals", Group.MOD);
         sb.put("viewBanlist", Group.MOD);
 

@@ -16,10 +16,14 @@ public class VimboardModSettings {
     private Group manageboards;
     private Group manageusers;
     private Group changePassword;
+    private Group modlog;
+    private Group search;
     private Group noticeboard;
+    private Group themes;
     private Group debugSql;
     private Group editConfig;
     private Group viewBanAppeals;
+    private Group recent;
     private Group editPages;
 
     //------------------------------------------------------------------------
@@ -74,12 +78,44 @@ public class VimboardModSettings {
         this.manageusers = manageusers;
     }
 
+    public Group getChangePassword() {
+        return changePassword;
+    }
+
+    public void setChangePassword(Group changePassword) {
+        this.changePassword = changePassword;
+    }
+
+    public Group getModlog() {
+        return modlog;
+    }
+
+    public void setModlog(Group modlog) {
+        this.modlog = modlog;
+    }
+
+    public Group getSearch() {
+        return search;
+    }
+
+    public void setSearch(Group search) {
+        this.search = search;
+    }
+
     public Group getNoticeboard() {
         return noticeboard;
     }
 
     public void setNoticeboard(Group noticeboard) {
         this.noticeboard = noticeboard;
+    }
+
+    public Group getThemes() {
+        return themes;
+    }
+
+    public void setThemes(Group themes) {
+        this.themes = themes;
     }
 
     public Group getDebugSql() {
@@ -106,19 +142,19 @@ public class VimboardModSettings {
         this.viewBanAppeals = viewBanAppeals;
     }
 
+    public Group getRecent() {
+        return recent;
+    }
+
+    public void setRecent(Group recent) {
+        this.recent = recent;
+    }
+
     public Group getEditPages() {
         return editPages;
     }
 
     public void setEditPages(Group editPages) {
         this.editPages = editPages;
-    }
-
-    public Group getChangePassword() {
-        return changePassword;
-    }
-
-    public void setChangePassword(Group changePassword) {
-        this.changePassword = changePassword;
     }
 }

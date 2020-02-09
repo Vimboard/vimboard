@@ -11,7 +11,6 @@ public class VimboardModProperties {
     /**
      * Number of entries to summarize and display on the dashboard.
      */
-    //$config['mod']['noticeboard_dashboard'] = 5;
     private Long noticeboardDashboard;
 
     //------------------------------------------------------------------------
@@ -53,10 +52,24 @@ public class VimboardModProperties {
     private Group changePassword;
 
     /**
+     * View the moderation log.
+     */
+    private Group modlog;
+
+    /**
+     * Search through posts, IP address notes and bans.
+     */
+    private Group search;
+
+    /**
      * Read the moderator noticeboard.
      */
-    //$config['mod']['noticeboard'] = JANITOR;
     private Group noticeboard;
+
+    /**
+     * Manage and install themes for homepage.
+     */
+    private Group themes;
 
     /**
      * Execute un-filtered SQL queries on the database (?/debug/sql).
@@ -72,6 +85,11 @@ public class VimboardModProperties {
      * View ban appeals.
      */
     private Group viewBanAppeals;
+
+    /**
+     * View the recent posts page.
+     */
+    private Group recent;
 
     /**
      * Create pages.
@@ -145,12 +163,39 @@ public class VimboardModProperties {
         return this;
     }
 
+    public Group getModlog() {
+        return modlog;
+    }
+
+    public VimboardModProperties setModlog(Group modlog) {
+        this.modlog = modlog;
+        return this;
+    }
+
+    public Group getSearch() {
+        return search;
+    }
+
+    public VimboardModProperties setSearch(Group search) {
+        this.search = search;
+        return this;
+    }
+
     public Group getNoticeboard() {
         return noticeboard;
     }
 
     public VimboardModProperties setNoticeboard(Group noticeboard) {
         this.noticeboard = noticeboard;
+        return this;
+    }
+
+    public Group getThemes() {
+        return themes;
+    }
+
+    public VimboardModProperties setThemes(Group themes) {
+        this.themes = themes;
         return this;
     }
 
@@ -178,6 +223,15 @@ public class VimboardModProperties {
 
     public VimboardModProperties setViewBanAppeals(Group viewBanAppeals) {
         this.viewBanAppeals = viewBanAppeals;
+        return this;
+    }
+
+    public Group getRecent() {
+        return recent;
+    }
+
+    public VimboardModProperties setRecent(Group recent) {
+        this.recent = recent;
         return this;
     }
 

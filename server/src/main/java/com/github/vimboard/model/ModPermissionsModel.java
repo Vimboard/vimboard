@@ -1,5 +1,7 @@
 package com.github.vimboard.model;
 
+import com.github.vimboard.domain.Group;
+
 public class ModPermissionsModel {
 
     private boolean changePassword = false;
@@ -8,9 +10,13 @@ public class ModPermissionsModel {
     private boolean editPages = false;
     private boolean manageboards = false;
     private boolean manageusers = false;
+    private boolean modlog = false;
     private boolean newboard = false;
     private boolean noticeboard = false;
+    private boolean recent = false;
     private boolean reports = false;
+    private boolean search = false;
+    private boolean themes = false;
     private boolean viewBanAppeals = false;
     private boolean viewBanlist = false;
 
@@ -72,6 +78,15 @@ public class ModPermissionsModel {
         return this;
     }
 
+    public boolean isModlog() {
+        return modlog;
+    }
+
+    public ModPermissionsModel setModlog(boolean modlog) {
+        this.modlog = modlog;
+        return this;
+    }
+
     public boolean isNewboard() {
         return newboard;
     }
@@ -90,12 +105,39 @@ public class ModPermissionsModel {
         return this;
     }
 
+    public boolean isRecent() {
+        return recent;
+    }
+
+    public ModPermissionsModel setRecent(boolean recent) {
+        this.recent = recent;
+        return this;
+    }
+
     public boolean isReports() {
         return reports;
     }
 
     public ModPermissionsModel setReports(boolean reports) {
         this.reports = reports;
+        return this;
+    }
+
+    public boolean isSearch() {
+        return search;
+    }
+
+    public ModPermissionsModel setSearch(boolean search) {
+        this.search = search;
+        return this;
+    }
+
+    public boolean isThemes() {
+        return themes;
+    }
+
+    public ModPermissionsModel setThemes(boolean themes) {
+        this.themes = themes;
         return this;
     }
 
