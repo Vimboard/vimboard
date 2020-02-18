@@ -2,6 +2,8 @@ package com.github.vimboard.config;
 
 import com.github.vimboard.domain.Group;
 
+import java.util.Map;
+
 public class VimboardModProperties {
 
     //------------------------------------------------------------------------
@@ -19,6 +21,11 @@ public class VimboardModProperties {
 
     // Post Controls ---------------------------------------------------------
 
+    /**
+     * View IP addresses.
+     */
+    private Group showIp;
+
     // Administration --------------------------------------------------------
 
     /**
@@ -30,6 +37,11 @@ public class VimboardModProperties {
      * View list of bans.
      */
     private Group viewBanlist;
+
+    /**
+     * View IP address notes.
+     */
+    private Group viewNotes;
 
     /**
      * Create a new board.
@@ -97,6 +109,15 @@ public class VimboardModProperties {
     private Group editPages;
 
     //------------------------------------------------------------------------
+    // Other/uncategorized
+    //------------------------------------------------------------------------
+
+    /**
+     * Add links to dashboard (will all be in a new "Other" category).
+     */
+    private Map<String, String> dashboardLinks;
+
+    //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
 
@@ -106,6 +127,15 @@ public class VimboardModProperties {
 
     public VimboardModProperties setNoticeboardDashboard(Long noticeboardDashboard) {
         this.noticeboardDashboard = noticeboardDashboard;
+        return this;
+    }
+
+    public Group getShowIp() {
+        return showIp;
+    }
+
+    public VimboardModProperties setShowIp(Group showIp) {
+        this.showIp = showIp;
         return this;
     }
 
@@ -124,6 +154,15 @@ public class VimboardModProperties {
 
     public VimboardModProperties setViewBanlist(Group viewBanlist) {
         this.viewBanlist = viewBanlist;
+        return this;
+    }
+
+    public Group getViewNotes() {
+        return viewNotes;
+    }
+
+    public VimboardModProperties setViewNotes(Group viewNotes) {
+        this.viewNotes = viewNotes;
         return this;
     }
 
@@ -241,6 +280,15 @@ public class VimboardModProperties {
 
     public VimboardModProperties setEditPages(Group editPages) {
         this.editPages = editPages;
+        return this;
+    }
+
+    public Map<String, String> getDashboardLinks() {
+        return dashboardLinks;
+    }
+
+    public VimboardModProperties setDashboardLinks(Map<String, String> dashboardLinks) {
+        this.dashboardLinks = dashboardLinks;
         return this;
     }
 }

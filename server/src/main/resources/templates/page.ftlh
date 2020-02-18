@@ -3,6 +3,7 @@
   -- Template attributes:
   --
   -- body
+  -- config.version
   -- mod
   -- page.boardlist.top
   -- page.dataStylesheet
@@ -10,7 +11,6 @@
   -- page.pm
   -- page.subtitle
   -- page.title
-  -- page.version
   -->
 <#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
@@ -26,7 +26,7 @@
 <body class="8chan vichan <#if mod??>is-moderator<#else>is-not-moderator</#if> active-page" data-stylesheet="${page.dataStylesheet}">
 ${page.boardlist.top?no_esc}
 
-<#if page.pm??><div class="top_notice"><@spring.message "page.You_have"/> <a href="?/PM/${page.pm.id?string["0"]}"><@spring.message "page.An_unread_PM"/></a><#if page.pm.waiting gt 0 ><@spring.messageArgs "page.Plus_{count}_more_waiting", [ page.pm.waiting ]/></#if>.</div><hr></#if>
+<#if page.pm??><div class="top_notice"><@spring.message "page.You_have"/> <a href="?/PM/${page.pm.id?string["0"]}"><@spring.message "page.an_unread_PM"/></a><#if page.pm.waiting gt 0 ><@spring.messageArgs "page.plus_{count}_more_waiting", [page.pm.waiting]/></#if>.</div><hr></#if>
 <header>
     <h1>${page.title}</h1>
     <div class="subtitle">
@@ -38,7 +38,7 @@ ${page.boardlist.top?no_esc}
 <hr>
 <footer>
     <p class="unimportant" style="margin-top:20px;text-align:center;">- Tinyboard +
-        <a href="https://engine.vichan.net/">vichan</a> ${page.version} -
+        <a href="https://engine.vichan.net/">vichan</a> ${config.version} -
         <br>Tinyboard Copyright &copy; 2010-2014 Tinyboard Development Group
         <br><a href="https://engine.vichan.net/">vichan</a> Copyright &copy; 2012-2018 vichan-devel</p>
 </footer>

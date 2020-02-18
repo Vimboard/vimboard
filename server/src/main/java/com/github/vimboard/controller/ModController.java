@@ -1,9 +1,9 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
-import com.github.vimboard.config.VimboardVersion;
 import com.github.vimboard.model.DashboardModel;
 import com.github.vimboard.model.PageModel;
+import com.github.vimboard.model.Release;
 import com.github.vimboard.repository.BoardRepository;
 import com.github.vimboard.repository.NoticeboardRepository;
 import com.github.vimboard.repository.PmsRepository;
@@ -75,6 +75,10 @@ public class ModController extends AbstractController {
 
         model.addAttribute("dashboard", new DashboardModel()
                 .setBoards(boardRepository.list())
+                .setNewerRelease(new Release()
+                        .setMassive(9)
+                        .setMajor(1)
+                        .setMinor(4))
                 .setNoticeboard(noticeboardRepository.preview())
                 .setReports(reportRepository.count())
                 .setUnreadPms(pmsRepository.count()));
@@ -102,8 +106,7 @@ public class ModController extends AbstractController {
                 .setDataStylesheet(dataStylesheet)
                 .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftlh"))
                 .setTitle(pageTitle)
-                .setSubtitle(pageSubTitle)
-                .setVersion(VimboardVersion.get()));
+                .setSubtitle(pageSubTitle));
 
         model.addAttribute("body", bodyTemplate);
 

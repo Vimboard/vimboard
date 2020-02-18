@@ -6,6 +6,8 @@ public class VimboardBoardSettings {
 
     // General/misc settings
 
+    private Boolean debug;
+
     // Database settings
 
     // Cache, lock and queue settings
@@ -87,9 +89,21 @@ public class VimboardBoardSettings {
 
     private String metaKeywords;
 
+    // Read-only settings
+
+    private String version;
+
     //------------------------------------------------------------------------
     // Getters and setters (setters must return void)
     //------------------------------------------------------------------------
+
+    public Boolean getDebug() {
+        return debug;
+    }
+
+    public void setDebug(Boolean debug) {
+        this.debug = debug;
+    }
 
     public Boolean getRecaptcha() {
         return recaptcha;
@@ -297,5 +311,13 @@ public class VimboardBoardSettings {
 
     public void setMetaKeywords(String metaKeywords) {
         this.metaKeywords = metaKeywords;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

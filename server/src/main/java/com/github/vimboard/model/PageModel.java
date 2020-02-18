@@ -45,11 +45,6 @@ public class PageModel {
      */
     private String title;
 
-    /**
-     * Vimboard verstion.
-     */
-    private String version;
-
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
@@ -114,15 +109,6 @@ public class PageModel {
 
     public PageModel setTitle(String title) {
         this.title = title;
-        return this;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public PageModel setVersion(String version) {
-        this.version = version;
         return this;
     }
 }

@@ -49,6 +49,10 @@ vimboard:
     # General/misc settings
     # ------------------------------------------------------------------------
 
+    # Shows some extra information at the bottom of pages. Good for
+    # development/debugging.
+    debug: false
+
     # ------------------------------------------------------------------------
     # Database settings
     # ------------------------------------------------------------------------
@@ -256,11 +260,21 @@ vimboard:
       # Mod permissions
       # ----------------------------------------------------------------------
 
+      ## Post Controls
+
+      # View IP addresses.
+      show-ip: MOD
+
+      ## Administration
+
       # View the report queue.
       reports: JANITOR
 
       # View list of bans.
       viewBanlist: MOD
+
+      # View IP address notes.
+      view-notes: JANITOR
 
       # Create a new board.
       newboard: ADMIN
@@ -300,6 +314,14 @@ vimboard:
 
       # Create pages.
       edit-pages: MOD
+
+      # ------------------------------------------------------------------------
+      # Other/uncategorized
+      # ------------------------------------------------------------------------
+
+      # Add links to dashboard (will all be in a new "Other" category).
+#     dashboard-links:
+#       Something: ?/something
 
     # ------------------------------------------------------------------------
     # Mod permissions

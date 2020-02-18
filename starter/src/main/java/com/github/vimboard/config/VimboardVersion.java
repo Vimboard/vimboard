@@ -7,11 +7,11 @@ import java.util.Properties;
 /**
  * Application version based on pom.xml project version.
  */
-public class VimboardVersion {
+class VimboardVersion {
 
     private static final String VERSION_PROPERTIES_FILE = "com/github/vimboard/config/VimboardVersion.properties";
 
-    private static final String release;
+    private static final String version;
 
     static {
         InputStream is = VimboardVersion.class.getClassLoader()
@@ -20,7 +20,7 @@ public class VimboardVersion {
             Properties p = new Properties();
             try {
                 p.load(is);
-                release = p.getProperty("release");
+                version = p.getProperty("version");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -32,11 +32,11 @@ public class VimboardVersion {
     }
 
     /**
-     * Returns application verstion number.
+     * Returns application version.
      *
-     * @return string, contains application version number.
+     * @return string, contains application version.
      */
-    public static String get() {
-        return release;
+    static String get() {
+        return version;
     }
 }

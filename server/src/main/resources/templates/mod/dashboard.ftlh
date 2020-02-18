@@ -1,13 +1,15 @@
 <#ftl output_format="HTML">
 <#--
   -- Template attributes:
-
-todo  noticeboard#${post.id}
-
   --
   -- dashboard.boards
   -- dashboard.boards - board.title
   -- dashboard.boards - board.uri
+  -- dashboard.logoutToken
+  -- dashboard.newerRelease
+  -- dashboard.newerRelease - massive
+  -- dashboard.newerRelease - major
+  -- dashboard.newerRelease - minor
   -- dashboard.noticeboard
   -- dashboard.noticeboard - id
   -- dashboard.noticeboard - subject
@@ -19,7 +21,9 @@ todo  noticeboard#${post.id}
   -- config.banAppeals
   -- config.boardAbbreviation
   -- config.boardPath
+  -- config.debug
   -- config.fileIndex
+  -- config.mod.dashboardLinks
   -- config.postDate
   -- mod.hasPermission.changePassword
   -- mod.hasPermission.debugSql
@@ -172,49 +176,51 @@ todo  noticeboard#${post.id}
     </fieldset>
 </#if>
 
-{% if config.mod.dashboard_links and config.mod.dashboard_links|count %}
+<#if ((config.mod.dashboardLinks?keys?size)!0) gt 0>
+    <fieldset>
+        <legend><@spring.message "dashboard.Other"/></legend>
+
+        <ul>
+            <#list config.mod.dashboardLinks as label, link>
+                <li><a href="${link}">${label}</a></li>
+            </#list>
+        </ul>
+    </fieldset>
+</#if>
+
+<#if config.debug>
+    <fieldset>
+        <legend><@spring.message "dashboard.Debug"/></legend>
+        <ul>
+            <li><a href="?/debug/antispam"><@spring.message "dashboard.Anti_spam"/></a></li>
+            <li><a href="?/debug/recent"><@spring.message "dashboard.Recent_posts"/></a></li>
+            <#if (mod.hasPermission.debugSql)!false>
+                <li><a href="?/debug/sql"><@spring.message "dashboard.SQL"/></a></li>
+            </#if>
+        </ul>
+    </fieldset>
+</#if>
+
+<#if dashboard.newerRelease??>
+    <fieldset>
+        <legend><@spring.message "dashboard.Update"/></legend>
+        <ul>
+            <li>
+                <@spring.messageArgs "dashboard.A_newer_version_of_vichan_{version}_is_available",
+                        ["<strong>v${dashboard.newerRelease.massive}.${dashboard.newerRelease.major}.${dashboard.newerRelease.minor}</strong>"]/>
+
+                <@spring.messageArgs "dashboard.See_{link}_for_upgrade_instructions",
+                        ["<a href=\"https://engine.vichan.net\">https://engine.vichan.net/</a>"]/>
+            </li>
+        </ul>
+    </fieldset>
+</#if>
+
 <fieldset>
-    <legend>{% trans 'Other' %}</legend>
+    <legend><@spring.message "dashboard.User_account"/></legend>
 
     <ul>
-        {% for label,link in config.mod.dashboard_links %}
-        <li><a href="{{ link }}">{{ label }}</a></li>
-        {% endfor %}
-    </ul>
-</fieldset>
-{% endif %}
-
-{% if config.debug %}
-<fieldset>
-    <legend>{% trans 'Debug' %}</legend>
-    <ul>
-        <li><a href="?/debug/antispam">{% trans 'Anti-spam' %}</a></li>
-        <li><a href="?/debug/recent">{% trans 'Recent posts' %}</a></li>
-        {% if (mod.hasPermission.debugSql)!false %}
-        <li><a href="?/debug/sql">{% trans 'SQL' %}</a></li>
-        {% endif %}
-    </ul>
-</fieldset>
-{% endif %}
-
-{% if newer_release %}
-<fieldset>
-    <legend>Update</legend>
-    <ul>
-        <li>
-            A newer version of vichan
-            (<strong>v{{ newer_release.massive }}.{{ newer_release.major }}.{{ newer_release.minor }}</strong>) is available!
-            See <a href="https://engine.vichan.net">https://engine.vichan.net/</a> for upgrade instructions.
-        </li>
-    </ul>
-</fieldset>
-{% endif %}
-
-<fieldset>
-    <legend>{% trans 'User account' %}</legend>
-
-    <ul>
-        <li><a href="?/logout/{{ logout_token }}">{% trans 'Logout' %}</a></li>
+        <li><a href="?/logout/${dashboard.logoutToken}"><@spring.message "dashboard.Logout"/></a></li>
     </ul>
 </fieldset>
 

@@ -2,6 +2,10 @@
 <#--
   -- Template attributes:
   --
+  -- mod.hasPermission.modlog
+  -- mod.hasPermission.showIp
+  -- mod.hasPermission.viewBanlist
+  -- mod.hasPermission.viewNotes
   -- searchForm.searchQuery
   -- searchForm.searchType
   -->
@@ -10,15 +14,15 @@
     <input id="search" name="query" type="text" size="60" value="${(searchForm.searchQuery)!""}">
     <select name="type">
         <option value="posts"<#if (searchForm.searchType)!"" = "posts"> selected</#if>><@spring.message "searchForm.Posts"/></option>
-        {% if mod|hasPermission(config.mod.view_notes) and mod|hasPermission(config.mod.show_ip) %}
+        <#if (mod.hasPermission.viewNotes)!false && (mod.hasPermission.showIp)!false>
             <option value="IP_notes"<#if (searchForm.searchType)!"" = "IP_notes"> selected</#if>><@spring.message "searchForm.IP_address_notes"/></option>
-        {%  endif %}
-        {% if mod|hasPermission(config.mod.view_banlist) %}
+        </#if>
+        <#if (mod.hasPermission.viewBanlist)!false>
             <option value="bans"<#if (searchForm.searchType)!"" = "bans"> selected</#if>><@spring.message "searchForm.Bans"/></option>
-        {%  endif %}
-        {% if mod|hasPermission(config.mod.modlog) %}
+        </#if>
+        <#if (mod.hasPermission.modlog)!false>
             <option value="log"<#if (searchForm.searchType)!"" = "log"> selected</#if>><@spring.message "searchForm.Moderation_log"/></option>
-        {%  endif %}
+        </#if>
     </select>
     <input type="submit" value="<@spring.message "searchForm.Search"/>">
 </form>

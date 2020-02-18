@@ -2,6 +2,8 @@ package com.github.vimboard.config;
 
 import com.github.vimboard.domain.Group;
 
+import java.util.Map;
+
 public class VimboardModSettings {
 
     // Mod settings
@@ -10,8 +12,13 @@ public class VimboardModSettings {
 
     // Mod permissions
 
+    // Post Controls
+    private Group showIp;
+
+    // Administration
     private Group reports;
     private Group viewBanlist;
+    private Group viewNotes;
     private Group newboard;
     private Group manageboards;
     private Group manageusers;
@@ -26,6 +33,10 @@ public class VimboardModSettings {
     private Group recent;
     private Group editPages;
 
+    // Other/uncategorized
+
+    private Map<String, String> dashboardLinks;
+
     //------------------------------------------------------------------------
     // Getters and setters (setters must return void)
     //------------------------------------------------------------------------
@@ -36,6 +47,14 @@ public class VimboardModSettings {
 
     public void setNoticeboardDashboard(Long noticeboardDashboard) {
         this.noticeboardDashboard = noticeboardDashboard;
+    }
+
+    public Group getShowIp() {
+        return showIp;
+    }
+
+    public void setShowIp(Group showIp) {
+        this.showIp = showIp;
     }
 
     public Group getReports() {
@@ -52,6 +71,14 @@ public class VimboardModSettings {
 
     public void setViewBanlist(Group viewBanlist) {
         this.viewBanlist = viewBanlist;
+    }
+
+    public Group getViewNotes() {
+        return viewNotes;
+    }
+
+    public void setViewNotes(Group viewNotes) {
+        this.viewNotes = viewNotes;
     }
 
     public Group getNewboard() {
@@ -156,5 +183,13 @@ public class VimboardModSettings {
 
     public void setEditPages(Group editPages) {
         this.editPages = editPages;
+    }
+
+    public Map<String, String> getDashboardLinks() {
+        return dashboardLinks;
+    }
+
+    public void setDashboardLinks(Map<String, String> dashboardLinks) {
+        this.dashboardLinks = dashboardLinks;
     }
 }

@@ -9,6 +9,10 @@ public class DashboardModel {
 
     private List<Board> boards;
 
+    private String logoutToken = "";
+
+    private Release newerRelease;
+
     private List<Noticeboard> noticeboard;
 
     private long unreadPms = 0L;
@@ -25,6 +29,24 @@ public class DashboardModel {
 
     public DashboardModel setBoards(List<Board> boards) {
         this.boards = boards;
+        return this;
+    }
+
+    public String getLogoutToken() {
+        return logoutToken;
+    }
+
+    public DashboardModel setLogoutToken(String logoutToken) {
+        this.logoutToken = logoutToken;
+        return this;
+    }
+
+    public Release getNewerRelease() {
+        return newerRelease;
+    }
+
+    public DashboardModel setNewerRelease(Release newerRelease) {
+        this.newerRelease = newerRelease;
         return this;
     }
 

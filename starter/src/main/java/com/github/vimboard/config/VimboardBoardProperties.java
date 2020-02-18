@@ -10,6 +10,12 @@ public class VimboardBoardProperties {
     // General/misc settings
     //------------------------------------------------------------------------
 
+    /**
+     * Shows some extra information at the bottom of pages. Good for
+     * development/debugging.
+     */
+    private Boolean debug;
+
     //------------------------------------------------------------------------
     // Database settings
     //------------------------------------------------------------------------
@@ -252,6 +258,15 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
+
+    public Boolean getDebug() {
+        return debug;
+    }
+
+    public VimboardBoardProperties setDebug(Boolean debug) {
+        this.debug = debug;
+        return this;
+    }
 
     public Boolean getRecaptcha() {
         return recaptcha;

@@ -92,6 +92,7 @@ public class SettingsBean {
         sb.put("boards", null, this::convertBoards);
         sb.put("countryFlagsCondensed", true);
         sb.put("countryFlagsCondensedCss", "static/flags/flags.css");
+        sb.put("debug", false);
         sb.put("fileIndex", "index.html");
         final String fileScript = (String) sb.put("fileScript", "main.js");
         sb.put("fontAwesome", true);
@@ -109,6 +110,7 @@ public class SettingsBean {
             //noinspection unchecked
             stylesheets = (Map<String, String>) sb.put("stylesheets", defaultValue);
         }
+        sb.put("version", VimboardVersion.get());
 
         // Settings with dependencies
 
@@ -142,6 +144,7 @@ public class SettingsBean {
 
         // Settings without dependencies
 
+        sb.put("dashboardLinks", new HashMap<String, String>());
         sb.put("noticeboardDashboard", 5L);
         // Mod permissions
         sb.put("changePassword", Group.JANITOR);
@@ -156,9 +159,11 @@ public class SettingsBean {
         sb.put("recent", Group.MOD);
         sb.put("reports", Group.JANITOR);
         sb.put("search", Group.JANITOR);
+        sb.put("showIp", Group.MOD);
         sb.put("themes", Group.ADMIN);
         sb.put("viewBanAppeals", Group.MOD);
         sb.put("viewBanlist", Group.MOD);
+        sb.put("viewNotes", Group.JANITOR);
 
         // Settings with dependencies
 

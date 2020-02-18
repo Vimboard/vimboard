@@ -1,6 +1,6 @@
 package com.github.vimboard.repository;
 
-import com.github.vimboard.config.VimboardVersion;
+import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.domain.DBVersion;
 import com.github.vimboard.mapper.SchemaMapper;
 import org.apache.ibatis.session.SqlSession;
@@ -12,15 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class SchemaRepository {
 
     private final SqlSession sqlSession;
+    private final SettingsBean settingsBean;
 
     @Autowired
-    public SchemaRepository(SqlSession sqlSession) {
+    public SchemaRepository(SqlSession sqlSession, SettingsBean settingsBean) {
         this.sqlSession = sqlSession;
+        this.settingsBean = settingsBean;
     }
 
     @Transactional
     public void create() {
-        schemaMapper().create(VimboardVersion.get());
+        schemaMapper().create(settingsBean.getAll().getVersion());
     }
 
     @Transactional

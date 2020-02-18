@@ -112,6 +112,9 @@ public class SecurityService {
                 if (group.hasRole(modSettings.getSearch())) {
                     permissionModel.setSearch(true);
                 }
+                if (group.hasRole(modSettings.getShowIp())) {
+                    permissionModel.setShowIp(true);
+                }
                 if (group.hasRole(modSettings.getThemes())) {
                     permissionModel.setThemes(true);
                 }
@@ -120,6 +123,9 @@ public class SecurityService {
                 }
                 if (group.hasRole(modSettings.getViewBanlist())) {
                     permissionModel.setViewBanlist(true);
+                }
+                if (group.hasRole(modSettings.getViewNotes())) {
+                    permissionModel.setViewNotes(true);
                 }
             }
         }

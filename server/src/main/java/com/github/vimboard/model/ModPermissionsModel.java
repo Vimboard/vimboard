@@ -16,9 +16,11 @@ public class ModPermissionsModel {
     private boolean recent = false;
     private boolean reports = false;
     private boolean search = false;
+    private boolean showIp = false;
     private boolean themes = false;
     private boolean viewBanAppeals = false;
     private boolean viewBanlist = false;
+    private boolean viewNotes = false;
 
     //------------------------------------------------------------------------
     // Getters and setters
@@ -132,6 +134,15 @@ public class ModPermissionsModel {
         return this;
     }
 
+    public boolean isShowIp() {
+        return showIp;
+    }
+
+    public ModPermissionsModel setShowIp(boolean showIp) {
+        this.showIp = showIp;
+        return this;
+    }
+
     public boolean isThemes() {
         return themes;
     }
@@ -156,6 +167,15 @@ public class ModPermissionsModel {
 
     public ModPermissionsModel setViewBanlist(boolean viewBanlist) {
         this.viewBanlist = viewBanlist;
+        return this;
+    }
+
+    public boolean isViewNotes() {
+        return viewNotes;
+    }
+
+    public ModPermissionsModel setViewNotes(boolean viewNotes) {
+        this.viewNotes = viewNotes;
         return this;
     }
 }
