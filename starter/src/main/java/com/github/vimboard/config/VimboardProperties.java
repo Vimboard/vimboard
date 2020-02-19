@@ -6,6 +6,15 @@ import java.util.Map;
 
 public class VimboardProperties {
 
+     /**
+     * Static content location.
+     */
+    private String www;
+
+    //------------------------------------------------------------------------
+    // Board settings
+    //------------------------------------------------------------------------
+
     /**
      * The common configuration for all boards.
      */
@@ -18,14 +27,18 @@ public class VimboardProperties {
       */
     private Map<String, VimboardBoardProperties> custom;
 
-    /**
-      * Static content location.
-      */
-    private String www;
-
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
+
+    public String getWww() {
+        return www;
+    }
+
+    public VimboardProperties setWww(String www) {
+        this.www = www;
+        return this;
+    }
 
     public VimboardBoardProperties getAll() {
         return all;
@@ -42,15 +55,6 @@ public class VimboardProperties {
 
     public VimboardProperties setCustom(Map<String, VimboardBoardProperties> custom) {
         this.custom = custom;
-        return this;
-    }
-
-    public String getWww() {
-        return www;
-    }
-
-    public VimboardProperties setWww(String www) {
-        this.www = www;
         return this;
     }
 }

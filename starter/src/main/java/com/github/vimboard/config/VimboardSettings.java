@@ -4,13 +4,25 @@ import java.util.Map;
 
 public class VimboardSettings {
 
+    private String www;
+
+    // Board settings
+
     private VimboardBoardSettings all;
     private Map<String, VimboardBoardSettings> custom;
-    private String www;
 
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
+
+    public String getWww() {
+        return www;
+    }
+
+    public VimboardSettings setWww(String www) {
+        this.www = www;
+        return this;
+    }
 
     public VimboardBoardSettings getAll() {
         return all;
@@ -27,15 +39,6 @@ public class VimboardSettings {
 
     public VimboardSettings setCustom(Map<String, VimboardBoardSettings> custom) {
         this.custom = custom;
-        return this;
-    }
-
-    public String getWww() {
-        return www;
-    }
-
-    public VimboardSettings setWww(String www) {
-        this.www = www;
         return this;
     }
 }

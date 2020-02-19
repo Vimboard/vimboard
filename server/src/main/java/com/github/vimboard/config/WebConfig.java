@@ -71,9 +71,8 @@ public class WebConfig {
                 .authorizeRequests(authorizeRequests ->
                     authorizeRequests
                         .antMatchers("/admin.php/**").hasRole("ADMIN")
-                        .antMatchers("/mod.php/**").access("hasRole('JANITOR') or hasRole('MOD') or hasRole('ADMIN')")
-                )
-                .formLogin();
+                        //.antMatchers("/mod.php/**").access("hasRole('JANITOR') or hasRole('MOD') or hasRole('ADMIN')")
+                );
         }
 
         @Bean

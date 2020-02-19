@@ -14,15 +14,16 @@
 # SERVER SETTINGS
 # ----------------------------------------------------------------------------
 
-# Logging
+# Logging.
 logging:
   level:
     root: WARN
 
+# Server port.
 server:
   port: 8080
 
-# Database connection
+# Database connection.
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -35,6 +36,9 @@ spring:
 # VIMBOARD
 # ----------------------------------------------------------------------------
 vimboard:
+
+  # Authentication implementation: SPRING_FORM or MOD_PHP.
+  authentication: SPRING_FORM
 
   # todo - move to board config
   # Static content location

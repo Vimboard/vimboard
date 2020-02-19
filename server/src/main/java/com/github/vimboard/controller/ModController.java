@@ -2,6 +2,7 @@ package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.model.DashboardModel;
+import com.github.vimboard.model.ModModel;
 import com.github.vimboard.model.PageModel;
 import com.github.vimboard.model.Release;
 import com.github.vimboard.repository.BoardRepository;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -59,13 +61,31 @@ public class ModController extends AbstractController {
 
     @RequestMapping("")
     public String root(HttpServletRequest request, Model model) {
-        final String query = request.getQueryString();
+        ModModel modModel = securityService.getMod();
 
+        if (modModel == null) {
+//            try {
+//                request.login(, );
+//                modModel = securityService.getMod();
+//            } catch (ServletException e) {
+//                e.printStackTrace();
+//            }
+        }
+
+        model.addAttribute("mod", modModel);
+
+
+
+        final String query = request.getQueryString();
         if (query == null || query.isEmpty()) {
             return redirectToDashboard(request);
-
-        } else if (query.equals("/")) {
-            return dashboard(model);
+        }
+        switch (query) {
+            case "/":
+                return dashboard(model);
+            case "/logout":
+            case "/logout/":
+                return logout(request, model);
         }
 
         throw new ResourceBadRequestException();
@@ -88,6 +108,22 @@ public class ModController extends AbstractController {
         return modPage("mod/dashboard.ftlh", model, i18n("page.Dashboard"), null);
     }
 
+    private String login(Model model) {
+        model.addAttribute("body", "mod/login.ftlh");
+
+        return "page";
+    }
+
+    private String logout(HttpServletRequest request, Model model) {
+        try {
+            request.logout();
+            model.addAttribute("ex", "- none -");
+        } catch (ServletException e) {
+            model.addAttribute("ex", e.toString());
+        }
+        return "foo";
+    }
+
     // TODO move
     private String modPage(String bodyTemplate, Model model, String pageTitle, String pageSubTitle) {
 
@@ -98,8 +134,6 @@ public class ModController extends AbstractController {
         }
 
         model.addAttribute("config", settingsBean.getAll());
-
-        model.addAttribute("mod", securityService.getMod());
 
         model.addAttribute("page", new PageModel()
                 .setBoardlist(boardService.buildBoardList())
