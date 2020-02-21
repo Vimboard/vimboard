@@ -1,5 +1,6 @@
 package com.github.vimboard.config;
 
+import com.github.vimboard.config.properties.VimboardProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

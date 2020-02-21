@@ -44,7 +44,7 @@
   -- mod.id
   -->
 <fieldset>
-    <legend><@spring.message "dashboard.Boards"/></legend>
+    <legend><@spring.message "mod.dashboard.Boards"/></legend>
 
     <ul>
         <#list dashboard.boards as board>
@@ -62,27 +62,27 @@
                     </small>
                 </#if>
                 <#if (mod.hasPermission.manageboards)!false>
-                    <a href="?/edit/${board.uri}"><small>[<@spring.message "dashboard.edit"/>]</small></a>
+                    <a href="?/edit/${board.uri}"><small>[<@spring.message "mod.dashboard.edit"/>]</small></a>
                 </#if>
                 <#if (mod.hasPermission.editPages)!false>
-                    <a href="?/edit_pages/${board.uri}"><small>[<@spring.message "dashboard.pages"/>]</small></a>
+                    <a href="?/edit_pages/${board.uri}"><small>[<@spring.message "mod.dashboard.pages"/>]</small></a>
                 </#if>
             </li>
         </#list>
 
         <#if (mod.hasPermission.newboard)!false>
-            <li style="margin-top:15px"><a href="?/new-board"><strong><@spring.message "dashboard.Create_new_board"/></strong></a></li>
+            <li style="margin-top:15px"><a href="?/new-board"><strong><@spring.message "mod.dashboard.Create_new_board"/></strong></a></li>
         </#if>
     </ul>
 </fieldset>
 
 <fieldset>
-    <legend><@spring.message "dashboard.Messages"/></legend>
+    <legend><@spring.message "mod.dashboard.Messages"/></legend>
     <ul>
         <#if (mod.hasPermission.noticeboard)!false>
             <#if dashboard.noticeboard?size gt 0>
                 <li>
-                    <@spring.message "dashboard.Noticeboard"/>:
+                    <@spring.message "mod.dashboard.Noticeboard"/>:
                     <ul>
                         <#list dashboard.noticeboard as post>
                             <li>
@@ -90,17 +90,17 @@
                                     <#if post.subject?has_content>
                                         ${post.subject}
                                     <#else>
-                                        <em><@spring.message "dashboard.no_subject"/></em>
+                                        <em><@spring.message "mod.dashboard.no_subject"/></em>
                                     </#if>
                                 </a>
                                 <small class="unimportant">
-                                    &mdash; <@spring.message "dashboard.by"/>
+                                    &mdash; <@spring.message "mod.dashboard.by"/>
                                     <#if post.username?has_content>
                                         ${post.username}
                                     <#else>
-                                        <em><@spring.message "dashboard.deleted"/>?</em>
+                                        <em><@spring.message "mod.dashboard.deleted"/>?</em>
                                     </#if>
-                                    <@spring.message "dashboard.at"/>
+                                    <@spring.message "mod.dashboard.at"/>
                                     ${post.time?string[config.postDate]}
                                 </small>
                             </li>
@@ -108,57 +108,57 @@
                     </ul>
                 </li>
             </#if>
-            <li><a href="?/noticeboard"><@spring.message "dashboard.View_all_noticeboard_entries"/></a></li>
+            <li><a href="?/noticeboard"><@spring.message "mod.dashboard.View_all_noticeboard_entries"/></a></li>
         </#if>
-        <li><a href="?/edit_news"><@spring.message "dashboard.News"/></a></li>
+        <li><a href="?/edit_news"><@spring.message "mod.dashboard.News"/></a></li>
         <li>
             <a href="?/inbox">
-                <@spring.message "dashboard.PM_inbox"/>
-                <#if dashboard.unreadPms gt 0><strong></#if>(${dashboard.unreadPms} <@spring.message "dashboard.unread"/>)<#if dashboard.unreadPms gt 0></strong></#if>
+                <@spring.message "mod.dashboard.PM_inbox"/>
+                <#if dashboard.unreadPms gt 0><strong></#if>(${dashboard.unreadPms} <@spring.message "mod.dashboard.unread"/>)<#if dashboard.unreadPms gt 0></strong></#if>
             </a>
         </li>
     </ul>
 </fieldset>
 
 <fieldset>
-    <legend><@spring.message "dashboard.Administration"/></legend>
+    <legend><@spring.message "mod.dashboard.Administration"/></legend>
 
     <ul>
         <#if (mod.hasPermission.reports)!false>
             <li>
                 <#if dashboard.reports gt 0><strong></#if>
-                    <a href="?/reports"><@spring.message "dashboard.Report_queue"/> (${dashboard.reports})</a>
+                    <a href="?/reports"><@spring.message "mod.dashboard.Report_queue"/> (${dashboard.reports})</a>
                 <#if dashboard.reports gt 0></strong></#if>
             </li>
         </#if>
         <#if (mod.hasPermission.viewBanlist)!false>
-            <li><a href="?/bans"><@spring.message "dashboard.Ban_list"/></a></li>
+            <li><a href="?/bans"><@spring.message "mod.dashboard.Ban_list"/></a></li>
         </#if>
         <#if config.banAppeals && (mod.hasPermission.viewBanAppeals)!false>
-            <li><a href="?/ban-appeals"><@spring.message "dashboard.Ban_appeals"/></a></li>
+            <li><a href="?/ban-appeals"><@spring.message "mod.dashboard.Ban_appeals"/></a></li>
         </#if>
         <#if (mod.hasPermission.manageusers)!false>
-            <li><a href="?/users"><@spring.message "dashboard.Manage_users"/></a></li>
+            <li><a href="?/users"><@spring.message "mod.dashboard.Manage_users"/></a></li>
         <#elseif (mod.hasPermission.changePassword)!false>
-            <li><a href="?/users/${mod.id}"><@spring.message "dashboard.Change_password"/></a></li>
+            <li><a href="?/users/${mod.id}"><@spring.message "mod.dashboard.Change_password"/></a></li>
         </#if>
         <#if (mod.hasPermission.themes)!false>
-            <li><a href="?/themes"><@spring.message "dashboard.Manage_themes"/></a></li>
+            <li><a href="?/themes"><@spring.message "mod.dashboard.Manage_themes"/></a></li>
         </#if>
         <#if (mod.hasPermission.modlog)!false>
-            <li><a href="?/log"><@spring.message "dashboard.Moderation_log"/></a></li>
+            <li><a href="?/log"><@spring.message "mod.dashboard.Moderation_log"/></a></li>
         </#if>
         <#if (mod.hasPermission.editPages)!false>
-            <li><a href="?/edit_pages"><@spring.message "dashboard.Global_static_pages"/></a></li>
+            <li><a href="?/edit_pages"><@spring.message "mod.dashboard.Global_static_pages"/></a></li>
         </#if>
         <#if (mod.hasPermission.recent)!false>
-            <li><a href="?/recent/25"><@spring.message "dashboard.Recent_posts"/></a></li>
+            <li><a href="?/recent/25"><@spring.message "mod.dashboard.Recent_posts"/></a></li>
         </#if>
         <#if (mod.hasPermission.rebuild)!false>
-            <li><a href="?/rebuild"><@spring.message "dashboard.Rebuild"/></a></li>
+            <li><a href="?/rebuild"><@spring.message "mod.dashboard.Rebuild"/></a></li>
         </#if>
         <#if (mod.hasPermission.editConfig)!false>
-            <li><a href="?/config"><@spring.message "dashboard.Configuration"/></a></li>
+            <li><a href="?/config"><@spring.message "mod.dashboard.Configuration"/></a></li>
         </#if>
 
     </ul>
@@ -166,7 +166,7 @@
 
 <#if (mod.hasPermission.search)!false>
     <fieldset>
-        <legend><@spring.message "dashboard.Search"/></legend>
+        <legend><@spring.message "mod.dashboard.Search"/></legend>
 
         <ul>
             <li>
@@ -178,7 +178,7 @@
 
 <#if ((config.mod.dashboardLinks?keys?size)!0) gt 0>
     <fieldset>
-        <legend><@spring.message "dashboard.Other"/></legend>
+        <legend><@spring.message "mod.dashboard.Other"/></legend>
 
         <ul>
             <#list config.mod.dashboardLinks as label, link>
@@ -190,12 +190,12 @@
 
 <#if config.debug>
     <fieldset>
-        <legend><@spring.message "dashboard.Debug"/></legend>
+        <legend><@spring.message "mod.dashboard.Debug"/></legend>
         <ul>
-            <li><a href="?/debug/antispam"><@spring.message "dashboard.Anti_spam"/></a></li>
-            <li><a href="?/debug/recent"><@spring.message "dashboard.Recent_posts"/></a></li>
+            <li><a href="?/debug/antispam"><@spring.message "mod.dashboard.Anti_spam"/></a></li>
+            <li><a href="?/debug/recent"><@spring.message "mod.dashboard.Recent_posts"/></a></li>
             <#if (mod.hasPermission.debugSql)!false>
-                <li><a href="?/debug/sql"><@spring.message "dashboard.SQL"/></a></li>
+                <li><a href="?/debug/sql"><@spring.message "mod.dashboard.SQL"/></a></li>
             </#if>
         </ul>
     </fieldset>
@@ -203,13 +203,13 @@
 
 <#if dashboard.newerRelease??>
     <fieldset>
-        <legend><@spring.message "dashboard.Update"/></legend>
+        <legend><@spring.message "mod.dashboard.Update"/></legend>
         <ul>
             <li>
-                <@spring.messageArgs "dashboard.A_newer_version_of_vichan_{version}_is_available",
+                <@spring.messageArgs "mod.dashboard.A_newer_version_of_vichan_{version}_is_available",
                         ["<strong>v${dashboard.newerRelease.massive}.${dashboard.newerRelease.major}.${dashboard.newerRelease.minor}</strong>"]/>
 
-                <@spring.messageArgs "dashboard.See_{link}_for_upgrade_instructions",
+                <@spring.messageArgs "mod.dashboard.See_{link}_for_upgrade_instructions",
                         ["<a href=\"https://engine.vichan.net\">https://engine.vichan.net/</a>"]/>
             </li>
         </ul>
@@ -217,10 +217,10 @@
 </#if>
 
 <fieldset>
-    <legend><@spring.message "dashboard.User_account"/></legend>
+    <legend><@spring.message "mod.dashboard.User_account"/></legend>
 
     <ul>
-        <li><a href="?/logout/${dashboard.logoutToken}"><@spring.message "dashboard.Logout"/></a></li>
+        <li><a href="?/logout/${dashboard.logoutToken}"><@spring.message "mod.dashboard.Logout"/></a></li>
     </ul>
 </fieldset>
 

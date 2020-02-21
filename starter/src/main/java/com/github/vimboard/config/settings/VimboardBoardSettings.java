@@ -1,4 +1,4 @@
-package com.github.vimboard.config;
+package com.github.vimboard.config.settings;
 
 import java.util.Map;
 
@@ -7,6 +7,7 @@ public class VimboardBoardSettings {
     // General/misc settings
 
     private Boolean debug;
+    private Short redirectHttp;
 
     // Database settings
 
@@ -103,6 +104,14 @@ public class VimboardBoardSettings {
 
     public void setDebug(Boolean debug) {
         this.debug = debug;
+    }
+
+    public Short getRedirectHttp() {
+        return redirectHttp;
+    }
+
+    public void setRedirectHttp(Short redirectHttp) {
+        this.redirectHttp = redirectHttp;
     }
 
     public Boolean getRecaptcha() {

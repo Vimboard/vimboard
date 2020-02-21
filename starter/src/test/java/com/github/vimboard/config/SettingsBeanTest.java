@@ -1,5 +1,7 @@
 package com.github.vimboard.config;
 
+import com.github.vimboard.config.properties.VimboardBoardProperties;
+import com.github.vimboard.config.properties.VimboardProperties;
 import org.junit.Test;
 import static com.github.vimboard.utils.ArrayCheck.*;
 import static com.github.vimboard.utils.EntryCheck.*;

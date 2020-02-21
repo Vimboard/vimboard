@@ -1,7 +1,7 @@
 package com.github.vimboard.service;
 
 import com.github.vimboard.config.SettingsBean;
-import com.github.vimboard.config.VimboardModSettings;
+import com.github.vimboard.config.settings.VimboardModSettings;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
 import com.github.vimboard.model.ModModel;
@@ -10,7 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class SecurityService {
@@ -25,45 +30,27 @@ public class SecurityService {
     /**
      * TODO
      *
-     * @return {@code true} if the user has mod privileies.
-     */
-    public boolean isMod() {
-        final Authentication auth = SecurityContextHolder.getContext()
-                .getAuthentication();
-        return isMod(auth);
-    }
-
-    private boolean isMod(Authentication auth) {
-        for (GrantedAuthority ga : auth.getAuthorities()) {
-            if (Group.JANITOR.equals(ga)
-                    || Group.MOD.equals(ga)
-                    || Group.ADMIN.equals(ga)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * TODO
-     *
      * @return not {@code null} if the user has mod privileies.
      */
     public ModModel getMod() {
         final Authentication auth = SecurityContextHolder.getContext()
                 .getAuthentication();
+        if (auth == null) {
+            return null;
+        }
 
         final Object principal = auth.getPrincipal();
+
         if (!(principal instanceof Mod)) {
             return null;
         }
-        final Mod mod = (Mod) principal;
 
         if (!isMod(auth)) {
             return null;
         }
 
-        ModModel modModel = new ModModel();
+        final Mod mod = (Mod) principal;
+        final ModModel modModel = new ModModel();
         modModel.setId(mod.getId());
         fillPermissionsModel(modModel.getHasPermission(), auth);
 
@@ -129,5 +116,68 @@ public class SecurityService {
                 }
             }
         }
+    }
+
+    /**
+     * TODO
+     *
+     * @return
+     */
+    public boolean isAnonymous() {
+        final Authentication auth = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (auth == null) {
+            return true;
+        }
+        return auth.getPrincipal() == null
+                || auth.getPrincipal().equals("anonymousUser");
+    }
+
+    /**
+     * TODO
+     *
+     * @return {@code true} if the user has mod privileies.
+     */
+    public boolean isMod() {
+        final Authentication auth = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (auth == null) {
+            return false;
+        }
+        return isMod(auth);
+    }
+
+    private boolean isMod(Authentication auth) {
+        for (GrantedAuthority ga : auth.getAuthorities()) {
+            if (Group.JANITOR.equals(ga)
+                    || Group.MOD.equals(ga)
+                    || Group.ADMIN.equals(ga)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean login(HttpServletRequest request,
+            String username, String password) {
+        try {
+            request.login(username, password);
+        } catch (ServletException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public void logout(HttpServletRequest request,
+            HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+    }
+
+    public void setCookies() {
+
     }
 }

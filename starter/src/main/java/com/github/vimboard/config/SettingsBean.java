@@ -1,5 +1,11 @@
 package com.github.vimboard.config;
 
+import com.github.vimboard.config.properties.VimboardBoardProperties;
+import com.github.vimboard.config.properties.VimboardModProperties;
+import com.github.vimboard.config.properties.VimboardProperties;
+import com.github.vimboard.config.settings.VimboardBoardSettings;
+import com.github.vimboard.config.settings.VimboardModSettings;
+import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.domain.Group;
 
 import javax.validation.ValidationException;
@@ -101,6 +107,7 @@ public class SettingsBean {
         sb.put("mod", buildModSettings(null, boardUri), this::convertMod);
         sb.put("postDate", "MM/dd/yy (EEE) HH:mm:ss");
         sb.put("recaptcha", false);
+        sb.put("redirectHttp", (short) 303);
         final String root = (String) sb.put("root", "/");
         final Map<String, String> stylesheets;
         {

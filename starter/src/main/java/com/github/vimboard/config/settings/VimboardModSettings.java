@@ -1,4 +1,4 @@
-package com.github.vimboard.config;
+package com.github.vimboard.config.settings;
 
 import com.github.vimboard.domain.Group;
 

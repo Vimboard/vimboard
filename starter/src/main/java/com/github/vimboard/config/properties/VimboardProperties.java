@@ -1,4 +1,4 @@
-package com.github.vimboard.config;
+package com.github.vimboard.config.properties;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 

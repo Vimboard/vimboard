@@ -1,4 +1,4 @@
-package com.github.vimboard.config;
+package com.github.vimboard.config.settings;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.github.vimboard.config;
+package com.github.vimboard.config.properties;
 
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -15,6 +15,14 @@ public class VimboardBoardProperties {
      * development/debugging.
      */
     private Boolean debug;
+
+    /**
+     * The HTTP status code to use when redirecting. Can be either 303
+     * "See Other" or 302 "Found". (303 is more correct but both should work.)
+     * There is really no reason for you to ever need to change this.
+     * http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+     */
+    private Short redirectHttp;
 
     //------------------------------------------------------------------------
     // Database settings
@@ -265,6 +273,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setDebug(Boolean debug) {
         this.debug = debug;
+        return this;
+    }
+
+    public Short getRedirectHttp() {
+        return redirectHttp;
+    }
+
+    public VimboardBoardProperties setRedirectHttp(Short redirectHttp) {
+        this.redirectHttp = redirectHttp;
         return this;
     }
 

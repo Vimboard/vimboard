@@ -4,7 +4,7 @@
   --
   -- login.error
   -->
-<#if login.error??><h2 style="text-align:center">${login.error}</h2></#if>
+<#if (login.error)??><h2 style="text-align:center">${login.error}</h2></#if>
 <form action="" method="post">
     <table style="margin-top:25px;">
         <tr>
@@ -12,12 +12,12 @@
                 <@spring.message "mod.login.Username"/>
             </th>
             <td>
-                <input type="text" name="username" size="20" maxlength="30" value="{{ username|e }}">
+                <input type="text" name="username" size="20" maxlength="30" value="${(login.username)!""}">
             </td>
         </tr>
         <tr>
             <th>
-                {% trans 'Password' %}
+                <@spring.message "mod.login.Password"/>
             </th>
             <td>
                 <input type="password" name="password" size="20" maxlength="30" value="">
@@ -26,7 +26,7 @@
         <tr>
             <td></td>
             <td>
-                <input type="submit" name="login" value="{% trans %}Continue{% endtrans %}" />
+                <input type="submit" name="login" value="<@spring.message "mod.login.Continue"/>" />
             </td>
     </table>
 </form>

@@ -1,7 +1,6 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
-import com.github.vimboard.config.VimboardSettings;
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.service.ICityService;
 import freemarker.template.Configuration;
