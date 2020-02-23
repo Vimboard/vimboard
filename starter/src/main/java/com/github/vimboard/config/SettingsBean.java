@@ -1,9 +1,11 @@
 package com.github.vimboard.config;
 
 import com.github.vimboard.config.properties.VimboardBoardProperties;
+import com.github.vimboard.config.properties.VimboardCookiesProperties;
 import com.github.vimboard.config.properties.VimboardModProperties;
 import com.github.vimboard.config.properties.VimboardProperties;
 import com.github.vimboard.config.settings.VimboardBoardSettings;
+import com.github.vimboard.config.settings.VimboardCookiesSettings;
 import com.github.vimboard.config.settings.VimboardModSettings;
 import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.domain.Group;
@@ -96,6 +98,7 @@ public class SettingsBean {
         sb.put("boardPath", "{uri}/");
         sb.put("boardlistWrapBracket", false);
         sb.put("boards", null, this::convertBoards);
+        sb.put("cookies", buildCookiesSettings(null, boardUri), this::convertCookies);
         sb.put("countryFlagsCondensed", true);
         sb.put("countryFlagsCondensedCss", "static/flags/flags.css");
         sb.put("debug", false);
@@ -135,13 +138,34 @@ public class SettingsBean {
         return (VimboardBoardSettings) sb.build();
     }
 
+    private VimboardCookiesSettings buildCookiesSettings(
+            VimboardCookiesProperties p, String boardUri) {
+        final VimboardCookiesSettings a = (boardUri == null
+                ? null
+                : vimboardSettings.getAll().getCookies());
+
+        final SettingsBuilder sb =
+                new SettingsBuilder(boardUri, "cookies", p, a) {
+
+                    @Override
+                    protected Object createSettings() {
+                        return new VimboardCookiesSettings();
+                    }
+                };
+
+        sb.put("salt", "abcdefghijklmnopqrstuvwxyz09123456789!@#$%^&*()");
+
+        return (VimboardCookiesSettings) sb.build();
+    }
+
     private VimboardModSettings buildModSettings(
             VimboardModProperties p, String boardUri) {
         final VimboardModSettings a = (boardUri == null
                 ? null
                 : vimboardSettings.getAll().getMod());
 
-        final SettingsBuilder sb = new SettingsBuilder(boardUri, "mod", p, a) {
+        final SettingsBuilder sb =
+                new SettingsBuilder(boardUri, "mod", p, a) {
 
                     @Override
                     protected VimboardModSettings createSettings() {
@@ -221,6 +245,11 @@ public class SettingsBean {
             Map<String, String> stylesheets) {
         final String defaultStylesheet = (String) value;
         return new String[] { defaultStylesheet, stylesheets.get(defaultStylesheet) };
+    }
+
+    private Object convertCookies(SettingsBuilder sb, Object value) {
+        final VimboardCookiesProperties p = (VimboardCookiesProperties) value;
+        return buildCookiesSettings(p, sb.boardUri);
     }
 
     private Object convertMod(SettingsBuilder sb, Object value) {

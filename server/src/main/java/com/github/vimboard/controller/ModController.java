@@ -70,7 +70,7 @@ public class ModController extends AbstractController {
             return login(request, response, model, null);
         }
 
-        model.addAttribute("mod", securityService.getMod());
+        model.addAttribute("mod", securityService.getModModel());
 
         String query = request.getQueryString();
         if (query == null || query.isEmpty()) {
@@ -92,6 +92,7 @@ public class ModController extends AbstractController {
     private String dashboard(Model model) {
         model.addAttribute("dashboard", new DashboardModel()
                 .setBoards(boardRepository.list())
+                .setLogoutToken(securityService.makeSecureLinkToken("logout"))
                 .setNewerRelease(new Release()
                         .setMassive(9)
                         .setMajor(1)
@@ -99,7 +100,6 @@ public class ModController extends AbstractController {
                 .setNoticeboard(noticeboardRepository.preview())
                 .setReports(reportRepository.count())
                 .setUnreadPms(pmsRepository.count()));
-        //model.addAttribute("logout_token", // todo
         return modPage("mod/dashboard.ftlh", model,
                 i18n("mod.dashboard.Dashboard"), null);
     }
@@ -122,7 +122,6 @@ public class ModController extends AbstractController {
                 loginModel.setError(i18n("error.invalid"));
             } else {
                 //modService.log("Logged in") // todo
-                securityService.setCookies();
                 return redirectToDashboard(request, redirect);
             }
         }

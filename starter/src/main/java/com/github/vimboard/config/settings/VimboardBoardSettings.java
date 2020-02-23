@@ -15,6 +15,8 @@ public class VimboardBoardSettings {
 
     // Cookie settings
 
+    private VimboardCookiesSettings cookies;
+
     // Flood/spam settings
 
     private Boolean recaptcha;
@@ -112,6 +114,14 @@ public class VimboardBoardSettings {
 
     public void setRedirectHttp(Short redirectHttp) {
         this.redirectHttp = redirectHttp;
+    }
+
+    public VimboardCookiesSettings getCookies() {
+        return cookies;
+    }
+
+    public void setCookies(VimboardCookiesSettings cookies) {
+        this.cookies = cookies;
     }
 
     public Boolean getRecaptcha() {

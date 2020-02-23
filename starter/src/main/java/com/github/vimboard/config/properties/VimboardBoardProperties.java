@@ -36,6 +36,8 @@ public class VimboardBoardProperties {
     // Cookie settings
     //------------------------------------------------------------------------
 
+    private VimboardCookiesProperties cookies;
+
     //------------------------------------------------------------------------
     // Flood/spam settings
     //------------------------------------------------------------------------
@@ -282,6 +284,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setRedirectHttp(Short redirectHttp) {
         this.redirectHttp = redirectHttp;
+        return this;
+    }
+
+    public VimboardCookiesProperties getCookies() {
+        return cookies;
+    }
+
+    public VimboardBoardProperties setCookies(VimboardCookiesProperties cookies) {
+        this.cookies = cookies;
         return this;
     }
 

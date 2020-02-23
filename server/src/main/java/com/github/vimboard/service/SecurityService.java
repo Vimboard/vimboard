@@ -28,17 +28,21 @@ public class SecurityService {
     }
 
     /**
-     * TODO
+     * todo
      *
-     * @return not {@code null} if the user has mod privileies.
+     * @return {@code null} if the user does not have mod privileges.
      */
-    public ModModel getMod() {
+    public Mod getMod() {
         final Authentication auth = SecurityContextHolder.getContext()
                 .getAuthentication();
         if (auth == null) {
             return null;
         }
 
+        return getMod(auth);
+    }
+
+    public Mod getMod(Authentication auth) {
         final Object principal = auth.getPrincipal();
 
         if (!(principal instanceof Mod)) {
@@ -49,7 +53,26 @@ public class SecurityService {
             return null;
         }
 
-        final Mod mod = (Mod) principal;
+        return (Mod) principal;
+    }
+
+    /**
+     * todo
+     *
+     * @return {@code null} if the user does not have mod privileges.
+     */
+    public ModModel getModModel() {
+        final Authentication auth = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (auth == null) {
+            return null;
+        }
+
+        final Mod mod = getMod();
+        if (mod == null) {
+            return null;
+        }
+
         final ModModel modModel = new ModModel();
         modModel.setId(mod.getId());
         fillPermissionsModel(modModel.getHasPermission(), auth);
@@ -57,7 +80,7 @@ public class SecurityService {
         return modModel;
     }
 
-    private void fillPermissionsModel(ModPermissionsModel permissionModel,
+    public void fillPermissionsModel(ModPermissionsModel permissionModel,
             Authentication auth) {
         final VimboardModSettings modSettings = settingsBean.getAll().getMod();
         for (GrantedAuthority ga : auth.getAuthorities()) {
@@ -129,6 +152,7 @@ public class SecurityService {
         if (auth == null) {
             return true;
         }
+
         return auth.getPrincipal() == null
                 || auth.getPrincipal().equals("anonymousUser");
     }
@@ -147,7 +171,7 @@ public class SecurityService {
         return isMod(auth);
     }
 
-    private boolean isMod(Authentication auth) {
+    public boolean isMod(Authentication auth) {
         for (GrantedAuthority ga : auth.getAuthorities()) {
             if (Group.JANITOR.equals(ga)
                     || Group.MOD.equals(ga)
@@ -177,7 +201,10 @@ public class SecurityService {
         }
     }
 
-    public void setCookies() {
-
+    public String makeSecureLinkToken(String uri) {
+        final String token = settingsBean.getAll().getCookies().getSalt()
+                + "-" + uri
+                + "-" + getMod().getId();
+        return SecurityUtils.sha1(token).substring(0, 8);
     }
 }

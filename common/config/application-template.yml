@@ -75,6 +75,11 @@ vimboard:
     # Cookie settings
     # ------------------------------------------------------------------------
 
+    cookies:
+
+      # Make this something long and random for security.
+      salt: abcdefghijklmnopqrstuvwxyz09123456789!@#$%^&*()
+
     # ------------------------------------------------------------------------
     # Flood/spam settings
     # ------------------------------------------------------------------------

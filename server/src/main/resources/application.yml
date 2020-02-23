@@ -16,5 +16,8 @@ spring:
     username: username
     password: password
 
+  freemarker:
+    suffix: .ftlh
+
   main:
     banner-mode: 'OFF'
