@@ -23,10 +23,57 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.github.vimboard.controller.ModController.UriPatternType.*;
 
 @Controller
 @RequestMapping("/mod.php")
 public class ModController extends AbstractController {
+
+    enum UriPatternType {
+        ALL,
+        SECURED,
+        SECURED_POST
+    }
+
+    static class UriPattern {
+
+        final Pattern pattern;
+        final boolean post;
+        final boolean secured;
+
+        UriPattern(String regex) {
+            this(regex, UriPatternType.ALL);
+        }
+
+        UriPattern(String regex, UriPatternType type) {
+            post = type.equals(SECURED_POST);
+            switch (type) {
+                case SECURED:
+                case SECURED_POST:
+                    secured = true;
+                    pattern = Pattern.compile("^" + regex
+                            + "(/(?<token>[a-f0-9]{8}))?"
+                            + "(?:&[^&=]+=[^&]*)*$");
+                    break;
+                default:
+                    secured = false;
+                    pattern = Pattern.compile("^" + regex
+                            + "(?:&[^&=]+=[^&]*)*$");
+            }
+        }
+    }
+
+    interface Handler {
+
+        String handle(HttpServletRequest request, HttpServletResponse response,
+                Model model);
+    }
+
+    //------------------------------------------------------------------------
 
     private static final Logger logger = LoggerFactory.getLogger(ModController.class);
 
@@ -37,6 +84,8 @@ public class ModController extends AbstractController {
     private final ReportRepository reportRepository;
     private final SecurityService securityService;
     private final SettingsBean settingsBean;
+
+    private final Map<UriPattern, Handler> handlerMap = new LinkedHashMap<>();
 
     @Autowired
     public ModController(
@@ -56,6 +105,14 @@ public class ModController extends AbstractController {
         this.reportRepository = reportRepository;
         this.securityService = securityService;
         this.settingsBean = settingsBean;
+
+        handlerMap.put(new UriPattern("/"), this::dashboard);
+        handlerMap.put(new UriPattern("/logout", SECURED), this::logout);
+
+        //uriConfirm = uriPattern("/confirm/(.+)");
+
+        //uriUsers = uriPattern("/users");
+        //uriUserPromote = uriPattern("");
     }
 
     @RequestMapping(value = {"/", "/**"})
@@ -76,12 +133,32 @@ public class ModController extends AbstractController {
         if (query == null || query.isEmpty()) {
             query = "/";
         }
-        switch (query) {
-            case "/":
-                return dashboard(model);
-            case "/logout":
-            case "/logout/":
-                return logout(request, response, model);
+
+        for (Map.Entry<UriPattern, Handler> h : handlerMap.entrySet()) {
+            final UriPattern uriPattern = h.getKey();
+            final Handler handler = h.getValue();
+
+            final Matcher matcher = uriPattern.pattern.matcher(query);
+            if (matcher.find()) {
+
+                if (uriPattern.secured && (
+                        !uriPattern.post
+                        || request.getMethod().equals("POST"))) {
+
+                    String token = matcher.group("token");
+                    if (token == null) {
+                        token = request.getParameter("token");
+                    }
+
+                    if (token == null) {
+
+                    }
+
+                    // CSRF-protected page; validate security token
+                }
+
+                return handler.handle(request, response, model);
+            }
         }
 
         throw new ResourceBadRequestException();
@@ -89,7 +166,8 @@ public class ModController extends AbstractController {
 
     //------------------------------------------------------------------------
 
-    private String dashboard(Model model) {
+    private String dashboard(HttpServletRequest request,
+            HttpServletResponse response, Model model) {
         model.addAttribute("dashboard", new DashboardModel()
                 .setBoards(boardRepository.list())
                 .setLogoutToken(securityService.makeSecureLinkToken("logout"))

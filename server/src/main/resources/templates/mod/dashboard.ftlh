@@ -206,7 +206,7 @@
         <legend><@spring.message "mod.dashboard.Update"/></legend>
         <ul>
             <li>
-                <@spring.messageArgs "mod.dashboard.A_newer_version_of_vichan_{version}_is_available",
+                <@spring.messageArgs "mod.dashboard.A_newer_version_of_vimboard_{version}_is_available",
                         ["<strong>v${dashboard.newerRelease.massive}.${dashboard.newerRelease.major}.${dashboard.newerRelease.minor}</strong>"]/>
 
                 <@spring.messageArgs "mod.dashboard.See_{link}_for_upgrade_instructions",
