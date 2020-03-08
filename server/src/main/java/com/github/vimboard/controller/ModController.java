@@ -128,6 +128,7 @@ public class ModController extends AbstractController {
     private final SettingsBean settingsBean;
 
     private final Map<UriPattern, Handler> handlerMap = new LinkedHashMap<>();
+    private final Pattern removeTokenPattern;
 
     @Autowired
     public ModController(
@@ -157,6 +158,8 @@ public class ModController extends AbstractController {
 
         //uriUsers = uriPattern("/users");
         //uriUserPromote = uriPattern("");
+
+        removeTokenPattern = Pattern.compile("/([a-f0-9]{8})$");
     }
 
     @RequestMapping(value = {"/", "/**"})
@@ -214,11 +217,14 @@ public class ModController extends AbstractController {
                         }
                     }
 
-                    // todo remove
-                    return error(handlerContext.put(
-                            "message", i18n("error.csrf")));
-
                     // CSRF-protected page; validate security token
+                    final String actualQuery =
+                            removeTokenPattern.matcher(query).replaceAll("");
+                    if (!securityService.makeSecureLinkToken(actualQuery)
+                            .equals(token)) {
+                        return error(handlerContext.put(
+                                "message", i18n("error.csrf")));
+                    }
                 }
 
                 return handler.handle(handlerContext);
@@ -297,22 +303,14 @@ public class ModController extends AbstractController {
     //------------------------------------------------------------------------
 
     private String error(HandlerContext ctx) {
-
-        // TODO need HTTP 400
-
-        ctx.model.addAttribute("body", "error.ftlh");
-
-        ctx.model.addAttribute("config", settingsBean.getAll());
+        ctx.response.setStatus(400);
 
         ctx.model.addAttribute("error", new ErrorModel()
                 .setMessage((String) ctx.get("message")));
 
-        ctx.model.addAttribute("page", new PageModel()
-                .setTitle(i18n("error.Error"))
-                .setSubtitle("error.An_error_has_occured_"));
-
-        return "page";
-    }
+        return modPage("error.ftlh", ctx.model,
+                i18n("error.Error"), i18n("error.An_error_has_occured_"));
+   }
 
     // TODO move
     private String modPage(String bodyTemplate, Model model,
