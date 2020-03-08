@@ -1,10 +1,7 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
-import com.github.vimboard.model.DashboardModel;
-import com.github.vimboard.model.LoginModel;
-import com.github.vimboard.model.PageModel;
-import com.github.vimboard.model.Release;
+import com.github.vimboard.model.*;
 import com.github.vimboard.repository.BoardRepository;
 import com.github.vimboard.repository.NoticeboardRepository;
 import com.github.vimboard.repository.PmsRepository;
@@ -67,10 +64,55 @@ public class ModController extends AbstractController {
         }
     }
 
+    static class HandlerContext {
+
+        HttpServletRequest request;
+        HttpServletResponse response;
+        Model model;
+        Matcher matcher;
+        Map<String, Object> args;
+
+        public Object get(String argKey) {
+            return args.get(argKey);
+        }
+
+        public HandlerContext put(String argKey, Object argValue) {
+            if (args == null) {
+                args = new HashMap<>();
+            }
+            args.put(argKey, argValue);
+            return this;
+        }
+
+        public HandlerContext setRequest(HttpServletRequest request) {
+            this.request = request;
+            return this;
+        }
+
+        public HandlerContext setResponse(HttpServletResponse response) {
+            this.response = response;
+            return this;
+        }
+
+        public HandlerContext setModel(Model model) {
+            this.model = model;
+            return this;
+        }
+
+        public HandlerContext setMatcher(Matcher matcher) {
+            this.matcher = matcher;
+            return this;
+        }
+
+        public HandlerContext setArgs(Map<String, Object> args) {
+            this.args = args;
+            return this;
+        }
+    }
+
     interface Handler {
 
-        String handle(HttpServletRequest request, HttpServletResponse response,
-                Model model);
+        String handle(HandlerContext args);
     }
 
     //------------------------------------------------------------------------
@@ -106,10 +148,12 @@ public class ModController extends AbstractController {
         this.securityService = securityService;
         this.settingsBean = settingsBean;
 
+        // dashboard
         handlerMap.put(new UriPattern("/"), this::dashboard);
+        // confirm action (if javascript didn't work)
+        handlerMap.put(new UriPattern("/confirm/(.+)"), this::confirm);
+        // logout
         handlerMap.put(new UriPattern("/logout", SECURED), this::logout);
-
-        //uriConfirm = uriPattern("/confirm/(.+)");
 
         //uriUsers = uriPattern("/users");
         //uriUserPromote = uriPattern("");
@@ -141,23 +185,43 @@ public class ModController extends AbstractController {
             final Matcher matcher = uriPattern.pattern.matcher(query);
             if (matcher.find()) {
 
+                final HandlerContext handlerContext = new HandlerContext()
+                        .setRequest(request)
+                        .setResponse(response)
+                        .setModel(model)
+                        .setMatcher(matcher);
+
                 if (uriPattern.secured && (
                         !uriPattern.post
                         || request.getMethod().equals("POST"))) {
 
-                    String token = matcher.group("token");
+                    String token;
+                    try {
+                        token = matcher.group("token");
+                    } catch (IllegalArgumentException ex) {
+                        token = null;
+                    }
                     if (token == null) {
                         token = request.getParameter("token");
                     }
-
                     if (token == null) {
-
+                        if (uriPattern.post) {
+                            return error(handlerContext.put(
+                                    "message", i18n("error.csrf")));
+                        } else {
+                            return confirm(handlerContext.put(
+                                    "request", query));
+                        }
                     }
+
+                    // todo remove
+                    return error(handlerContext.put(
+                            "message", i18n("error.csrf")));
 
                     // CSRF-protected page; validate security token
                 }
 
-                return handler.handle(request, response, model);
+                return handler.handle(handlerContext);
             }
         }
 
@@ -166,11 +230,22 @@ public class ModController extends AbstractController {
 
     //------------------------------------------------------------------------
 
-    private String dashboard(HttpServletRequest request,
-            HttpServletResponse response, Model model) {
-        model.addAttribute("dashboard", new DashboardModel()
+    private String confirm(HandlerContext ctx) {
+
+        final String request = (String) ctx.get("request");
+
+        ctx.model.addAttribute("confirm", new ConfirmModel()
+                .setRequest(request)
+                .setToken(securityService.makeSecureLinkToken(request)));
+
+        return modPage("mod/confirm.ftlh", ctx.model,
+                i18n("mod.confirm.Confirm_action"), null);
+    }
+
+    private String dashboard(HandlerContext args) {
+        args.model.addAttribute("dashboard", new DashboardModel()
                 .setBoards(boardRepository.list())
-                .setLogoutToken(securityService.makeSecureLinkToken("logout"))
+                .setLogoutToken(securityService.makeSecureLinkToken("/logout"))
                 .setNewerRelease(new Release()
                         .setMassive(9)
                         .setMajor(1)
@@ -178,7 +253,7 @@ public class ModController extends AbstractController {
                 .setNoticeboard(noticeboardRepository.preview())
                 .setReports(reportRepository.count())
                 .setUnreadPms(pmsRepository.count()));
-        return modPage("mod/dashboard.ftlh", model,
+        return modPage("mod/dashboard.ftlh", args.model,
                 i18n("mod.dashboard.Dashboard"), null);
     }
 
@@ -214,22 +289,43 @@ public class ModController extends AbstractController {
         return modPage("mod/login.ftlh", model, i18n("mod.login.Login"), null);
     }
 
-    private String logout(HttpServletRequest request,
-            HttpServletResponse response, Model model) {
-        securityService.logout(request, response);
-        return redirectToDashboard(request, null);
+    private String logout(HandlerContext ctx) {
+        securityService.logout(ctx.request, ctx.response);
+        return redirectToDashboard(ctx.request, null);
+    }
+
+    //------------------------------------------------------------------------
+
+    private String error(HandlerContext ctx) {
+
+        // TODO need HTTP 400
+
+        ctx.model.addAttribute("body", "error.ftlh");
+
+        ctx.model.addAttribute("config", settingsBean.getAll());
+
+        ctx.model.addAttribute("error", new ErrorModel()
+                .setMessage((String) ctx.get("message")));
+
+        ctx.model.addAttribute("page", new PageModel()
+                .setTitle(i18n("error.Error"))
+                .setSubtitle("error.An_error_has_occured_"));
+
+        return "page";
     }
 
     // TODO move
     private String modPage(String bodyTemplate, Model model,
             String pageTitle, String pageSubTitle) {
 
+        model.addAttribute("body", bodyTemplate);
+
+        model.addAttribute("config", settingsBean.getAll());
+
         String dataStylesheet = settingsBean.getAll().getDefaultStylesheet()[1];
         if (dataStylesheet == null || dataStylesheet.isEmpty()) {
             dataStylesheet = "default"; // TODO: если нигде не используется, то можно перенести в загрузку конфига
         }
-
-        model.addAttribute("config", settingsBean.getAll());
 
         model.addAttribute("page", new PageModel()
                 .setBoardlist(boardService.buildBoardList())
@@ -237,8 +333,6 @@ public class ModController extends AbstractController {
                 .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftlh"))
                 .setTitle(pageTitle)
                 .setSubtitle(pageSubTitle));
-
-        model.addAttribute("body", bodyTemplate);
 
         return "page";
     }

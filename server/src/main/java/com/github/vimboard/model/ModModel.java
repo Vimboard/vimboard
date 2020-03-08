@@ -2,6 +2,9 @@ package com.github.vimboard.model;
 
 public class ModModel {
 
+    /**
+     * TODO
+     */
     private int id;
 
     /**

@@ -203,7 +203,7 @@ public class SecurityService {
 
     public String makeSecureLinkToken(String uri) {
         final String token = settingsBean.getAll().getCookies().getSalt()
-                + "-" + uri
+                + "-" + uri.substring(1)
                 + "-" + getMod().getId();
         return SecurityUtils.sha1(token).substring(0, 8);
     }

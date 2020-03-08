@@ -20,7 +20,7 @@ public class PageModel {
     private String dataStylesheet;
 
     /**
-     * If {@code true} then don't draw "Return to dashboard" link.
+     * If {@code true} then don't draw "Return to dashboard" link for mod user.
      */
     private Boolean hideDashboardLink = false;
 
