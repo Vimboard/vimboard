@@ -14,6 +14,23 @@ public class ModBoardsTypeHandler extends BaseTypeHandler<String[]> {
     public void setNonNullParameter(PreparedStatement ps, int i,
             String[] parameter, JdbcType jdbcType) throws SQLException {
         ps.setString(i, String.join(",", parameter));
+// todo
+//        if (parameter.length == 0) {
+//            ps.setString(i, "");
+//            return;
+//        }
+//        StringBuilder sb = new StringBuilder();
+//        for (int p = 0; p < parameter.length; p++) {
+//            if (parameter[p].equals("*")) {
+//                ps.setString(i, "*");
+//                return;
+//            }
+//            if (p > 0) {
+//                sb.append(",");
+//            }
+//            sb.append(parameter[p]);
+//        }
+//        ps.setString(i, sb.toString());
     }
 
     @Override

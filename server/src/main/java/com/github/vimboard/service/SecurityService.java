@@ -4,8 +4,8 @@ import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.config.settings.VimboardModSettings;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
-import com.github.vimboard.model.ModModel;
-import com.github.vimboard.model.ModPermissionsModel;
+import com.github.vimboard.model.domain.ModModel;
+import com.github.vimboard.model.domain.ModPermissionsModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +25,76 @@ public class SecurityService {
     @Autowired
     public SecurityService(SettingsBean settingsBean) {
         this.settingsBean = settingsBean;
+    }
+
+    public void fillPermissionsModel(ModPermissionsModel permissionModel,
+            Authentication auth) {
+        final VimboardModSettings modSettings = settingsBean.getAll().getMod();
+        for (GrantedAuthority ga : auth.getAuthorities()) {
+            if (ga instanceof Group) {
+                final Group group = (Group) ga;
+                if (group.hasRole(modSettings.getChangePassword())) {
+                    permissionModel.setChangePassword(true);
+                }
+                if (group.hasRole(modSettings.getCreateusers())) {
+                    permissionModel.setCreateusers(true);
+                }
+                if (group.hasRole(modSettings.getDebugSql())) {
+                    permissionModel.setDebugSql(true);
+                }
+                if (group.hasRole(modSettings.getEditConfig())) {
+                    permissionModel.setEditConfig(true);
+                }
+                if (group.hasRole(modSettings.getEditPages())) {
+                    permissionModel.setEditPages(true);
+                }
+                if (group.hasRole(modSettings.getEditusers())) {
+                    permissionModel.setEditusers(true);
+                }
+                if (group.hasRole(modSettings.getManageboards())) {
+                    permissionModel.setManageboards(true);
+                }
+                if (group.hasRole(modSettings.getManageusers())) {
+                    permissionModel.setManageusers(true);
+                }
+                if (group.hasRole(modSettings.getModlog())) {
+                    permissionModel.setModlog(true);
+                }
+                if (group.hasRole(modSettings.getNewboard())) {
+                    permissionModel.setNewboard(true);
+                }
+                if (group.hasRole(modSettings.getNoticeboard())) {
+                    permissionModel.setNoticeboard(true);
+                }
+                if (group.hasRole(modSettings.getPromoteusers())) {
+                    permissionModel.setPromoteusers(true);
+                }
+                if (group.hasRole(modSettings.getRecent())) {
+                    permissionModel.setRecent(true);
+                }
+                if (group.hasRole(modSettings.getReports())) {
+                    permissionModel.setReports(true);
+                }
+                if (group.hasRole(modSettings.getSearch())) {
+                    permissionModel.setSearch(true);
+                }
+                if (group.hasRole(modSettings.getShowIp())) {
+                    permissionModel.setShowIp(true);
+                }
+                if (group.hasRole(modSettings.getThemes())) {
+                    permissionModel.setThemes(true);
+                }
+                if (group.hasRole(modSettings.getViewBanAppeals())) {
+                    permissionModel.setViewBanAppeals(true);
+                }
+                if (group.hasRole(modSettings.getViewBanlist())) {
+                    permissionModel.setViewBanlist(true);
+                }
+                if (group.hasRole(modSettings.getViewNotes())) {
+                    permissionModel.setViewNotes(true);
+                }
+            }
+        }
     }
 
     /**
@@ -78,67 +148,6 @@ public class SecurityService {
         fillPermissionsModel(modModel.getHasPermission(), auth);
 
         return modModel;
-    }
-
-    public void fillPermissionsModel(ModPermissionsModel permissionModel,
-            Authentication auth) {
-        final VimboardModSettings modSettings = settingsBean.getAll().getMod();
-        for (GrantedAuthority ga : auth.getAuthorities()) {
-            if (ga instanceof Group) {
-                final Group group = (Group) ga;
-                if (group.hasRole(modSettings.getChangePassword())) {
-                    permissionModel.setChangePassword(true);
-                }
-                if (group.hasRole(modSettings.getDebugSql())) {
-                    permissionModel.setDebugSql(true);
-                }
-                if (group.hasRole(modSettings.getEditConfig())) {
-                    permissionModel.setEditConfig(true);
-                }
-                if (group.hasRole(modSettings.getEditPages())) {
-                    permissionModel.setEditPages(true);
-                }
-                if (group.hasRole(modSettings.getManageboards())) {
-                    permissionModel.setManageboards(true);
-                }
-                if (group.hasRole(modSettings.getManageusers())) {
-                    permissionModel.setManageusers(true);
-                }
-                if (group.hasRole(modSettings.getModlog())) {
-                    permissionModel.setModlog(true);
-                }
-                if (group.hasRole(modSettings.getNewboard())) {
-                    permissionModel.setNewboard(true);
-                }
-                if (group.hasRole(modSettings.getNoticeboard())) {
-                    permissionModel.setNoticeboard(true);
-                }
-                if (group.hasRole(modSettings.getRecent())) {
-                    permissionModel.setRecent(true);
-                }
-                if (group.hasRole(modSettings.getReports())) {
-                    permissionModel.setReports(true);
-                }
-                if (group.hasRole(modSettings.getSearch())) {
-                    permissionModel.setSearch(true);
-                }
-                if (group.hasRole(modSettings.getShowIp())) {
-                    permissionModel.setShowIp(true);
-                }
-                if (group.hasRole(modSettings.getThemes())) {
-                    permissionModel.setThemes(true);
-                }
-                if (group.hasRole(modSettings.getViewBanAppeals())) {
-                    permissionModel.setViewBanAppeals(true);
-                }
-                if (group.hasRole(modSettings.getViewBanlist())) {
-                    permissionModel.setViewBanlist(true);
-                }
-                if (group.hasRole(modSettings.getViewNotes())) {
-                    permissionModel.setViewNotes(true);
-                }
-            }
-        }
     }
 
     /**

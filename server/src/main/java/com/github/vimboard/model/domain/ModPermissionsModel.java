@@ -1,18 +1,19 @@
-package com.github.vimboard.model;
-
-import com.github.vimboard.domain.Group;
+package com.github.vimboard.model.domain;
 
 public class ModPermissionsModel {
 
     private boolean changePassword = false;
+    private boolean createusers = false;
     private boolean debugSql = false;
     private boolean editConfig = false;
     private boolean editPages = false;
+    private boolean editusers = false;
     private boolean manageboards = false;
     private boolean manageusers = false;
     private boolean modlog = false;
     private boolean newboard = false;
     private boolean noticeboard = false;
+    private boolean promoteusers = false;
     private boolean recent = false;
     private boolean reports = false;
     private boolean search = false;
@@ -32,6 +33,15 @@ public class ModPermissionsModel {
 
     public ModPermissionsModel setChangePassword(boolean changePassword) {
         this.changePassword = changePassword;
+        return this;
+    }
+
+    public boolean isCreateusers() {
+        return createusers;
+    }
+
+    public ModPermissionsModel setCreateusers(boolean createusers) {
+        this.createusers = createusers;
         return this;
     }
 
@@ -59,6 +69,15 @@ public class ModPermissionsModel {
 
     public ModPermissionsModel setEditPages(boolean editPages) {
         this.editPages = editPages;
+        return this;
+    }
+
+    public boolean isEditusers() {
+        return editusers;
+    }
+
+    public ModPermissionsModel setEditusers(boolean editusers) {
+        this.editusers = editusers;
         return this;
     }
 
@@ -104,6 +123,15 @@ public class ModPermissionsModel {
 
     public ModPermissionsModel setNoticeboard(boolean noticeboard) {
         this.noticeboard = noticeboard;
+        return this;
+    }
+
+    public boolean isPromoteusers() {
+        return promoteusers;
+    }
+
+    public ModPermissionsModel setPromoteusers(boolean promoteusers) {
+        this.promoteusers = promoteusers;
         return this;
     }
 

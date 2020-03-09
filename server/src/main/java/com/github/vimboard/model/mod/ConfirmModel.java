@@ -1,4 +1,4 @@
-package com.github.vimboard.model;
+package com.github.vimboard.model.mod;
 
 public class ConfirmModel {
 

@@ -1,11 +1,15 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
+import com.github.vimboard.domain.dashboard.User;
 import com.github.vimboard.model.*;
-import com.github.vimboard.repository.BoardRepository;
-import com.github.vimboard.repository.NoticeboardRepository;
-import com.github.vimboard.repository.PmsRepository;
-import com.github.vimboard.repository.ReportRepository;
+import com.github.vimboard.model.domain.ModModel;
+import com.github.vimboard.model.domain.ReleaseModel;
+import com.github.vimboard.model.mod.ConfirmModel;
+import com.github.vimboard.model.mod.DashboardModel;
+import com.github.vimboard.model.mod.LoginModel;
+import com.github.vimboard.model.mod.UsersModel;
+import com.github.vimboard.repository.*;
 import com.github.vimboard.service.BoardService;
 import com.github.vimboard.service.SecurityService;
 import org.slf4j.Logger;
@@ -121,6 +125,7 @@ public class ModController extends AbstractController {
 
     private final BoardRepository boardRepository;
     private final BoardService boardService;
+    private final ModRepository modRepository;
     private final NoticeboardRepository noticeboardRepository;
     private final PmsRepository pmsRepository;
     private final ReportRepository reportRepository;
@@ -135,6 +140,7 @@ public class ModController extends AbstractController {
             MessageSource messageSource,
             BoardRepository boardRepository,
             BoardService boardService,
+            ModRepository modRepository,
             NoticeboardRepository noticeboardRepository,
             PmsRepository pmsRepository,
             ReportRepository reportRepository,
@@ -143,6 +149,7 @@ public class ModController extends AbstractController {
         super(messageSource);
         this.boardRepository = boardRepository;
         this.boardService = boardService;
+        this.modRepository = modRepository;
         this.noticeboardRepository = noticeboardRepository;
         this.pmsRepository = pmsRepository;
         this.reportRepository = reportRepository;
@@ -156,8 +163,8 @@ public class ModController extends AbstractController {
         // logout
         handlerMap.put(new UriPattern("/logout", SECURED), this::logout);
 
-        //uriUsers = uriPattern("/users");
-        //uriUserPromote = uriPattern("");
+        // manage users
+        handlerMap.put(new UriPattern("/users"), this::users);
 
         removeTokenPattern = Pattern.compile("/([a-f0-9]{8})$");
     }
@@ -170,7 +177,7 @@ public class ModController extends AbstractController {
     @RequestMapping(value = "")
     public String root(HttpServletRequest request, HttpServletResponse response,
             Model model) {
-        if (securityService.isAnonymous()) {
+        if (securityService.isAnonymous()) { // todo change to getModModel == null
             return login(request, response, model, null);
         }
 
@@ -252,7 +259,7 @@ public class ModController extends AbstractController {
         args.model.addAttribute("dashboard", new DashboardModel()
                 .setBoards(boardRepository.list())
                 .setLogoutToken(securityService.makeSecureLinkToken("/logout"))
-                .setNewerRelease(new Release()
+                .setNewerRelease(new ReleaseModel()
                         .setMassive(9)
                         .setMajor(1)
                         .setMinor(4))
@@ -300,6 +307,22 @@ public class ModController extends AbstractController {
         return redirectToDashboard(ctx.request, null);
     }
 
+    private String users(HandlerContext ctx) {
+        final ModModel modModel = getModModel(ctx);
+        if (modModel == null
+                || !modModel.getHasPermission().isManageusers()) {
+            return error(ctx.put("message", i18n("error.noaccess")));
+        }
+
+        final List<User> userList = modRepository.listUsers();
+
+        ctx.model.addAttribute("users", new UsersModel()
+                .setList(userList));
+
+        return modPage("mod/users.ftlh", ctx.model,
+                i18n("mod.users.Manage_users_{count}", userList.size()), null);
+    }
+
     //------------------------------------------------------------------------
 
     private String error(HandlerContext ctx) {
@@ -310,6 +333,15 @@ public class ModController extends AbstractController {
 
         return modPage("error.ftlh", ctx.model,
                 i18n("error.Error"), i18n("error.An_error_has_occured_"));
+   }
+
+   private ModModel getModModel(HandlerContext ctx) {
+       Object model = ctx.model.getAttribute("mod");
+       if (model instanceof ModModel) {
+           return (ModModel) model;
+       } else {
+           return securityService.getModModel();
+       }
    }
 
     // TODO move

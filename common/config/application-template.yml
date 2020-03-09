@@ -286,7 +286,7 @@ vimboard:
       reports: JANITOR
 
       # View list of bans.
-      viewBanlist: MOD
+      view-banlist: MOD
 
       # View IP address notes.
       view-notes: JANITOR
@@ -299,6 +299,15 @@ vimboard:
 
       # List/manage users.
       manageusers: MOD
+
+      # Promote/demote users.
+      promoteusers: ADMIN
+
+      # Edit any users' login information.
+      editusers: ADMIN
+
+      # Create a user.
+      createusers: ADMIN
 
       # Change user's own password.
       change-password: JANITOR

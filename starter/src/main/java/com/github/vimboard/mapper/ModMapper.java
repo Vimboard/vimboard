@@ -2,6 +2,7 @@ package com.github.vimboard.mapper;
 
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
+import com.github.vimboard.domain.dashboard.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface ModMapper {
     Mod findByName(String username);
 
     List<Mod> list();
+
+    List<User> listUsers();
 }

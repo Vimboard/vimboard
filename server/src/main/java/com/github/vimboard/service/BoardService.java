@@ -2,7 +2,7 @@ package com.github.vimboard.service;
 
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.domain.Board;
-import com.github.vimboard.model.BoardListModel;
+import com.github.vimboard.model.domain.BoardListModel;
 import com.github.vimboard.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

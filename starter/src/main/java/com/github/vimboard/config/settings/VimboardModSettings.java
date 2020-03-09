@@ -22,6 +22,9 @@ public class VimboardModSettings {
     private Group newboard;
     private Group manageboards;
     private Group manageusers;
+    private Group promoteusers;
+    private Group editusers;
+    private Group createusers;
     private Group changePassword;
     private Group modlog;
     private Group search;
@@ -103,6 +106,30 @@ public class VimboardModSettings {
 
     public void setManageusers(Group manageusers) {
         this.manageusers = manageusers;
+    }
+
+    public Group getPromoteusers() {
+        return promoteusers;
+    }
+
+    public void setPromoteusers(Group promoteusers) {
+        this.promoteusers = promoteusers;
+    }
+
+    public Group getEditusers() {
+        return editusers;
+    }
+
+    public void setEditusers(Group editusers) {
+        this.editusers = editusers;
+    }
+
+    public Group getCreateusers() {
+        return createusers;
+    }
+
+    public void setCreateusers(Group createusers) {
+        this.createusers = createusers;
     }
 
     public Group getChangePassword() {

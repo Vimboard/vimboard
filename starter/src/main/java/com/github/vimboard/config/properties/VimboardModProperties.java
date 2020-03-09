@@ -59,6 +59,21 @@ public class VimboardModProperties {
     private Group manageusers;
 
     /**
+     * Promote/demote users.
+     */
+    private Group promoteusers;
+
+    /**
+     * Edit any users' login information.
+     */
+    private Group editusers;
+
+    /**
+     * Create a user.
+     */
+    private Group createusers;
+
+    /**
      * Change user's own password.
      */
     private Group changePassword;
@@ -190,6 +205,33 @@ public class VimboardModProperties {
 
     public VimboardModProperties setManageusers(Group manageusers) {
         this.manageusers = manageusers;
+        return this;
+    }
+
+    public Group getPromoteusers() {
+        return promoteusers;
+    }
+
+    public VimboardModProperties setPromoteusers(Group promoteusers) {
+        this.promoteusers = promoteusers;
+        return this;
+    }
+
+    public Group getEditusers() {
+        return editusers;
+    }
+
+    public VimboardModProperties setEditusers(Group editusers) {
+        this.editusers = editusers;
+        return this;
+    }
+
+    public Group getCreateusers() {
+        return createusers;
+    }
+
+    public VimboardModProperties setCreateusers(Group createusers) {
+        this.createusers = createusers;
         return this;
     }
 

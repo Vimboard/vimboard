@@ -35,6 +35,18 @@
 
         ----------------------------------------------------------------------
 
+        CREATE TABLE vmb.modlogs (
+            mod      integer NOT NULL,
+            ip       varchar(39) NOT NULL,
+            board    varchar(58) DEFAULT NULL,
+            time     timestamp NOT NULL,
+            text     text NOT NULL
+        );
+        CREATE INDEX ON vmb.modlogs(mod);
+        CREATE INDEX ON vmb.modlogs(time);
+
+        ----------------------------------------------------------------------
+
         CREATE TABLE vmb.mods (
             id          serial NOT NULL,
             username    varchar(100) NOT NULL,

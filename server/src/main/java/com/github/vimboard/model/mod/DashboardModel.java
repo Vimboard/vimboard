@@ -1,7 +1,8 @@
-package com.github.vimboard.model;
+package com.github.vimboard.model.mod;
 
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.domain.Noticeboard;
+import com.github.vimboard.model.domain.ReleaseModel;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class DashboardModel {
 
     private String logoutToken = "";
 
-    private Release newerRelease;
+    private ReleaseModel newerRelease;
 
     private List<Noticeboard> noticeboard;
 
@@ -41,11 +42,11 @@ public class DashboardModel {
         return this;
     }
 
-    public Release getNewerRelease() {
+    public ReleaseModel getNewerRelease() {
         return newerRelease;
     }
 
-    public DashboardModel setNewerRelease(Release newerRelease) {
+    public DashboardModel setNewerRelease(ReleaseModel newerRelease) {
         this.newerRelease = newerRelease;
         return this;
     }

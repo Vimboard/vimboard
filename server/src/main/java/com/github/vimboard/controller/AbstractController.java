@@ -15,4 +15,9 @@ public class AbstractController {
         final var currentLocale = LocaleContextHolder.getLocale();
         return messageSource.getMessage(message, null, currentLocale);
     }
+
+    public String i18n(String message, Object... args) {
+        final var currentLocale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(message, args, currentLocale);
+    }
 }

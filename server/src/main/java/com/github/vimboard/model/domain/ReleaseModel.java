@@ -1,9 +1,9 @@
-package com.github.vimboard.model;
+package com.github.vimboard.model.domain;
 
 /**
  * TODO
  */
-public class Release {
+public class ReleaseModel {
 
     /**
      * TODO
@@ -28,7 +28,7 @@ public class Release {
         return massive;
     }
 
-    public Release setMassive(int massive) {
+    public ReleaseModel setMassive(int massive) {
         this.massive = massive;
         return this;
     }
@@ -37,7 +37,7 @@ public class Release {
         return major;
     }
 
-    public Release setMajor(int major) {
+    public ReleaseModel setMajor(int major) {
         this.major = major;
         return this;
     }
@@ -46,7 +46,7 @@ public class Release {
         return minor;
     }
 
-    public Release setMinor(int minor) {
+    public ReleaseModel setMinor(int minor) {
         this.minor = minor;
         return this;
     }

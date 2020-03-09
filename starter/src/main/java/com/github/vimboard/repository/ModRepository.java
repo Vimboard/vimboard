@@ -2,6 +2,7 @@ package com.github.vimboard.repository;
 
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
+import com.github.vimboard.domain.dashboard.User;
 import com.github.vimboard.mapper.ModMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,11 @@ public class ModRepository {
     @Transactional(readOnly = true)
     public List<Mod> list() {
         return modMapper().list();
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> listUsers() {
+        return modMapper().listUsers();
     }
 
     private ModMapper modMapper() {

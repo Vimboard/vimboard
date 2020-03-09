@@ -1,5 +1,8 @@
 package com.github.vimboard.model;
 
+import com.github.vimboard.model.domain.BoardListModel;
+import com.github.vimboard.model.domain.PersonalMessageModel;
+
 public class PageModel {
 
     /**

@@ -3,12 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.vimboard.mapper.ModMapper">
 
-    <resultMap id="result" type="com.github.vimboard.domain.Mod">
+    <resultMap id="modResult" type="com.github.vimboard.domain.Mod">
         <id property="id" column="id"/>
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="type" column="type" typeHandler="com.github.vimboard.mapper.GroupTypeHandler"/>
         <result property="boards" column="boards" typeHandler="com.github.vimboard.mapper.ModBoardsTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="userResult" type="com.github.vimboard.domain.dashboard.User" extends="modResult">
+        <result property="time" column="time"/>
+        <result property="text" column="text"/>
     </resultMap>
 
     <update id="alter">
@@ -31,12 +36,21 @@
         DELETE FROM vmb.mods WHERE username = #{username}
     </delete>
 
-    <select id="findByName" resultMap="result">
+    <select id="findByName" resultMap="modResult">
         SELECT id, username, password, type, boards FROM vmb.mods WHERE username = #{username} /* LIMIT 1 */
     </select>
 
-    <select id="list" resultMap="result">
+    <select id="list" resultMap="modResult">
         SELECT id, username, password, type, boards FROM vmb.mods
+    </select>
+
+    <select id="listUsers" resultMap="userResult">
+        SELECT
+            id, username, password, type, boards,
+            (SELECT time FROM vmb.modlogs WHERE mod = id ORDER BY time DESC LIMIT 1) AS last,
+		    (SELECT text FROM vmb.modlogs WHERE mod = id ORDER BY time DESC LIMIT 1) AS action
+		FROM vmb.mods
+        ORDER BY type DESC, id
     </select>
 
 </mapper>

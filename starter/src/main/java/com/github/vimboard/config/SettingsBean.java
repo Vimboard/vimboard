@@ -179,14 +179,17 @@ public class SettingsBean {
         sb.put("noticeboardDashboard", 5L);
         // Mod permissions
         sb.put("changePassword", Group.JANITOR);
+        sb.put("createusers", Group.ADMIN);
         sb.put("debugSql", Group.DISABLED);
         sb.put("editConfig", Group.ADMIN);
         sb.put("editPages", Group.MOD);
+        sb.put("editusers", Group.ADMIN);
         sb.put("manageboards", Group.ADMIN);
         sb.put("manageusers", Group.MOD);
         sb.put("modlog", Group.ADMIN);
         sb.put("newboard", Group.ADMIN);
         sb.put("noticeboard", Group.JANITOR);
+        sb.put("promoteusers", Group.ADMIN);
         sb.put("recent", Group.MOD);
         sb.put("reports", Group.JANITOR);
         sb.put("search", Group.JANITOR);
