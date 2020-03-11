@@ -3,11 +3,17 @@
   -- Template attributes:
   --
   -- config.boardAbbreviation
+  -- mod.id
   -- mod.hasPermission.modlog
+  -- mod.hasPermission.promoteusers
   -- users.list - action
   -- users.list - boards
+  -- users.list - canBeDemoted
+  -- users.list - canBePromoted
+  -- users.list - demoteToken
   -- users.list - id
   -- users.list - last
+  -- users.list - promoteToken
   -- users.list - type
   -- users.list - username
   -->
@@ -70,15 +76,15 @@
                 </td>
             </#if>
             <td>
-                {% if mod|hasPermission(config.mod.promoteusers) and user.type < constant(config.mod.groups[0:-1]|last|upper) %}
-                    <a style="float:left;text-decoration:none" href="?/users/{{ user.id }}/promote/{{ user.promote_token }}" title="{% trans 'Promote' %}">&#9650;</a>
-                {% endif %}
-                {% if mod|hasPermission(config.mod.promoteusers) and user.type > constant(config.mod.groups|first|upper) %}
-                    <a style="float:left;text-decoration:none" href="?/users/{{ user.id }}/demote/{{ user.demote_token }}" title="{% trans 'Demote' %}"{% if mod.id == user.id %} onclick="return confirm('{% trans 'Are you sure you want to demote yourself?' %}')"{% endif %}>&#9660;</a>
-                {% endif %}
-                {% if mod|hasPermission(config.mod.modlog) %}
-                    <a class="unimportant" style="margin-left:5px;float:right" href="?/log:{{ user.username|e }}">[{% trans 'log' %}]</a>
-                {% endif %}
+                <#if ((mod.hasPermission.promoteusers)!false) && user.canBePromoted>
+                    <a style="float:left;text-decoration:none" href="?/users/${user.id}/promote/${user.promoteToken}" title="<@spring.message "mod.users.Promote"/>">&#9650;</a>
+                </#if>
+                <#if ((mod.hasPermission.promoteusers)!false) && user.canBeDemoted>
+                    <a style="float:left;text-decoration:none" href="?/users/${user.id}/demote/${user.demoteToken}" title="<@spring.message "mod.users.Demote"/>"<#if mod.id == user.id> onclick="return confirm('<@spring.message "mod.users.Are_you_sure_you_want_to_demote_yourself_"/>')"</#if>>&#9660;</a>
+                </#if>
+                <#if (mod.hasPermission.modlog)!false>
+                    <a class="unimportant" style="margin-left:5px;float:right" href="?/log:${user.username}">[<@spring.message "mod.users.log"/>]</a>
+                </#if>
                 {% if mod|hasPermission(config.mod.editusers) or (mod|hasPermission(config.mod.change_password) and mod.id == user.id) %}
                     <a class="unimportant" style="margin-left:5px;float:right" href="?/users/{{ user.id }}">[{% trans 'edit' %}]</a>
                 {% endif %}

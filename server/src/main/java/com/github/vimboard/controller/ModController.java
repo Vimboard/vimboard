@@ -1,16 +1,21 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
-import com.github.vimboard.domain.dashboard.User;
-import com.github.vimboard.model.*;
+import com.github.vimboard.model.ErrorModel;
+import com.github.vimboard.model.PageModel;
 import com.github.vimboard.model.domain.ModModel;
 import com.github.vimboard.model.domain.ReleaseModel;
+import com.github.vimboard.model.domain.UserModel;
 import com.github.vimboard.model.mod.ConfirmModel;
 import com.github.vimboard.model.mod.DashboardModel;
 import com.github.vimboard.model.mod.LoginModel;
 import com.github.vimboard.model.mod.UsersModel;
-import com.github.vimboard.repository.*;
+import com.github.vimboard.repository.BoardRepository;
+import com.github.vimboard.repository.NoticeboardRepository;
+import com.github.vimboard.repository.PmsRepository;
+import com.github.vimboard.repository.ReportRepository;
 import com.github.vimboard.service.BoardService;
+import com.github.vimboard.service.ModService;
 import com.github.vimboard.service.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +29,15 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.vimboard.controller.ModController.UriPatternType.*;
+import static com.github.vimboard.controller.ModController.UriPatternType.SECURED;
+import static com.github.vimboard.controller.ModController.UriPatternType.SECURED_POST;
 
 @Controller
 @RequestMapping("/mod.php")
@@ -125,7 +134,7 @@ public class ModController extends AbstractController {
 
     private final BoardRepository boardRepository;
     private final BoardService boardService;
-    private final ModRepository modRepository;
+    private final ModService modService;
     private final NoticeboardRepository noticeboardRepository;
     private final PmsRepository pmsRepository;
     private final ReportRepository reportRepository;
@@ -140,7 +149,7 @@ public class ModController extends AbstractController {
             MessageSource messageSource,
             BoardRepository boardRepository,
             BoardService boardService,
-            ModRepository modRepository,
+            ModService modService,
             NoticeboardRepository noticeboardRepository,
             PmsRepository pmsRepository,
             ReportRepository reportRepository,
@@ -149,7 +158,7 @@ public class ModController extends AbstractController {
         super(messageSource);
         this.boardRepository = boardRepository;
         this.boardService = boardService;
-        this.modRepository = modRepository;
+        this.modService = modService;
         this.noticeboardRepository = noticeboardRepository;
         this.pmsRepository = pmsRepository;
         this.reportRepository = reportRepository;
@@ -314,7 +323,10 @@ public class ModController extends AbstractController {
             return error(ctx.put("message", i18n("error.noaccess")));
         }
 
-        final List<User> userList = modRepository.listUsers();
+        final List<UserModel> userList = modService.listUsers();
+
+        // todo promoteToken
+        // todo demoteToken
 
         ctx.model.addAttribute("users", new UsersModel()
                 .setList(userList));

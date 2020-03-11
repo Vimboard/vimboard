@@ -12,8 +12,8 @@
     </resultMap>
 
     <resultMap id="userResult" type="com.github.vimboard.domain.dashboard.User" extends="modResult">
-        <result property="time" column="time"/>
-        <result property="text" column="text"/>
+        <result property="last" column="last"/>
+        <result property="action" column="action"/>
     </resultMap>
 
     <update id="alter">

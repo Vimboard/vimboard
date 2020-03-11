@@ -6,28 +6,28 @@ import java.util.Date;
 
 public class User extends Mod {
 
-    private Date time;
-    private String text;
+    private Date last;
+    private String action;
 
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
 
-    public Date getTime() {
-        return time;
+    public Date getLast() {
+        return last;
     }
 
-    public User setTime(Date time) {
-        this.time = time;
+    public User setLast(Date last) {
+        this.last = last;
         return this;
     }
 
-    public String getText() {
-        return text;
+    public String getAction() {
+        return action;
     }
 
-    public User setText(String text) {
-        this.text = text;
+    public User setAction(String action) {
+        this.action = action;
         return this;
     }
 }

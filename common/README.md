@@ -24,4 +24,8 @@ Static content description
 
 [`stylesheets/font-awesome/*`](public/stylesheets/font-awesome) - see `<board-config>.font-awesome`
 
+[`stylesheets/img/arrow.png`](public/stylesheets/img/arrow.png) - used in [`stylesheets/style.css`](public/stylesheets/style.css)
+
+[`stylesheets/img/fade-blue.png`](public/stylesheets/img/fade-blue.png) - used in [`stylesheets/style.css`](public/stylesheets/style.css)
+
 [`stylesheets/style.css`](public/stylesheets/style.css)- default style, see `<board-config>.stylesheets`

@@ -48,12 +48,30 @@ public enum Group implements GrantedAuthority {
     }
 
     /**
-     * TODO
+     * Checks if this group has rights from the specified one.
      *
-     * @param role
-     * @return
+     * @param group the specified group.
+     * @return {@code true} if this group has rights.
      */
-    public boolean hasRole(Group role) {
-        return this.ordinal() >= role.ordinal();
+    public boolean hasRole(Group group) {
+        return this.ordinal() >= group.ordinal();
+    }
+
+    /**
+     * Checks if a user with this group can be promoted.
+     *
+     * @return {@code true} if the user cann't be promoted.
+     */
+    public boolean canBePromoted() {
+        return ordinal() < ADMIN.ordinal();
+    }
+
+    /**
+     * Checks if a user with this group can be demoted.
+     *
+     * @return {@code true} if the user cann't be demoted.
+     */
+    public boolean canBeDemoted() {
+        return ordinal() > JANITOR.ordinal() && !equals(DISABLED);
     }
 }
