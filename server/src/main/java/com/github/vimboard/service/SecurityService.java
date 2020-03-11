@@ -36,6 +36,9 @@ public class SecurityService {
                 if (group.hasRole(modSettings.getChangePassword())) {
                     permissionModel.setChangePassword(true);
                 }
+                if (group.hasRole(modSettings.getCreatePm())) {
+                    permissionModel.setCreatePm(true);
+                }
                 if (group.hasRole(modSettings.getCreateusers())) {
                     permissionModel.setCreateusers(true);
                 }

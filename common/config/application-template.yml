@@ -306,14 +306,17 @@ vimboard:
       # Edit any users' login information.
       editusers: ADMIN
 
-      # Create a user.
-      createusers: ADMIN
-
       # Change user's own password.
       change-password: JANITOR
 
+      # Create a user.
+      createusers: ADMIN
+
       # View the moderation log.
       modlog: ADMIN
+
+      # Create a PM (viewing mod usernames).
+      create-pm: JANITOR
 
       # Search through posts, IP address notes and bans.
       search: JANITOR

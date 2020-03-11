@@ -179,6 +179,7 @@ public class SettingsBean {
         sb.put("noticeboardDashboard", 5L);
         // Mod permissions
         sb.put("changePassword", Group.JANITOR);
+        sb.put("createPm", Group.JANITOR);
         sb.put("createusers", Group.ADMIN);
         sb.put("debugSql", Group.DISABLED);
         sb.put("editConfig", Group.ADMIN);

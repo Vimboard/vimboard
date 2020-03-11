@@ -4,6 +4,10 @@
   --
   -- config.boardAbbreviation
   -- mod.id
+  -- mod.hasPermission.changePassword
+  -- mod.hasPermission.createPm
+  -- mod.hasPermission.createusers
+  -- mod.hasPermission.editusers
   -- mod.hasPermission.modlog
   -- mod.hasPermission.promoteusers
   -- users.list - action
@@ -69,7 +73,7 @@
             <#if (mod.hasPermission.modlog)!false>
                 <td>
                     <#if user.last??>
-                        <span title="${user.action}">${user.last}</span> <#-- TODO last|ago -->
+                        <span title="${user.action}">${user.last}</span>
                     <#else>
                         <em><@spring.message "mod.users.never"/></em>
                     </#if>
@@ -85,20 +89,20 @@
                 <#if (mod.hasPermission.modlog)!false>
                     <a class="unimportant" style="margin-left:5px;float:right" href="?/log:${user.username}">[<@spring.message "mod.users.log"/>]</a>
                 </#if>
-                {% if mod|hasPermission(config.mod.editusers) or (mod|hasPermission(config.mod.change_password) and mod.id == user.id) %}
-                    <a class="unimportant" style="margin-left:5px;float:right" href="?/users/{{ user.id }}">[{% trans 'edit' %}]</a>
-                {% endif %}
-                {% if mod|hasPermission(config.mod.create_pm) %}
-                    <a class="unimportant" style="margin-left:5px;float:right" href="?/new_PM/{{ user.username|e }}">[{% trans 'PM' %}]</a>
-                {% endif %}
+                <#if ((mod.hasPermission.editusers)!false) || ((mod.hasPermission.changePassword)!false) && mod.id == user.id>
+                    <a class="unimportant" style="margin-left:5px;float:right" href="?/users/${user.id}">[<@spring.message "mod.users.edit"/>]</a>
+                </#if>
+                <#if (mod.hasPermission.createPm)!false>
+                    <a class="unimportant" style="margin-left:5px;float:right" href="?/new_PM/${user.username}">[<@spring.message "mod.users.PM"/>]</a>
+                </#if>
             </td>
         </tr>
     </#list>
 </table>
 
-{% if mod|hasPermission(config.mod.createusers) %}
+<#if (mod.hasPermission.createusers)!false>
     <p style="text-align:center">
-        <a href="?/users/new">Create a new user</a>
+        <a href="?/users/new"><@spring.message "mod.users.Create_a_new_user"/></a>
     </p>
-{% endif %}
+</#if>
 

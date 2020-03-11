@@ -3,6 +3,7 @@ package com.github.vimboard.model.domain;
 public class ModPermissionsModel {
 
     private boolean changePassword = false;
+    private boolean createPm = false;
     private boolean createusers = false;
     private boolean debugSql = false;
     private boolean editConfig = false;
@@ -33,6 +34,15 @@ public class ModPermissionsModel {
 
     public ModPermissionsModel setChangePassword(boolean changePassword) {
         this.changePassword = changePassword;
+        return this;
+    }
+
+    public boolean isCreatePm() {
+        return createPm;
+    }
+
+    public ModPermissionsModel setCreatePm(boolean createPm) {
+        this.createPm = createPm;
         return this;
     }
 

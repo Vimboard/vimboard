@@ -69,19 +69,25 @@ public class VimboardModProperties {
     private Group editusers;
 
     /**
-     * Create a user.
-     */
-    private Group createusers;
-
-    /**
      * Change user's own password.
      */
     private Group changePassword;
 
     /**
+     * Create a user.
+     */
+    private Group createusers;
+
+    /**
      * View the moderation log.
      */
     private Group modlog;
+
+    /**
+     * Create a PM (viewing mod usernames).
+     */
+    //$config['mod']['create_pm'] = JANITOR;
+    private Group createPm;
 
     /**
      * Search through posts, IP address notes and bans.
@@ -226,15 +232,6 @@ public class VimboardModProperties {
         return this;
     }
 
-    public Group getCreateusers() {
-        return createusers;
-    }
-
-    public VimboardModProperties setCreateusers(Group createusers) {
-        this.createusers = createusers;
-        return this;
-    }
-
     public Group getChangePassword() {
         return changePassword;
     }
@@ -244,12 +241,30 @@ public class VimboardModProperties {
         return this;
     }
 
+    public Group getCreateusers() {
+        return createusers;
+    }
+
+    public VimboardModProperties setCreateusers(Group createusers) {
+        this.createusers = createusers;
+        return this;
+    }
+
     public Group getModlog() {
         return modlog;
     }
 
     public VimboardModProperties setModlog(Group modlog) {
         this.modlog = modlog;
+        return this;
+    }
+
+    public Group getCreatePm() {
+        return createPm;
+    }
+
+    public VimboardModProperties setCreatePm(Group createPm) {
+        this.createPm = createPm;
         return this;
     }
 
