@@ -333,28 +333,14 @@ public class ModController extends AbstractController {
         }
 
         final int userId = Integer.parseInt(ctx.matcher.group(1));
-        final String action = ctx.matcher.group(2);
+        final boolean isPromote = ctx.matcher.group(2).equals("promote");
 
         Mod mod = modRepository.find(userId);
         if (mod == null) {
             return error(ctx.put("message", i18n("error.404")));
         }
 
-        final Group[] enumGroups = Group.values();
-        final Group[] sortedGroups = new Group[enumGroups.length];
-        System.arraycopy(enumGroups, 0, sortedGroups, 0, enumGroups.length);
-        Arrays.sort(sortedGroups, (o1, o2) -> action.equals("demote")
-                ? o2.getId() - o1.getId()
-                : o1.getId() - o2.getId());
-
-        Group newType = null;
-        for (Group group : sortedGroups) {
-            if (group.getId() > mod.getType().getId()) {
-                newType = group;
-                break;
-            }
-        }
-
+        Group newType = modService.promote(mod.getType(), isPromote);
         if (newType == null) {
             return error(ctx.put("message",
                     i18n("mod.users.Impossible_to_promote_demote_user_")));
@@ -363,7 +349,7 @@ public class ModController extends AbstractController {
         modRepository.setType(userId, newType);
 
         securityService.log(ctx,
-                (action.equals("promote") ? "Promoted" : "Demoted")
+                (isPromote ? "Promoted" : "Demoted")
                         + " user \"" + mod.getUsername()
                         + "\" to " + newType.toString());
 

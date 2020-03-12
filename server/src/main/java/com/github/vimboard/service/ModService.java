@@ -1,5 +1,6 @@
 package com.github.vimboard.service;
 
+import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.dashboard.User;
 import com.github.vimboard.model.domain.UserModel;
 import com.github.vimboard.repository.ModRepository;
@@ -9,6 +10,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -46,5 +48,25 @@ public class ModService {
                             "/users/" + user.getId() + "/demote")));
         }
         return result;
+    }
+
+    public Group promote(Group current, boolean isPromote) {
+        if (isPromote && !current.canBePromoted()
+                || !isPromote && !current.canBeDemoted()) {
+            return null;
+        }
+        final Group[] enumGroups = Group.values();
+        final Group[] sortedGroups = new Group[enumGroups.length];
+        System.arraycopy(enumGroups, 0, sortedGroups, 0, enumGroups.length);
+        Arrays.sort(sortedGroups, (o1, o2) -> isPromote
+                ? o1.getId() - o2.getId()
+                : o2.getId() - o1.getId());
+        for (Group group : sortedGroups) {
+            if (isPromote && group.getId() > current.getId()
+                    || !isPromote && group.getId() < current.getId()) {
+                return group;
+            }
+        }
+        return null;
     }
 }
