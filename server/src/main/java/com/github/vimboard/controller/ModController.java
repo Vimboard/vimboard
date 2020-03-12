@@ -1,6 +1,8 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
+import com.github.vimboard.domain.Group;
+import com.github.vimboard.domain.Mod;
 import com.github.vimboard.model.ErrorModel;
 import com.github.vimboard.model.PageModel;
 import com.github.vimboard.model.domain.ModModel;
@@ -10,10 +12,7 @@ import com.github.vimboard.model.mod.ConfirmModel;
 import com.github.vimboard.model.mod.DashboardModel;
 import com.github.vimboard.model.mod.LoginModel;
 import com.github.vimboard.model.mod.UsersModel;
-import com.github.vimboard.repository.BoardRepository;
-import com.github.vimboard.repository.NoticeboardRepository;
-import com.github.vimboard.repository.PmsRepository;
-import com.github.vimboard.repository.ReportRepository;
+import com.github.vimboard.repository.*;
 import com.github.vimboard.service.BoardService;
 import com.github.vimboard.service.ModService;
 import com.github.vimboard.service.SecurityService;
@@ -29,10 +28,7 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,13 +73,14 @@ public class ModController extends AbstractController {
         }
     }
 
-    static class HandlerContext {
+    public static class HandlerContext {
 
-        HttpServletRequest request;
-        HttpServletResponse response;
-        Model model;
-        Matcher matcher;
-        Map<String, Object> args;
+        public HttpServletRequest request;
+        public HttpServletResponse response;
+        public ModModel modModel;
+        public Model model;
+        public Matcher matcher;
+        public Map<String, Object> args;
 
         public Object get(String argKey) {
             return args.get(argKey);
@@ -104,6 +101,11 @@ public class ModController extends AbstractController {
 
         public HandlerContext setResponse(HttpServletResponse response) {
             this.response = response;
+            return this;
+        }
+
+        public HandlerContext setModModel(ModModel modModel) {
+            this.modModel = modModel;
             return this;
         }
 
@@ -135,6 +137,7 @@ public class ModController extends AbstractController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final ModService modService;
+    private final ModRepository modRepository;
     private final NoticeboardRepository noticeboardRepository;
     private final PmsRepository pmsRepository;
     private final ReportRepository reportRepository;
@@ -150,6 +153,7 @@ public class ModController extends AbstractController {
             BoardRepository boardRepository,
             BoardService boardService,
             ModService modService,
+            ModRepository modRepository,
             NoticeboardRepository noticeboardRepository,
             PmsRepository pmsRepository,
             ReportRepository reportRepository,
@@ -159,6 +163,7 @@ public class ModController extends AbstractController {
         this.boardRepository = boardRepository;
         this.boardService = boardService;
         this.modService = modService;
+        this.modRepository = modRepository;
         this.noticeboardRepository = noticeboardRepository;
         this.pmsRepository = pmsRepository;
         this.reportRepository = reportRepository;
@@ -174,6 +179,8 @@ public class ModController extends AbstractController {
 
         // manage users
         handlerMap.put(new UriPattern("/users"), this::users);
+        // prmote/demote user
+        handlerMap.put(new UriPattern("/users/(\\d+)/(promote|demote)", SECURED), this::userPromote);
 
         removeTokenPattern = Pattern.compile("/([a-f0-9]{8})$");
     }
@@ -187,10 +194,11 @@ public class ModController extends AbstractController {
     public String root(HttpServletRequest request, HttpServletResponse response,
             Model model) {
         if (securityService.isAnonymous()) { // todo change to getModModel == null
-            return login(request, response, model, null);
+            return login(request, response, model, null); // todo redirect
         }
 
-        model.addAttribute("mod", securityService.getModModel());
+        final ModModel modModel = securityService.getModModel();
+        model.addAttribute("mod", modModel);
 
         String query = request.getQueryString();
         if (query == null || query.isEmpty()) {
@@ -207,6 +215,7 @@ public class ModController extends AbstractController {
                 final HandlerContext handlerContext = new HandlerContext()
                         .setRequest(request)
                         .setResponse(response)
+                        .setModModel(modModel)
                         .setModel(model)
                         .setMatcher(matcher);
 
@@ -316,6 +325,51 @@ public class ModController extends AbstractController {
         return redirectToDashboard(ctx.request, null);
     }
 
+    private String userPromote(HandlerContext ctx) {
+        final ModModel modModel = getModModel(ctx);
+        if (modModel == null
+                || !modModel.getHasPermission().isPromoteusers()) {
+            return error(ctx.put("message", i18n("error.noaccess")));
+        }
+
+        final int userId = Integer.parseInt(ctx.matcher.group(1));
+        final String action = ctx.matcher.group(2);
+
+        Mod mod = modRepository.find(userId);
+        if (mod == null) {
+            return error(ctx.put("message", i18n("error.404")));
+        }
+
+        final Group[] enumGroups = Group.values();
+        final Group[] sortedGroups = new Group[enumGroups.length];
+        System.arraycopy(enumGroups, 0, sortedGroups, 0, enumGroups.length);
+        Arrays.sort(sortedGroups, (o1, o2) -> action.equals("demote")
+                ? o2.getId() - o1.getId()
+                : o1.getId() - o2.getId());
+
+        Group newType = null;
+        for (Group group : sortedGroups) {
+            if (group.getId() > mod.getType().getId()) {
+                newType = group;
+                break;
+            }
+        }
+
+        if (newType == null) {
+            return error(ctx.put("message",
+                    i18n("mod.users.Impossible_to_promote_demote_user_")));
+        }
+
+        modRepository.setType(userId, newType);
+
+        securityService.log(ctx,
+                (action.equals("promote") ? "Promoted" : "Demoted")
+                        + " user \"" + mod.getUsername()
+                        + "\" to " + newType.toString());
+
+        return redirectToDashboard(ctx.request, "/users");
+    }
+
     private String users(HandlerContext ctx) {
         final ModModel modModel = getModModel(ctx);
         if (modModel == null
@@ -324,9 +378,6 @@ public class ModController extends AbstractController {
         }
 
         final List<UserModel> userList = modService.listUsers();
-
-        // todo promoteToken
-        // todo demoteToken
 
         ctx.model.addAttribute("users", new UsersModel()
                 .setList(userList));

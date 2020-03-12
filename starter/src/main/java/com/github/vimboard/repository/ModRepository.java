@@ -45,6 +45,11 @@ public class ModRepository {
     }
 
     @Transactional(readOnly = true)
+    public Mod find(int id) {
+        return modMapper().find(id);
+    }
+
+    @Transactional(readOnly = true)
     public Mod findByName(String username) {
         return modMapper().findByName(username);
     }
@@ -57,6 +62,11 @@ public class ModRepository {
     @Transactional(readOnly = true)
     public List<User> listUsers() {
         return modMapper().listUsers();
+    }
+
+    @Transactional
+    public void setType(int id, Group type) {
+        modMapper().setType(id, type);
     }
 
     private ModMapper modMapper() {

@@ -36,6 +36,10 @@
         DELETE FROM vmb.mods WHERE username = #{username}
     </delete>
 
+    <select id="find" resultMap="modResult">
+        SELECT id, username, password, type, boards FROM vmb.mods WHERE id = #{id}
+    </select>
+
     <select id="findByName" resultMap="modResult">
         SELECT id, username, password, type, boards FROM vmb.mods WHERE username = #{username} /* LIMIT 1 */
     </select>
@@ -52,5 +56,11 @@
 		FROM vmb.mods
         ORDER BY type DESC, id
     </select>
+
+    <update id="setType">
+        UPDATE vmb.mods
+        SET type = #{type, typeHandler=com.github.vimboard.mapper.GroupTypeHandler}
+        WHERE id = #{id}
+    </update>
 
 </mapper>

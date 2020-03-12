@@ -2,10 +2,15 @@ package com.github.vimboard.service;
 
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.config.settings.VimboardModSettings;
+import com.github.vimboard.controller.ModController;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
+import com.github.vimboard.domain.ModLog;
 import com.github.vimboard.model.domain.ModModel;
 import com.github.vimboard.model.domain.ModPermissionsModel;
+import com.github.vimboard.repository.ModLogRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,14 +21,21 @@ import org.springframework.stereotype.Service;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 @Service
 public class SecurityService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
+
+    private final ModLogRepository modLogRepository;
     private final SettingsBean settingsBean;
 
     @Autowired
-    public SecurityService(SettingsBean settingsBean) {
+    public SecurityService(
+            ModLogRepository modLogRepository,
+            SettingsBean settingsBean) {
+        this.modLogRepository = modLogRepository;
         this.settingsBean = settingsBean;
     }
 
@@ -192,6 +204,17 @@ public class SecurityService {
             }
         }
         return false;
+    }
+
+    public void log(ModController.HandlerContext ctx, String action) { // TODO abstract context, see auth.php#modLog
+        ModLog modLog = new ModLog()
+                .setMod(ctx.modModel == null ? -1 : ctx.modModel.getId())
+                .setIp(ctx.request.getRemoteAddr())
+                .setBoard(null) // TODO see auth.php#modLog
+                .setTime(new Date())
+                .setText(action);
+        modLogRepository.create(modLog);
+        // TODO logger.info() see auth.php#modLog
     }
 
     public boolean login(HttpServletRequest request,

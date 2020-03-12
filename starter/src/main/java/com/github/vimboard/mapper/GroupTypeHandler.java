@@ -14,7 +14,7 @@ public class GroupTypeHandler extends BaseTypeHandler<Group> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i,
             Group parameter, JdbcType jdbcType) throws SQLException {
-        ps.setShort(i, parameter.getType());
+        ps.setShort(i, parameter.getId());
     }
 
     @Override

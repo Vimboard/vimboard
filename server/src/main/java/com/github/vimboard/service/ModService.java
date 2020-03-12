@@ -15,10 +15,14 @@ import java.util.List;
 public class ModService {
 
     private final ModRepository modRepository;
+    private final SecurityService securityService;
 
     @Autowired
-    public ModService(ModRepository modRepository) {
+    public ModService(
+            ModRepository modRepository,
+            SecurityService securityService) {
         this.modRepository = modRepository;
+        this.securityService = securityService;
     }
 
     public List<UserModel> listUsers() {
@@ -36,8 +40,10 @@ public class ModService {
                     .setAction(user.getAction())
                     .setCanBePromoted(user.getType().canBePromoted())
                     .setCanBeDemoted(user.getType().canBeDemoted())
-                    .setPromoteToken("todo") // todo
-                    .setDemoteToken("todo"));  // todo
+                    .setPromoteToken(securityService.makeSecureLinkToken(
+                            "/users/" + user.getId() + "/promote"))
+                    .setDemoteToken(securityService.makeSecureLinkToken(
+                            "/users/" + user.getId() + "/demote")));
         }
         return result;
     }

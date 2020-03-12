@@ -23,19 +23,19 @@ public enum Group implements GrantedAuthority {
     // Definition
     //------------------------------------------------------------------------
 
-    private final short type;
+    private final short id;
 
-    Group(short type) {
-        this.type = type;
+    Group(short id) {
+        this.id = id;
     }
 
-    public short getType() {
-        return type;
+    public short getId() {
+        return id;
     }
 
     public static Group valueOf(short type) {
         for (Group g : Group.values()) {
-            if (g.getType() == type) {
+            if (g.getId() == type) {
                 return g;
             }
         }

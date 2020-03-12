@@ -20,13 +20,13 @@ public class ReportRepository {
     }
 
     @Transactional(readOnly = true)
-    public List<Report> list() {
-        return reportMapper().list();
+    public long count() {
+        return reportMapper().count();
     }
 
     @Transactional(readOnly = true)
-    public long count() {
-        return reportMapper().count();
+    public List<Report> list() {
+        return reportMapper().list();
     }
 
     private ReportMapper reportMapper() {

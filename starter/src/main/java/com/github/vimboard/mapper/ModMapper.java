@@ -16,9 +16,13 @@ public interface ModMapper {
 
     void drop(String username);
 
+    Mod find(int id);
+
     Mod findByName(String username);
 
     List<Mod> list();
 
     List<User> listUsers();
+
+    void setType(int id, Group type);
 }
