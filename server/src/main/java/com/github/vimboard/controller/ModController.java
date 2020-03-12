@@ -181,6 +181,10 @@ public class ModController extends AbstractController {
         handlerMap.put(new UriPattern("/users"), this::users);
         // prmote/demote user
         handlerMap.put(new UriPattern("/users/(\\d+)/(promote|demote)", SECURED), this::userPromote);
+        // edit user
+        handlerMap.put(new UriPattern("/users/(\\d+)", SECURED_POST), this::user);
+        // create a new user
+        handlerMap.put(new UriPattern("/users/new", SECURED_POST), this::userNew);
 
         removeTokenPattern = Pattern.compile("/([a-f0-9]{8})$");
     }
@@ -323,6 +327,14 @@ public class ModController extends AbstractController {
     private String logout(HandlerContext ctx) {
         securityService.logout(ctx.request, ctx.response);
         return redirectToDashboard(ctx.request, null);
+    }
+
+    private String user(HandlerContext ctx) {
+        return null; // todo
+    }
+
+    private String userNew(HandlerContext ctx) {
+        return null; // todo
     }
 
     private String userPromote(HandlerContext ctx) {
