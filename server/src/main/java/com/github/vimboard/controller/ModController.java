@@ -330,6 +330,23 @@ public class ModController extends AbstractController {
     }
 
     private String user(HandlerContext ctx) {
+        final int userId = Integer.parseInt(ctx.matcher.group(1));
+
+        final ModModel modModel = getModModel(ctx);
+        if (modModel == null || (!modModel.getHasPermission().isEditusers()
+                && !modModel.getHasPermission().isChangePassword()
+                && userId == modModel.getId())) {
+            return error(ctx.put("message", i18n("error.noaccess")));
+        }
+
+        Mod mod = modRepository.find(userId);
+        if (mod == null) {
+            return error(ctx.put("message", i18n("error.404")));
+        }
+
+//        if (modModel.getHasPermission().isEditusers()
+//                && )
+
         return null; // todo
     }
 
@@ -338,14 +355,14 @@ public class ModController extends AbstractController {
     }
 
     private String userPromote(HandlerContext ctx) {
+        final int userId = Integer.parseInt(ctx.matcher.group(1));
+        final boolean isPromote = ctx.matcher.group(2).equals("promote");
+
         final ModModel modModel = getModModel(ctx);
         if (modModel == null
                 || !modModel.getHasPermission().isPromoteusers()) {
             return error(ctx.put("message", i18n("error.noaccess")));
         }
-
-        final int userId = Integer.parseInt(ctx.matcher.group(1));
-        final boolean isPromote = ctx.matcher.group(2).equals("promote");
 
         Mod mod = modRepository.find(userId);
         if (mod == null) {

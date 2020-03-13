@@ -3,13 +3,13 @@
   -- Template attributes:
   --
   -- config.boardAbbreviation
-  -- mod.id
   -- mod.hasPermission.changePassword
   -- mod.hasPermission.createPm
   -- mod.hasPermission.createusers
   -- mod.hasPermission.editusers
   -- mod.hasPermission.modlog
   -- mod.hasPermission.promoteusers
+  -- mod.id
   -- users.list - action
   -- users.list - boards
   -- users.list - canBeDemoted

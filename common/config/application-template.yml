@@ -40,7 +40,6 @@ vimboard:
   # Authentication implementation: SPRING_FORM or MOD_PHP.
   authentication: SPRING_FORM
 
-  # todo - move to board config
   # Static content location
   www: /var/www/vimboard/public/
 
