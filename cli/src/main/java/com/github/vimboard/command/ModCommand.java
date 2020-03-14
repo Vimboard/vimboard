@@ -25,10 +25,11 @@ public class ModCommand {
         String[] boardsArr = boards.isEmpty()
                 ? new String[] {}
                 : boards.split(",");
-        Mod mod = modRepository.alter(username, password, type, boardsArr);
+        Mod mod = modRepository.findByName(username);
         if (mod == null) {
-            return "Mod not found";
+            return "User not found";
         }
+        modRepository.alterByName(username, password, type, boardsArr);
         return modToString(mod);
     }
 
@@ -38,19 +39,21 @@ public class ModCommand {
         String[] boardsArr = boards.isEmpty()
                 ? new String[] {}
                 : boards.split(",");
-        Mod mod = modRepository.create(username, password, type, boardsArr);
+        modRepository.create(username, password, type, boardsArr);
+        Mod mod = modRepository.findByName(username);
         if (mod == null) {
-            return "User not found";
+            return "User not created";
         }
         return modToString(mod);
     }
 
     @ShellMethod(key = "mod-drop", value = "Drop moderator.")
     public String drop(String username) {
-        Mod mod = modRepository.drop(username);
+        Mod mod = modRepository.findByName(username);
         if (mod == null) {
             return "User not found";
         }
+        modRepository.dropByName(username);
         return modToString(mod);
     }
 

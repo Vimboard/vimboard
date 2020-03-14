@@ -339,13 +339,55 @@ public class ModController extends AbstractController {
             return error(ctx.put("message", i18n("error.noaccess")));
         }
 
-        Mod mod = modRepository.find(userId);
+        final Mod mod = modRepository.find(userId);
         if (mod == null) {
             return error(ctx.put("message", i18n("error.404")));
         }
 
-//        if (modModel.getHasPermission().isEditusers()
-//                && )
+        if (modModel.getHasPermission().isEditusers()
+                && ctx.request.getMethod().equals("POST")
+                && ctx.request.getParameter("username") != null
+                && ctx.request.getParameter("password") != null) {
+
+            final List<String> boards = new ArrayList<>();
+            if (ctx.request.getParameter("allboards") != null) {
+                boards.add("*");
+            } else {
+                final Set<String> boardSet = boardService.buildUriSet();
+                final Enumeration<String> paramNames =
+                        ctx.request.getParameterNames();
+                final Pattern pattern = Pattern.compile("^board_("
+                        + settingsBean.getAll().getBoardRegex() + ")$");
+                while (paramNames.hasMoreElements()) {
+                    final Matcher mather = pattern.matcher(
+                            paramNames.nextElement());
+                    if (mather.find()) {
+                        final String board = mather.group(1);
+                        if (boardSet.contains(board)) {
+                            boards.add(board);
+                        }
+                    }
+                }
+            }
+
+            if (ctx.request.getParameter("delete") != null) {
+                if (!modModel.getHasPermission().isDeleteusers()) {
+                    return error(ctx.put("message", i18n("error.noaccess")));
+                }
+                modRepository.drop(userId);
+                securityService.log(ctx, "Deleted user " + mod.getUsername()
+                        + " <small>(#" + mod.getId() + ")</small>");
+                return redirectToDashboard(ctx.request, "/users");
+            }
+
+            if (ctx.request.getParameter("username").isEmpty()) {
+                return error(ctx.put("message",
+                        i18n("error.required", "username")));
+            }
+
+            // update username boards todo
+
+        }
 
         return null; // todo
     }
@@ -375,12 +417,11 @@ public class ModController extends AbstractController {
                     i18n("mod.users.Impossible_to_promote_demote_user_")));
         }
 
-        modRepository.setType(userId, newType);
+        modRepository.alterType(userId, newType);
 
-        securityService.log(ctx,
-                (isPromote ? "Promoted" : "Demoted")
-                        + " user \"" + mod.getUsername()
-                        + "\" to " + newType.toString());
+        securityService.log(ctx, (isPromote ? "Promoted" : "Demoted")
+                + " user \"" + mod.getUsername()
+                + "\" to " + newType.toString());
 
         return redirectToDashboard(ctx.request, "/users");
     }

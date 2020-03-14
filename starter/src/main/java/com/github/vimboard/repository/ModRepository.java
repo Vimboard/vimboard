@@ -23,25 +23,43 @@ public class ModRepository {
     }
 
     @Transactional
-    public Mod alter(String username, String password,
-            Group type, String[] boards) {
-        String psw = new BCryptPasswordEncoder().encode(password);
-        modMapper().alter(username, psw, type, boards);
-        return modMapper().findByName(username);
+    public void alter(int id, String username, String[] boards) {
+        modMapper().alter(id, username, boards);
     }
 
     @Transactional
-    public Mod create(String username, String password,
+    public void alterByName(String username, String password,
+            Group type, String[] boards) {
+        String psw = new BCryptPasswordEncoder().encode(password);
+        modMapper().alterByName(username, psw, type, boards);
+    }
+
+    @Transactional
+    public void alterType(int id, Group type) {
+        modMapper().alterType(id, type);
+    }
+
+    @Transactional
+    public void changePassword(int id, String password) {
+        String psw = new BCryptPasswordEncoder().encode(password);
+        modMapper().changePassword(id, psw);
+    }
+
+    @Transactional
+    public void create(String username, String password,
             Group type, String[] boards) {
         String psw = new BCryptPasswordEncoder().encode(password);
         modMapper().create(username, psw, type, boards);
-        return modMapper().findByName(username);
     }
 
     @Transactional
-    public Mod drop(String username) {
-        modMapper().drop(username);
-        return modMapper().findByName(username); // TODO: is null ??
+    public void drop(int id) {
+        modMapper().drop(id);
+    }
+
+    @Transactional
+    public void dropByName(String username) {
+        modMapper().dropByName(username);
     }
 
     @Transactional(readOnly = true)
@@ -62,11 +80,6 @@ public class ModRepository {
     @Transactional(readOnly = true)
     public List<User> listUsers() {
         return modMapper().listUsers();
-    }
-
-    @Transactional
-    public void setType(int id, Group type) {
-        modMapper().setType(id, type);
     }
 
     private ModMapper modMapper() {

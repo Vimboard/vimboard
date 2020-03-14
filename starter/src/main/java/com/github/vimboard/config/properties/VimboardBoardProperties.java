@@ -265,6 +265,13 @@ public class VimboardBoardProperties {
      */
     private String metaKeywords;
 
+    /*
+     * Regex for board URIs. Don't add "`" character or any Unicode that MySQL
+     * can't handle. 58 characters is the absolute maximum, because MySQL cannot
+     * handle table names greater than 64 characters.
+     */
+    private String boardRegex;
+
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
@@ -527,6 +534,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setMetaKeywords(String metaKeywords) {
         this.metaKeywords = metaKeywords;
+        return this;
+    }
+
+    public String getBoardRegex() {
+        return boardRegex;
+    }
+
+    public VimboardBoardProperties setBoardRegex(String boardRegex) {
+        this.boardRegex = boardRegex;
         return this;
     }
 }

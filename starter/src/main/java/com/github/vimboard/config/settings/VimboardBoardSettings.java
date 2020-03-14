@@ -91,6 +91,7 @@ public class VimboardBoardSettings {
     // Other/uncategorized
 
     private String metaKeywords;
+    private String boardRegex;
 
     // Read-only settings
 
@@ -330,6 +331,14 @@ public class VimboardBoardSettings {
 
     public void setMetaKeywords(String metaKeywords) {
         this.metaKeywords = metaKeywords;
+    }
+
+    public String getBoardRegex() {
+        return boardRegex;
+    }
+
+    public void setBoardRegex(String boardRegex) {
+        this.boardRegex = boardRegex;
     }
 
     public String getVersion() {

@@ -6,6 +6,7 @@ public class ModPermissionsModel {
     private boolean createPm = false;
     private boolean createusers = false;
     private boolean debugSql = false;
+    private boolean deleteusers = false;
     private boolean editConfig = false;
     private boolean editPages = false;
     private boolean editusers = false;
@@ -61,6 +62,15 @@ public class ModPermissionsModel {
 
     public ModPermissionsModel setDebugSql(boolean debugSql) {
         this.debugSql = debugSql;
+        return this;
+    }
+
+    public boolean isDeleteusers() {
+        return deleteusers;
+    }
+
+    public ModPermissionsModel setDeleteusers(boolean deleteusers) {
+        this.deleteusers = deleteusers;
         return this;
     }
 

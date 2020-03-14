@@ -74,6 +74,11 @@ public class VimboardModProperties {
     private Group changePassword;
 
     /**
+     * Delete a user.
+     */
+    private Group deleteusers;
+
+    /**
      * Create a user.
      */
     private Group createusers;
@@ -238,6 +243,15 @@ public class VimboardModProperties {
 
     public VimboardModProperties setChangePassword(Group changePassword) {
         this.changePassword = changePassword;
+        return this;
+    }
+
+    public Group getDeleteusers() {
+        return deleteusers;
+    }
+
+    public VimboardModProperties setDeleteusers(Group deleteusers) {
+        this.deleteusers = deleteusers;
         return this;
     }
 

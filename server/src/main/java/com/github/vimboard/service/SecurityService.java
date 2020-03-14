@@ -57,6 +57,9 @@ public class SecurityService {
                 if (group.hasRole(modSettings.getDebugSql())) {
                     permissionModel.setDebugSql(true);
                 }
+                if (group.hasRole(modSettings.getDeleteusers())) {
+                    permissionModel.setDeleteusers(true);
+                }
                 if (group.hasRole(modSettings.getEditConfig())) {
                     permissionModel.setEditConfig(true);
                 }

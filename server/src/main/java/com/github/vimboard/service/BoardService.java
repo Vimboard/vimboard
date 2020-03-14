@@ -7,8 +7,7 @@ import com.github.vimboard.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TODO
@@ -121,5 +120,14 @@ public class BoardService {
                 sb.append(" / ");
             }
         }
+    }
+
+    public Set<String> buildUriSet() {
+        final List<Board> boardList = boardRepository.list();
+        final Set<String> boardSet = new HashSet<>(boardList.size());
+        for (Board board : boardList) {
+            boardSet.add(board.getUri());
+        }
+        return boardSet;
     }
 }

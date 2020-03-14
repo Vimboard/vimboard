@@ -18,10 +18,29 @@
 
     <update id="alter">
         UPDATE vmb.mods
+        SET username = #{username},
+            boards = #{boards, typeHandler=com.github.vimboard.mapper.ModBoardsTypeHandler}
+        WHERE id = #{id}
+    </update>
+
+    <update id="alterByName">
+        UPDATE vmb.mods
         SET password = #{password},
             type = #{type, typeHandler=com.github.vimboard.mapper.GroupTypeHandler},
             boards = #{boards, typeHandler=com.github.vimboard.mapper.ModBoardsTypeHandler}
         WHERE username = #{username}
+    </update>
+
+    <update id="alterType">
+        UPDATE vmb.mods
+        SET type = #{type, typeHandler=com.github.vimboard.mapper.GroupTypeHandler}
+        WHERE id = #{id}
+    </update>
+
+    <update id="changePassword">
+        UPDATE vmb.mods
+        SET password = #{password}
+        WHERE id = #{id}
     </update>
 
     <insert id="create">
@@ -33,6 +52,10 @@
     </insert>
 
     <delete id="drop">
+        DELETE FROM vmb.mods WHERE id = #{id}
+    </delete>
+
+    <delete id="dropByName">
         DELETE FROM vmb.mods WHERE username = #{username}
     </delete>
 
@@ -56,11 +79,5 @@
 		FROM vmb.mods
         ORDER BY type DESC, id
     </select>
-
-    <update id="setType">
-        UPDATE vmb.mods
-        SET type = #{type, typeHandler=com.github.vimboard.mapper.GroupTypeHandler}
-        WHERE id = #{id}
-    </update>
 
 </mapper>

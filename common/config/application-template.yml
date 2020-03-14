@@ -377,6 +377,11 @@ vimboard:
     # per-board configurations.
 #   meta-keywords: 'chan,anonymous discussion,imageboard,tinyboard'
 
+    # Regex for board URIs. Don't add "`" character or any Unicode that MySQL
+    # can't handle. 58 characters is the absolute maximum, because MySQL cannot
+    # handle table names greater than 64 characters.
+    board-regex: [0-9a-zA-Z$_\u0080-\uFFFF]{1,58}
+
   # ==========================================================================
   # Separate configurations that overrides settings
   # of the common configuration for each board.

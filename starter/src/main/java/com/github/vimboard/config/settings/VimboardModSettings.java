@@ -25,6 +25,7 @@ public class VimboardModSettings {
     private Group promoteusers;
     private Group editusers;
     private Group changePassword;
+    private Group deleteusers;
     private Group createusers;
     private Group modlog;
     private Group createPm;
@@ -131,6 +132,14 @@ public class VimboardModSettings {
 
     public void setChangePassword(Group changePassword) {
         this.changePassword = changePassword;
+    }
+
+    public Group getDeleteusers() {
+        return deleteusers;
+    }
+
+    public void setDeleteusers(Group deleteusers) {
+        this.deleteusers = deleteusers;
     }
 
     public Group getCreateusers() {

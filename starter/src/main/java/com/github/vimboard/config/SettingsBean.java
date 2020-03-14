@@ -96,6 +96,7 @@ public class SettingsBean {
         sb.put("banAppeals", false);
         sb.put("boardAbbreviation", "/{uri}/");
         sb.put("boardPath", "{uri}/");
+        sb.put("boardRegex", "[0-9a-zA-Z$_\\u0080-\\uFFFF]{1,58}");
         sb.put("boardlistWrapBracket", false);
         sb.put("boards", null, this::convertBoards);
         sb.put("cookies", buildCookiesSettings(null, boardUri), this::convertCookies);
@@ -182,6 +183,7 @@ public class SettingsBean {
         sb.put("createPm", Group.JANITOR);
         sb.put("createusers", Group.ADMIN);
         sb.put("debugSql", Group.DISABLED);
+        sb.put("deleteusers", Group.ADMIN);
         sb.put("editConfig", Group.ADMIN);
         sb.put("editPages", Group.MOD);
         sb.put("editusers", Group.ADMIN);
