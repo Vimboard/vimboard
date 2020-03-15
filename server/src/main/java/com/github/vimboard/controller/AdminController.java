@@ -21,8 +21,8 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.util.HashMap;
 
-@Controller
-@RequestMapping("/admin.php")
+//@Controller
+//@RequestMapping("/admin.php")
 public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
