@@ -1,4 +1,4 @@
-
+# Create database
 
 ```postgresql
 CREATE ROLE vimadmin WITH LOGIN PASSWORD 'vimadmin123';
@@ -6,7 +6,40 @@ CREATE ROLE vimadmin WITH LOGIN PASSWORD 'vimadmin123';
 CREATE DATABASE vimboard WITH OWNER vimadmin;
 ```
 
+# Create service
 
+Создаём пользователя
+
+```shell script
+$ sudo useradd vimboard
+$ sudo passwd vimboard
+$ sudo chown vimboard:vimboard vimboard-server.jar
+$ sudo chmod 500 vimboard-server.jar
+```
+
+Создаём ссылку, которая позволит использовать JAR-как сервис
+
+```shell script
+$ sudo ln -s /path/to/vimboard-server.jar /etc/init.d/vimboard
+```
+
+Запуск сервиса
+
+```shell script
+$ sudo service vimboard start
+```
+
+Подробнее
+https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html
+https://www.baeldung.com/spring-boot-app-as-a-service
+
+# Other
+
+Проверяем пользователя, под которым запущен сервис
+`ps aux | grep vimboard`
+
+Проверяем открытые порты.
+`sudo netstat -tlpn`
 
 # Used links:
  - about spring - https://habr.com/ru/post/350682/

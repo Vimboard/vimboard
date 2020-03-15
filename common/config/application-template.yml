@@ -17,10 +17,11 @@
 # Logging.
 logging:
   level:
-    root: WARN
+    root: INFO
 
 # Server port.
 server:
+  address: localhost
   port: 8080
 
 # Database connection.
@@ -37,11 +38,9 @@ spring:
 # ----------------------------------------------------------------------------
 vimboard:
 
-  # Authentication implementation: SPRING_FORM or MOD_PHP.
-  authentication: SPRING_FORM
-
   # Static content location
   www: /var/www/vimboard/public/
+
 
   # ==========================================================================
   # The common configuration for all boards.
@@ -118,7 +117,7 @@ vimboard:
     # How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
     # This doesn't change the URL. Find {@link #boardPath} if you wish to
     # change the URL.
-    board-abbreviation: /{uri}/
+    board-abbreviation: "/{uri}/"
 
     # Allow unfiltered HTML in board subtitle.
     # This is useful for placing icons and links.
@@ -130,7 +129,7 @@ vimboard:
 
     # The format string passed to string built-in for displaying dates.
     # https://freemarker.apache.org/docs/ref_builtins_date.html
-    post-date: MM/dd/yy (EEE) HH:mm:ss
+    post-date: "MM/dd/yy (EEE) HH:mm:ss"
 
     # Custom stylesheets available for the user to choose.
     # See the "stylesheets/" folder for a list of available
@@ -240,7 +239,7 @@ vimboard:
     file-script: main.js
 
     # Board directory, followed by a forward-slash (/).
-    board-path: {uri}/
+    board-path: "{uri}/"
 
     # Set custom location for stylesheets file. This can be used for load
     # balancing across multiple servers or hostnames.
@@ -380,7 +379,8 @@ vimboard:
     # Regex for board URIs. Don't add "`" character or any Unicode that MySQL
     # can't handle. 58 characters is the absolute maximum, because MySQL cannot
     # handle table names greater than 64 characters.
-    board-regex: [0-9a-zA-Z$_\u0080-\uFFFF]{1,58}
+    board-regex: "[0-9a-zA-Z$_\u0080-\uFFFF]{1,58}"
+
 
   # ==========================================================================
   # Separate configurations that overrides settings
@@ -388,10 +388,12 @@ vimboard:
   # --------------------------------------------------------------------------
 # custom:
 
+
     # ========================================================================
     # /a/ board settings
     # ------------------------------------------------------------------------
 #   a: ... same as allBoards ...
+
 
     # ========================================================================
     # /b/ board settings
