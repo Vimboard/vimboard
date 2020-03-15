@@ -1,5 +1,6 @@
 # development tools
 common/config/application.yml
+common/vimboard-server.conf
 target
 .idea
 *.iml

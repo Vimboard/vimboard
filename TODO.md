@@ -21,6 +21,7 @@ $ sudo chmod 500 vimboard-server.jar
 
 ```shell script
 $ sudo ln -s /path/to/vimboard-server.jar /etc/init.d/vimboard
+$ sudo systemctl daemon-reload
 ```
 
 Запуск сервиса

@@ -58,12 +58,8 @@
                                     <directory>${basedir}/common</directory>
                                     <includes>
                                         <include>config/*.yml</include>
-                                    </includes>
-                                </resource>
-                                <resource>
-                                    <directory>${basedir}/common</directory>
-                                    <includes>
                                         <include>public/**</include>
+                                        <include>vimboard-server-template.conf</include>
                                     </includes>
                                 </resource>
                             </resources>
