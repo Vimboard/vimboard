@@ -1,12 +1,15 @@
-all: build
+all: clean release
 
-build: clean rebuild
+build: clean package
 
 clean:
 	mvn clean
 
-rebuild:
+package:
 	mvn package
+
+release:
+	mvn -P release package
 
 run:
 	cd target; java -jar vimboard-server.jar
