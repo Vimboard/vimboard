@@ -193,6 +193,7 @@
         <legend><@spring.message "mod.dashboard.Debug"/></legend>
         <ul>
             <li><a href="?/debug/antispam"><@spring.message "mod.dashboard.Anti_spam"/></a></li>
+            <li><a href="?/debug/http"><@spring.message "mod.dashboard.Http"/></a></li>
             <li><a href="?/debug/recent"><@spring.message "mod.dashboard.Recent_posts"/></a></li>
             <#if (mod.hasPermission.debugSql)!false>
                 <li><a href="?/debug/sql"><@spring.message "mod.dashboard.SQL"/></a></li>

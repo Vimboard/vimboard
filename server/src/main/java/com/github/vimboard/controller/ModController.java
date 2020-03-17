@@ -8,12 +8,10 @@ import com.github.vimboard.model.PageModel;
 import com.github.vimboard.model.domain.ModModel;
 import com.github.vimboard.model.domain.ReleaseModel;
 import com.github.vimboard.model.domain.UserModel;
-import com.github.vimboard.model.mod.ConfirmModel;
-import com.github.vimboard.model.mod.DashboardModel;
-import com.github.vimboard.model.mod.LoginModel;
-import com.github.vimboard.model.mod.UsersModel;
+import com.github.vimboard.model.mod.*;
 import com.github.vimboard.repository.*;
 import com.github.vimboard.service.BoardService;
+import com.github.vimboard.service.DebugService;
 import com.github.vimboard.service.ModService;
 import com.github.vimboard.service.SecurityService;
 import org.slf4j.Logger;
@@ -136,6 +134,7 @@ public class ModController extends AbstractController {
 
     private final BoardRepository boardRepository;
     private final BoardService boardService;
+    private final DebugService debugService;
     private final ModService modService;
     private final ModRepository modRepository;
     private final NoticeboardRepository noticeboardRepository;
@@ -152,6 +151,7 @@ public class ModController extends AbstractController {
             MessageSource messageSource,
             BoardRepository boardRepository,
             BoardService boardService,
+            DebugService debugService,
             ModService modService,
             ModRepository modRepository,
             NoticeboardRepository noticeboardRepository,
@@ -162,6 +162,7 @@ public class ModController extends AbstractController {
         super(messageSource);
         this.boardRepository = boardRepository;
         this.boardService = boardService;
+        this.debugService = debugService;
         this.modService = modService;
         this.modRepository = modRepository;
         this.noticeboardRepository = noticeboardRepository;
@@ -186,6 +187,9 @@ public class ModController extends AbstractController {
         // create a new user
         handlerMap.put(new UriPattern("/users/new", SECURED_POST), this::userNew);
 
+        // debug request
+        handlerMap.put(new UriPattern("/debug/http"), this::debugHttp);
+
         removeTokenPattern = Pattern.compile("/([a-f0-9]{8})$");
     }
 
@@ -201,7 +205,7 @@ public class ModController extends AbstractController {
             return login(request, response, model, null); // todo redirect
         }
 
-        final ModModel modModel = securityService.getModModel();
+        final ModModel modModel = securityService.buildModModel();
         model.addAttribute("mod", modModel);
 
         String query = request.getQueryString();
@@ -277,8 +281,8 @@ public class ModController extends AbstractController {
                 i18n("mod.confirm.Confirm_action"), null);
     }
 
-    private String dashboard(HandlerContext args) {
-        args.model.addAttribute("dashboard", new DashboardModel()
+    private String dashboard(HandlerContext ctx) {
+        ctx.model.addAttribute("dashboard", new DashboardModel()
                 .setBoards(boardRepository.list())
                 .setLogoutToken(securityService.makeSecureLinkToken("/logout"))
                 .setNewerRelease(new ReleaseModel()
@@ -288,8 +292,18 @@ public class ModController extends AbstractController {
                 .setNoticeboard(noticeboardRepository.preview())
                 .setReports(reportRepository.count())
                 .setUnreadPms(pmsRepository.count()));
-        return modPage("mod/dashboard.ftlh", args.model,
+        return modPage("mod/dashboard.ftlh", ctx.model,
                 i18n("mod.dashboard.Dashboard"), null);
+    }
+
+    private String debugHttp(HandlerContext ctx) {
+        // TODO: check permissions
+
+        ctx.model.addAttribute("request",
+                debugService.buildDebugHttpModel(ctx.request));
+
+        return modPage("mod/debug_http.ftlh", ctx.model,
+                i18n("mod.debugHttp.Debug__HTTP"), null);
     }
 
     private String login(HttpServletRequest request,
@@ -459,7 +473,7 @@ public class ModController extends AbstractController {
        if (model instanceof ModModel) {
            return (ModModel) model;
        } else {
-           return securityService.getModModel();
+           return securityService.buildModModel();
        }
    }
 

@@ -39,6 +39,30 @@ public class SecurityService {
         this.settingsBean = settingsBean;
     }
 
+    /**
+     * todo
+     *
+     * @return {@code null} if the user does not have mod privileges.
+     */
+    public ModModel buildModModel() {
+        final Authentication auth = SecurityContextHolder.getContext()
+                .getAuthentication();
+        if (auth == null) {
+            return null;
+        }
+
+        final Mod mod = getMod();
+        if (mod == null) {
+            return null;
+        }
+
+        final ModModel modModel = new ModModel();
+        modModel.setId(mod.getId());
+        fillPermissionsModel(modModel.getHasPermission(), auth);
+
+        return modModel;
+    }
+
     public void fillPermissionsModel(ModPermissionsModel permissionModel,
             Authentication auth) {
         final VimboardModSettings modSettings = settingsBean.getAll().getMod();
@@ -142,30 +166,6 @@ public class SecurityService {
         }
 
         return (Mod) principal;
-    }
-
-    /**
-     * todo
-     *
-     * @return {@code null} if the user does not have mod privileges.
-     */
-    public ModModel getModModel() {
-        final Authentication auth = SecurityContextHolder.getContext()
-                .getAuthentication();
-        if (auth == null) {
-            return null;
-        }
-
-        final Mod mod = getMod();
-        if (mod == null) {
-            return null;
-        }
-
-        final ModModel modModel = new ModModel();
-        modModel.setId(mod.getId());
-        fillPermissionsModel(modModel.getHasPermission(), auth);
-
-        return modModel;
     }
 
     /**
