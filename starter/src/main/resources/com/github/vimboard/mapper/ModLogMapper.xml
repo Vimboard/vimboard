@@ -8,4 +8,12 @@
         VALUES (#{mod}, #{ip}, #{board}, #{time}, #{text})
     </insert>
 
+    <select id="preview" resultType="com.github.vimboard.domain.ModLog">
+        SELECT mod, ip, board, time, text
+        FROM vmb.modlogs
+        WHERE mod = #{mod}
+        ORDER BY time DESC
+        LIMIT #{limit}
+    </select>
+    
 </mapper>

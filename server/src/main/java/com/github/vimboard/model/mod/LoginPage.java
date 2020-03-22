@@ -1,6 +1,6 @@
 package com.github.vimboard.model.mod;
 
-public class LoginModel {
+public class LoginPage {
 
     private String error;
     private String username;
@@ -13,7 +13,7 @@ public class LoginModel {
         return error;
     }
 
-    public LoginModel setError(String error) {
+    public LoginPage setError(String error) {
         this.error = error;
         return this;
     }
@@ -22,7 +22,7 @@ public class LoginModel {
         return username;
     }
 
-    public LoginModel setUsername(String username) {
+    public LoginPage setUsername(String username) {
         this.username = username;
         return this;
     }

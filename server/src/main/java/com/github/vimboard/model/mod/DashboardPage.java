@@ -6,7 +6,7 @@ import com.github.vimboard.model.domain.ReleaseModel;
 
 import java.util.List;
 
-public class DashboardModel {
+public class DashboardPage {
 
     private List<Board> boards;
 
@@ -28,7 +28,7 @@ public class DashboardModel {
         return boards;
     }
 
-    public DashboardModel setBoards(List<Board> boards) {
+    public DashboardPage setBoards(List<Board> boards) {
         this.boards = boards;
         return this;
     }
@@ -37,7 +37,7 @@ public class DashboardModel {
         return logoutToken;
     }
 
-    public DashboardModel setLogoutToken(String logoutToken) {
+    public DashboardPage setLogoutToken(String logoutToken) {
         this.logoutToken = logoutToken;
         return this;
     }
@@ -46,7 +46,7 @@ public class DashboardModel {
         return newerRelease;
     }
 
-    public DashboardModel setNewerRelease(ReleaseModel newerRelease) {
+    public DashboardPage setNewerRelease(ReleaseModel newerRelease) {
         this.newerRelease = newerRelease;
         return this;
     }
@@ -55,7 +55,7 @@ public class DashboardModel {
         return noticeboard;
     }
 
-    public DashboardModel setNoticeboard(List<Noticeboard> noticeboard) {
+    public DashboardPage setNoticeboard(List<Noticeboard> noticeboard) {
         this.noticeboard = noticeboard;
         return this;
     }
@@ -64,7 +64,7 @@ public class DashboardModel {
         return reports;
     }
 
-    public DashboardModel setReports(long reports) {
+    public DashboardPage setReports(long reports) {
         this.reports = reports;
         return this;
     }
@@ -73,7 +73,7 @@ public class DashboardModel {
         return unreadPms;
     }
 
-    public DashboardModel setUnreadPms(long unreadPms) {
+    public DashboardPage setUnreadPms(long unreadPms) {
         this.unreadPms = unreadPms;
         return this;
     }

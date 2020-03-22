@@ -1,6 +1,6 @@
 package com.github.vimboard.model;
 
-public class ErrorModel {
+public class ErrorPage {
 
     /**
      * Error message to be displayed.
@@ -15,7 +15,7 @@ public class ErrorModel {
         return message;
     }
 
-    public ErrorModel setMessage(String message) {
+    public ErrorPage setMessage(String message) {
         this.message = message;
         return this;
     }

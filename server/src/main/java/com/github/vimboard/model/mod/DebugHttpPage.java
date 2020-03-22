@@ -3,7 +3,7 @@ package com.github.vimboard.model.mod;
 import java.util.List;
 import java.util.Map;
 
-public class DebugHttpModel {
+public class DebugHttpPage {
 
     private Map<String, String> properties;
     private List<Map<String, String>> cookies;
@@ -18,7 +18,7 @@ public class DebugHttpModel {
         return properties;
     }
 
-    public DebugHttpModel setProperties(Map<String, String> properties) {
+    public DebugHttpPage setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
     }
@@ -27,7 +27,7 @@ public class DebugHttpModel {
         return cookies;
     }
 
-    public DebugHttpModel setCookies(List<Map<String, String>> cookies) {
+    public DebugHttpPage setCookies(List<Map<String, String>> cookies) {
         this.cookies = cookies;
         return this;
     }
@@ -36,7 +36,7 @@ public class DebugHttpModel {
         return headers;
     }
 
-    public DebugHttpModel setHeaders(Map<String, String> headers) {
+    public DebugHttpPage setHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;
     }
@@ -45,7 +45,7 @@ public class DebugHttpModel {
         return parameters;
     }
 
-    public DebugHttpModel setParameters(Map<String, String> parameters) {
+    public DebugHttpPage setParameters(Map<String, String> parameters) {
         this.parameters = parameters;
         return this;
     }

@@ -122,6 +122,11 @@ public class BoardService {
         }
     }
 
+    /**
+     * Build a set of board URI's.
+     *
+     * @return boar URI set.
+     */
     public Set<String> buildUriSet() {
         final List<Board> boardList = boardRepository.list();
         final Set<String> boardSet = new HashSet<>(boardList.size());

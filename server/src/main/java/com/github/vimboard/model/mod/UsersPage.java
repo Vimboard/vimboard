@@ -4,7 +4,7 @@ import com.github.vimboard.model.domain.UserModel;
 
 import java.util.List;
 
-public class UsersModel {
+public class UsersPage {
 
     private List<UserModel> list;
 
@@ -16,7 +16,7 @@ public class UsersModel {
         return list;
     }
 
-    public UsersModel setList(List<UserModel> list) {
+    public UsersPage setList(List<UserModel> list) {
         this.list = list;
         return this;
     }

@@ -1,6 +1,6 @@
 package com.github.vimboard.model.mod;
 
-public class ConfirmModel {
+public class ConfirmPage {
 
     /**
      * Request uri to confirm.
@@ -20,7 +20,7 @@ public class ConfirmModel {
         return request;
     }
 
-    public ConfirmModel setRequest(String request) {
+    public ConfirmPage setRequest(String request) {
         this.request = request;
         return this;
     }
@@ -29,7 +29,7 @@ public class ConfirmModel {
         return token;
     }
 
-    public ConfirmModel setToken(String token) {
+    public ConfirmPage setToken(String token) {
         this.token = token;
         return this;
     }

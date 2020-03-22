@@ -239,6 +239,12 @@ public class SecurityService {
         }
     }
 
+    /**
+     * Generates a token for the specified URI.
+     *
+     * @param uri the URI starting with "/".
+     * @return the token.
+     */
     public String makeSecureLinkToken(String uri) {
         final String token = settingsBean.getAll().getCookies().getSalt()
                 + "-" + uri.substring(1)

@@ -3,7 +3,7 @@ package com.github.vimboard.model;
 import com.github.vimboard.model.domain.BoardListModel;
 import com.github.vimboard.model.domain.PersonalMessageModel;
 
-public class PageModel {
+public class Page {
 
     /**
      * Board list bar model.
@@ -56,7 +56,7 @@ public class PageModel {
         return boardlist;
     }
 
-    public PageModel setBoardlist(BoardListModel boardlist) {
+    public Page setBoardlist(BoardListModel boardlist) {
         this.boardlist = boardlist;
         return this;
     }
@@ -65,7 +65,7 @@ public class PageModel {
         return dataStylesheet;
     }
 
-    public PageModel setDataStylesheet(String dataStylesheet) {
+    public Page setDataStylesheet(String dataStylesheet) {
         this.dataStylesheet = dataStylesheet;
         return this;
     }
@@ -74,7 +74,7 @@ public class PageModel {
         return hideDashboardLink;
     }
 
-    public PageModel setHideDashboardLink(Boolean hideDashboardLink) {
+    public Page setHideDashboardLink(Boolean hideDashboardLink) {
         this.hideDashboardLink = hideDashboardLink;
         return this;
     }
@@ -83,7 +83,7 @@ public class PageModel {
         return nojavascript;
     }
 
-    public PageModel setNojavascript(boolean nojavascript) {
+    public Page setNojavascript(boolean nojavascript) {
         this.nojavascript = nojavascript;
         return this;
     }
@@ -92,7 +92,7 @@ public class PageModel {
         return pm;
     }
 
-    public PageModel setPm(PersonalMessageModel pm) {
+    public Page setPm(PersonalMessageModel pm) {
         this.pm = pm;
         return this;
     }
@@ -101,7 +101,7 @@ public class PageModel {
         return subtitle;
     }
 
-    public PageModel setSubtitle(String subtitle) {
+    public Page setSubtitle(String subtitle) {
         this.subtitle = subtitle;
         return this;
     }
@@ -110,7 +110,7 @@ public class PageModel {
         return title;
     }
 
-    public PageModel setTitle(String title) {
+    public Page setTitle(String title) {
         this.title = title;
         return this;
     }

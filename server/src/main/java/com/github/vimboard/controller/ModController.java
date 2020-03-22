@@ -3,8 +3,9 @@ package com.github.vimboard.controller;
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
-import com.github.vimboard.model.ErrorModel;
-import com.github.vimboard.model.PageModel;
+import com.github.vimboard.domain.ModLog;
+import com.github.vimboard.model.ErrorPage;
+import com.github.vimboard.model.Page;
 import com.github.vimboard.model.domain.ModModel;
 import com.github.vimboard.model.domain.ReleaseModel;
 import com.github.vimboard.model.domain.UserModel;
@@ -135,8 +136,9 @@ public class ModController extends AbstractController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final DebugService debugService;
-    private final ModService modService;
+    private final ModLogRepository modLogRepository;
     private final ModRepository modRepository;
+    private final ModService modService;
     private final NoticeboardRepository noticeboardRepository;
     private final PmsRepository pmsRepository;
     private final ReportRepository reportRepository;
@@ -152,8 +154,9 @@ public class ModController extends AbstractController {
             BoardRepository boardRepository,
             BoardService boardService,
             DebugService debugService,
-            ModService modService,
+            ModLogRepository modLogRepository,
             ModRepository modRepository,
+            ModService modService,
             NoticeboardRepository noticeboardRepository,
             PmsRepository pmsRepository,
             ReportRepository reportRepository,
@@ -163,8 +166,9 @@ public class ModController extends AbstractController {
         this.boardRepository = boardRepository;
         this.boardService = boardService;
         this.debugService = debugService;
-        this.modService = modService;
+        this.modLogRepository = modLogRepository;
         this.modRepository = modRepository;
+        this.modService = modService;
         this.noticeboardRepository = noticeboardRepository;
         this.pmsRepository = pmsRepository;
         this.reportRepository = reportRepository;
@@ -201,12 +205,18 @@ public class ModController extends AbstractController {
     @RequestMapping(value = "")
     public String root(HttpServletRequest request, HttpServletResponse response,
             Model model) {
+        final HandlerContext handlerContext = new HandlerContext()
+                .setRequest(request)
+                .setResponse(response)
+                .setModel(model);
+
         if (securityService.isAnonymous()) { // todo change to getModModel == null
-            return login(request, response, model, null); // todo redirect
+            return login(handlerContext, null); // todo redirect
         }
 
         final ModModel modModel = securityService.buildModModel();
         model.addAttribute("mod", modModel);
+        handlerContext.setModModel(modModel);
 
         String query = request.getQueryString();
         if (query == null || query.isEmpty()) {
@@ -220,12 +230,7 @@ public class ModController extends AbstractController {
             final Matcher matcher = uriPattern.pattern.matcher(query);
             if (matcher.find()) {
 
-                final HandlerContext handlerContext = new HandlerContext()
-                        .setRequest(request)
-                        .setResponse(response)
-                        .setModModel(modModel)
-                        .setModel(model)
-                        .setMatcher(matcher);
+                handlerContext.setMatcher(matcher);
 
                 if (uriPattern.secured && (
                         !uriPattern.post
@@ -273,7 +278,7 @@ public class ModController extends AbstractController {
 
         final String request = (String) ctx.get("request");
 
-        ctx.model.addAttribute("confirm", new ConfirmModel()
+        ctx.model.addAttribute("confirm", new ConfirmPage()
                 .setRequest(request)
                 .setToken(securityService.makeSecureLinkToken(request)));
 
@@ -282,7 +287,7 @@ public class ModController extends AbstractController {
     }
 
     private String dashboard(HandlerContext ctx) {
-        ctx.model.addAttribute("dashboard", new DashboardModel()
+        ctx.model.addAttribute("dashboard", new DashboardPage() // TODO dashboard -> dashboardPage
                 .setBoards(boardRepository.list())
                 .setLogoutToken(securityService.makeSecureLinkToken("/logout"))
                 .setNewerRelease(new ReleaseModel()
@@ -299,43 +304,43 @@ public class ModController extends AbstractController {
     private String debugHttp(HandlerContext ctx) {
         // TODO: check permissions
 
-        ctx.model.addAttribute("request",
+        ctx.model.addAttribute("request", // TODO request -> debugHttpPage
                 debugService.buildDebugHttpModel(ctx.request));
 
         return modPage("mod/debug_http.ftlh", ctx.model,
                 i18n("mod.debugHttp.Debug__HTTP"), null);
     }
 
-    private String login(HttpServletRequest request,
-            HttpServletResponse response, Model model, String redirect) {
+    private String login(HandlerContext ctx, String redirect) {
 
-        final LoginModel loginModel = new LoginModel();
+        final LoginPage loginPage = new LoginPage();
 
-        if (request.getMethod().equals("POST")
-                && request.getParameter("login") != null) {
-            final String username = request.getParameter("username");
-            final String password = request.getParameter("password");
+        if (ctx.request.getMethod().equals("POST")
+                && ctx.request.getParameter("login") != null) {
+            final String username = ctx.request.getParameter("username");
+            final String password = ctx.request.getParameter("password");
 
             if (username == null || username.isEmpty()
                     || password == null || password.isEmpty()) {
-                loginModel.setError(i18n("error.invalid"));
-            } else if (!securityService.login(request, username, password)) {
+                loginPage.setError(i18n("error.invalid"));
+            } else if (!securityService.login(ctx.request, username, password)) {
                 logger.warn("Unauthorized login attempt!");
-                loginModel.setError(i18n("error.invalid"));
+                loginPage.setError(i18n("error.invalid"));
             } else {
-                //modService.log("Logged in") // todo
-                return redirectToDashboard(request, redirect);
+                securityService.log(ctx, "Logged in");
+                return redirectToDashboard(ctx.request, redirect);
             }
         }
 
-        final String username = request.getParameter("username");
+        final String username = ctx.request.getParameter("username");
         if (username != null) {
-            loginModel.setUsername(username);
+            loginPage.setUsername(username);
         }
 
-        model.addAttribute("login", loginModel);
+        ctx.model.addAttribute("login", loginPage); // TODO login -> loginPage
 
-        return modPage("mod/login.ftlh", model, i18n("mod.login.Login"), null);
+        return modPage("mod/login.ftlh", ctx.model,
+                i18n("mod.login.Login"), null);
     }
 
     private String logout(HandlerContext ctx) {
@@ -344,29 +349,32 @@ public class ModController extends AbstractController {
     }
 
     private String user(HandlerContext ctx) {
-        final int userId = Integer.parseInt(ctx.matcher.group(1));
-
         final ModModel modModel = getModModel(ctx);
+        final int userId = Integer.parseInt(ctx.matcher.group(1));
+        final String username = ctx.request.getParameter("username");
+        final String password = ctx.request.getParameter("password");
+
         if (modModel == null || (!modModel.getHasPermission().isEditusers()
                 && !modModel.getHasPermission().isChangePassword()
                 && userId == modModel.getId())) {
             return error(ctx.put("message", i18n("error.noaccess")));
         }
 
-        final Mod mod = modRepository.find(userId);
-        if (mod == null) {
+        final Mod user = modRepository.find(userId);
+        if (user == null) {
             return error(ctx.put("message", i18n("error.404")));
         }
 
         if (modModel.getHasPermission().isEditusers()
                 && ctx.request.getMethod().equals("POST")
-                && ctx.request.getParameter("username") != null
-                && ctx.request.getParameter("password") != null) {
+                && username != null
+                && password != null) {
 
-            final List<String> boards = new ArrayList<>();
+            final String[] boards;
             if (ctx.request.getParameter("allboards") != null) {
-                boards.add("*");
+                boards = new String[] { "*" };
             } else {
+                final List<String> boardList = new ArrayList<>();
                 final Set<String> boardSet = boardService.buildUriSet();
                 final Enumeration<String> paramNames =
                         ctx.request.getParameterNames();
@@ -378,10 +386,11 @@ public class ModController extends AbstractController {
                     if (mather.find()) {
                         final String board = mather.group(1);
                         if (boardSet.contains(board)) {
-                            boards.add(board);
+                            boardList.add(board);
                         }
                     }
                 }
+                boards = boardList.toArray(new String[0]);
             }
 
             if (ctx.request.getParameter("delete") != null) {
@@ -389,32 +398,152 @@ public class ModController extends AbstractController {
                     return error(ctx.put("message", i18n("error.noaccess")));
                 }
                 modRepository.drop(userId);
-                securityService.log(ctx, "Deleted user " + mod.getUsername()
-                        + " <small>(#" + mod.getId() + ")</small>");
+                securityService.log(ctx, "Deleted user " + user.getUsername()
+                        + " <small>(#" + user.getId() + ")</small>");
                 return redirectToDashboard(ctx.request, "/users");
             }
 
-            if (ctx.request.getParameter("username").isEmpty()) {
+            if (username.isEmpty()) {
                 return error(ctx.put("message",
                         i18n("error.required", "username")));
             }
 
-            // update username boards todo
+            modRepository.alter(userId, username, boards);
 
+            if (!user.getUsername().equals(username)) {
+                securityService.log(ctx, "Renamed user \"" + user.getUsername()
+                        + "\" <small>(#" + user.getId() + ")</small>"
+                        + " to \"" + username + "\"");
+            }
+
+            if (!password.isEmpty()) {
+                modRepository.changePassword(userId, password);
+                securityService.log(ctx, "Changed password for " + username
+                        + " <small>(#" + user.getId() + ")</small>");
+            }
+
+            // TODO: relog with new password. (Deprecated in Vimboard)
+
+            if (modModel.getHasPermission().isManageusers()) {
+                return redirectToDashboard(ctx.request, "/users");
+            } else {
+                return redirectToDashboard(ctx.request, "/");
+            }
         }
 
-        return null; // todo
+        if (modModel.getHasPermission().isChangePassword()
+                && userId == modModel.getId()
+                && ctx.request.getMethod().equals("POST")
+                && password != null) {
+            if (!password.isEmpty()) {
+                modRepository.changePassword(userId, password);
+                securityService.log(ctx, "Changed own password");
+
+                // TODO: relog with new password. (Deprecated in Vimboard)
+            }
+
+            if (modModel.getHasPermission().isManageusers()) {
+                return redirectToDashboard(ctx.request, "/users");
+            } else {
+                return redirectToDashboard(ctx.request, "/");
+            }
+        }
+
+        final List<ModLog> log;
+        if (modModel.getHasPermission().isModlog()) {
+            log = modLogRepository.preview(userId, 5);
+        } else {
+            log = new ArrayList<>();
+        }
+
+        ctx.model.addAttribute("userPage", new UserPage()
+                .setBoards(boardRepository.list())
+                .setLogs(log)
+                .setToken(securityService.makeSecureLinkToken(
+                        "/users/" + user.getId()))
+                .setUser(user));
+
+        return modPage("mod/user.ftlh", ctx.model,
+                i18n("mod.user.Edit_user"), null);
     }
 
     private String userNew(HandlerContext ctx) {
-        return null; // todo
+        final ModModel modModel = getModModel(ctx);
+        final String username = ctx.request.getParameter("username");
+        final String password = ctx.request.getParameter("password");
+
+        if (!modModel.getHasPermission().isCreateusers()) {
+            return error(ctx.put("message", i18n("error.noaccess")));
+        }
+
+        if (ctx.request.getMethod().equals("POST")) {
+            if (username.isEmpty()) {
+                return error(ctx.put("message",
+                        i18n("error.required", "username")));
+            }
+            if (password.isEmpty()) {
+                return error(ctx.put("message",
+                        i18n("error.required", "password")));
+            }
+
+            final String[] boards;
+            if (ctx.request.getParameter("allboards") != null) {
+                boards = new String[] { "*" };
+            } else {
+                final List<String> boardList = new ArrayList<>();
+                final Set<String> boardSet = boardService.buildUriSet();
+                final Enumeration<String> paramNames =
+                        ctx.request.getParameterNames();
+                final Pattern pattern = Pattern.compile("^board_("
+                        + settingsBean.getAll().getBoardRegex() + ")$");
+                while (paramNames.hasMoreElements()) {
+                    final Matcher mather = pattern.matcher(
+                            paramNames.nextElement());
+                    if (mather.find()) {
+                        final String board = mather.group(1);
+                        if (boardSet.contains(board)) {
+                            boardList.add(board);
+                        }
+                    }
+                }
+                boards = boardList.toArray(new String[0]);
+            }
+
+            Group type;
+            try {
+                type = Group.valueOf(Short.parseShort(
+                        ctx.request.getParameter("password")));
+            } catch (NumberFormatException ex) {
+                type = null;
+            }
+            if (type == null || type == Group.DISABLED) {
+                return error(ctx.put("message",
+                        i18n("error.invalidfield", "type")));
+            }
+
+            modRepository.create(username, password, type, boards);
+            final Mod user = modRepository.findByName(username);
+
+            securityService.log(ctx, "Created a new user: " + username
+                    + " <small>(#" + user.getId() + ")</small>");
+
+            return redirectToDashboard(ctx.request, "/users");
+        }
+
+        ctx.model.addAttribute("userPage", new UserPage()
+                .setBoards(boardRepository.list())
+                .setNew(true)
+                .setToken(securityService.makeSecureLinkToken("/users/new")));
+
+        return modPage("mod/user.ftlh", ctx.model,
+                i18n("mod.user.New_user"), null);
     }
 
     private String userPromote(HandlerContext ctx) {
+        final ModModel modModel = getModModel(ctx);
         final int userId = Integer.parseInt(ctx.matcher.group(1));
         final boolean isPromote = ctx.matcher.group(2).equals("promote");
 
-        final ModModel modModel = getModModel(ctx);
         if (modModel == null
                 || !modModel.getHasPermission().isPromoteusers()) {
             return error(ctx.put("message", i18n("error.noaccess")));
@@ -442,6 +571,7 @@ public class ModController extends AbstractController {
 
     private String users(HandlerContext ctx) {
         final ModModel modModel = getModModel(ctx);
+
         if (modModel == null
                 || !modModel.getHasPermission().isManageusers()) {
             return error(ctx.put("message", i18n("error.noaccess")));
@@ -449,7 +579,7 @@ public class ModController extends AbstractController {
 
         final List<UserModel> userList = modService.listUsers();
 
-        ctx.model.addAttribute("users", new UsersModel()
+        ctx.model.addAttribute("users", new UsersPage() // TODO users -> usersPage
                 .setList(userList));
 
         return modPage("mod/users.ftlh", ctx.model,
@@ -461,7 +591,7 @@ public class ModController extends AbstractController {
     private String error(HandlerContext ctx) {
         ctx.response.setStatus(400);
 
-        ctx.model.addAttribute("error", new ErrorModel()
+        ctx.model.addAttribute("error", new ErrorPage() // TODO error -> errorPage
                 .setMessage((String) ctx.get("message")));
 
         return modPage("error.ftlh", ctx.model,
@@ -490,7 +620,7 @@ public class ModController extends AbstractController {
             dataStylesheet = "default"; // TODO: если нигде не используется, то можно перенести в загрузку конфига
         }
 
-        model.addAttribute("page", new PageModel()
+        model.addAttribute("page", new Page()
                 .setBoardlist(boardService.buildBoardList())
                 .setDataStylesheet(dataStylesheet)
                 .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftlh"))

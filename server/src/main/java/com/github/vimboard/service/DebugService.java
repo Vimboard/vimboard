@@ -1,6 +1,6 @@
 package com.github.vimboard.service;
 
-import com.github.vimboard.model.mod.DebugHttpModel;
+import com.github.vimboard.model.mod.DebugHttpPage;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -10,13 +10,13 @@ import java.util.*;
 @Service
 public class DebugService {
 
-    public DebugHttpModel buildDebugHttpModel(HttpServletRequest request) {
+    public DebugHttpPage buildDebugHttpModel(HttpServletRequest request) {
 
         if (request == null) {
             return null;
         }
 
-        final DebugHttpModel model = new DebugHttpModel();
+        final DebugHttpPage model = new DebugHttpPage();
 
         // W4 HttpServletRequest
         final Map<String, String> properties = new LinkedHashMap<>(24);

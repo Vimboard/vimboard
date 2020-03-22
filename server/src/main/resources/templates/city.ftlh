@@ -1,4 +1,5 @@
 <#ftl output_format="HTML">
+<#-- TODO remove -->
 <!DOCTYPE html>
 <html>
 <head>
