@@ -1,26 +1,4 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- config.boardAbbreviation
-  -- mod.hasPermission.changePassword
-  -- mod.hasPermission.createPm
-  -- mod.hasPermission.createusers
-  -- mod.hasPermission.editusers
-  -- mod.hasPermission.modlog
-  -- mod.hasPermission.promoteusers
-  -- mod.id
-  -- users.list - action
-  -- users.list - boards
-  -- users.list - canBeDemoted
-  -- users.list - canBePromoted
-  -- users.list - demoteToken
-  -- users.list - id
-  -- users.list - last
-  -- users.list - promoteToken
-  -- users.list - type
-  -- users.list - username
-  -->
 <table class="modlog" style="width:auto">
     <tr>
         <th><@spring.message "mod.users.ID"/></th>
@@ -40,16 +18,16 @@
             <td>
                 <#switch user.type>
                     <#case "JANITOR">
-                        <@spring.message "mod.users.Janitor"/>
+                        <@spring.message "group.Janitor"/>
                         <#break>
                     <#case "MOD">
-                        <@spring.message "mod.users.Mod"/>
+                        <@spring.message "group.Mod"/>
                         <#break>
                     <#case "ADMIN">
-                        <@spring.message "mod.users.Admin"/>
+                        <@spring.message "group.Admin"/>
                         <#break>
                     <#default>
-                        <em><@spring.message "mod.users.Unknown"/></em> (${user.type})
+                        <em><@spring.message "group.Unknown"/></em> (${user.type})
                 </#switch>
             </td>
             <td>

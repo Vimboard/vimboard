@@ -1,16 +1,18 @@
 package com.github.vimboard.model.mod;
 
 import com.github.vimboard.domain.Board;
+import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
-import com.github.vimboard.domain.ModLog;
+import com.github.vimboard.model.domain.ModLogModel;
 
 import java.util.List;
 
 public class UserPage {
 
     private List<Board> boards;
-    private List<ModLog> logs = null;
+    private Group[] groups = Group.values();
     private boolean isNew = false;
+    private List<ModLogModel> logs = null;
     private String token;
     private Mod user = null;
 
@@ -27,12 +29,12 @@ public class UserPage {
         return this;
     }
 
-    public List<ModLog> getLogs() {
-        return logs;
+    public Group[] getGroups() {
+        return groups;
     }
 
-    public UserPage setLogs(List<ModLog> logs) {
-        this.logs = logs;
+    public UserPage setGroups(Group[] groups) {
+        this.groups = groups;
         return this;
     }
 
@@ -40,8 +42,17 @@ public class UserPage {
         return isNew;
     }
 
-    public UserPage setNew(boolean isNew) {
-        this.isNew = isNew;
+    public UserPage setNew(boolean aNew) {
+        isNew = aNew;
+        return this;
+    }
+
+    public List<ModLogModel> getLogs() {
+        return logs;
+    }
+
+    public UserPage setLogs(List<ModLogModel> logs) {
+        this.logs = logs;
         return this;
     }
 

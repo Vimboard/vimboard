@@ -1,11 +1,4 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- error.board
-  -- error.message
-  -- TODO
-  -->
 <div style="text-align:center">
     <h2 style="margin:20px 0">${error.message}</h2>
     <#if (error.board)??>

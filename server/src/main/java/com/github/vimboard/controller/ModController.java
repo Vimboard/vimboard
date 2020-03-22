@@ -3,18 +3,15 @@ package com.github.vimboard.controller;
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
-import com.github.vimboard.domain.ModLog;
 import com.github.vimboard.model.ErrorPage;
 import com.github.vimboard.model.Page;
+import com.github.vimboard.model.domain.ModLogModel;
 import com.github.vimboard.model.domain.ModModel;
 import com.github.vimboard.model.domain.ReleaseModel;
 import com.github.vimboard.model.domain.UserModel;
 import com.github.vimboard.model.mod.*;
 import com.github.vimboard.repository.*;
-import com.github.vimboard.service.BoardService;
-import com.github.vimboard.service.DebugService;
-import com.github.vimboard.service.ModService;
-import com.github.vimboard.service.SecurityService;
+import com.github.vimboard.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,7 +133,7 @@ public class ModController extends AbstractController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final DebugService debugService;
-    private final ModLogRepository modLogRepository;
+    private final ModLogService modLogService;
     private final ModRepository modRepository;
     private final ModService modService;
     private final NoticeboardRepository noticeboardRepository;
@@ -154,7 +151,7 @@ public class ModController extends AbstractController {
             BoardRepository boardRepository,
             BoardService boardService,
             DebugService debugService,
-            ModLogRepository modLogRepository,
+            ModLogService modLogService,
             ModRepository modRepository,
             ModService modService,
             NoticeboardRepository noticeboardRepository,
@@ -166,7 +163,7 @@ public class ModController extends AbstractController {
         this.boardRepository = boardRepository;
         this.boardService = boardService;
         this.debugService = debugService;
-        this.modLogRepository = modLogRepository;
+        this.modLogService = modLogService;
         this.modRepository = modRepository;
         this.modService = modService;
         this.noticeboardRepository = noticeboardRepository;
@@ -449,9 +446,9 @@ public class ModController extends AbstractController {
             }
         }
 
-        final List<ModLog> log;
+        final List<ModLogModel> log;
         if (modModel.getHasPermission().isModlog()) {
-            log = modLogRepository.preview(userId, 5);
+            log = modLogService.preview(userId, 5);
         } else {
             log = new ArrayList<>();
         }

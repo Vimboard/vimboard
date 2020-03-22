@@ -1,16 +1,5 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- mod.hasPermission.changePassword
-  -- mod.hasPermission.editusers
-  -- mod.id
-  -- userPage.isNew
-  -- userPage.token
-  -- userPage.user - id
-  -- userPage.user - username
-  -->
-<#if userPage.isNew>
+<#if userPage.new>
     <#assign action = "?/users/new">
 <#else>
     <#assign action = "?/users/" + userPage.user.id>
@@ -22,115 +11,126 @@
         <tr>
             <th><@spring.message "mod.user.Username"/></th>
             <td>
-                <#if userPage.isNew || (mod.hasPermission.editusers)!false>
-                    <input size="20" maxlength="30" type="text" name="username" value="${userPage.user.username}" autocomplete="off">
+                <#if userPage.new || (mod.hasPermission.editusers)!false>
+                    <input size="20" maxlength="30" type="text" name="username" value="${(userPage.user.username)!""}" autocomplete="off">
                 <#else>
                     ${userPage.user.username}
                 </#if>
             </td>
         </tr>
         <tr>
-            <th><@spring.message "mod.user.Password"/><#if !userPage.isNew> <small style="font-weight:normal">(<@spring.message "mod.user.new__optional"/>)</small></#if></th>
+            <th><@spring.message "mod.user.Password"/><#if !userPage.new> <small style="font-weight:normal">(<@spring.message "mod.user.new__optional"/>)</small></#if></th>
             <td>
-                <#if userPage.user.isNew || ((mod.hasPermission.editusers)!false || ((mod.hasPermission.changePassword)!false && userPage.user.id == mod.id))>
+                <#if userPage.new || ((mod.hasPermission.editusers)!false || ((mod.hasPermission.changePassword)!false && userPage.user.id == mod.id))>
                     <input size="20" maxlength="30" type="password" name="password" value="" autocomplete="off">
                 <#else>
                     -
                 </#if>
             </td>
         </tr>
-<#-- TODO: -->
-        {% if new %}
+        <#if userPage.new>
             <tr>
-                <th>{% trans 'Group' %}</th>
+                <th><@spring.message "mod.user.Group"/></th>
                 <td>
                     <ul style="padding:5px 8px;list-style:none">
-                        {% for group_value, group_name in config.mod.groups if group_name != 'Disabled' %}
-                            <li>
-                                <input type="radio" name="type" id="group_{{ group_name }}" value="{{ group_value }}">
-                                <label for="group_{{ group_name }}">{% trans group_name %}</label>
-                            </li>
-                        {% endfor %}
+                        <#list userPage.groups as group>
+                            <#if group != "DISABLED">
+                                <li>
+                                    <input type="radio" name="type" id="group_${group}" value="${group}">
+                                    <label for="group_${group}">
+                                        <#switch group>
+                                            <#case "JANITOR">
+                                                <@spring.message "group.Janitor"/>
+                                                <#break>
+                                            <#case "MOD">
+                                                <@spring.message "group.Mod"/>
+                                                <#break>
+                                            <#case "ADMIN">
+                                                <@spring.message "group.Admin"/>
+                                                <#break>
+                                            <#default>
+                                                <em><@spring.message "group.Unknown"/></em> (${group})
+                                        </#switch>
+                                    </label>
+                                </li>
+                            </#if>
+                        </#list>
                     </ul>
                 </td>
             </tr>
-        {% endif %}
+        </#if>
         <tr>
-            <th>{% trans 'Boards' %}</th>
+            <th><@spring.message "mod.user.Boards"/></th>
             <td>
                 <ul style="padding:0 5px;list-style:none">
                     <li>
                         <input type="checkbox" id="allboards" name="allboards"
-                        {% if '*' in user.boards %} checked{% endif %}
-                        {% if not mod|hasPermission(config.mod.editusers) %}
-                         disabled
-                        {% endif %}
+                        <#if (userPage.user.boards?seq_contains("*"))!false> checked</#if>
+                        <#if !(mod.hasPermission.editusers)!false> disabled</#if>
                         >
-                        <label for="allboards">"*" - {% trans 'All boards' %}</label>
+                        <label for="allboards">"*" - <@spring.message "mod.user.All_boards"/></label>
                     </li>
-                    {% for board in boards %}
+                    <#list userPage.boards as board>
                         <li>
-                            <input type="checkbox" id="board_{{ board.uri }}" name="board_{{ board.uri }}"
-                                {% if board.uri in user.boards %} checked{% endif %}
-                                {% if not mod|hasPermission(config.mod.editusers) %}
-                                 disabled
-                                {% endif %}
+                            <input type="checkbox" id="board_${board.uri}" name="board_${board.uri}"
+                                <#if (userPage.user.boards?seq_contains(board.uri))!false> checked</#if>
+                                <#if !(mod.hasPermission.editusers)!false> disabled</#if>
                                 >
-                            <label for="board_{{ board.uri }}">
-                                {{ config.board_abbreviation|sprintf(board.uri) }}
+                            <label for="board_${board.uri}">
+                                ${config.boardAbbreviation?replace("{uri}", board.uri)}
                                  -
-                                {{ board.title|e }}
+                                ${board.title}
                             </label>
                         </li>
-                    {% endfor %}
+                    </#list>
                 </ul>
             </td>
         </tr>
     </table>
 
     <ul style="padding:0;text-align:center;list-style:none">
-        {% if new %}
-            <li><input type="submit" value="{% trans 'Create user' %}"></li>
-        {% else %}
-            <li><input type="submit" value="{% trans 'Save changes' %}"></li>
-            {% if mod|hasPermission(config.mod.deleteusers) %}
-                <li><input name="delete" onclick="return confirm('Are you sure you want to permanently delete this user?');" type="submit" value="{% trans 'Delete user' %}"></li>
-            {% endif %}
-        {% endif %}
+        <#if userPage.new>
+            <li><input type="submit" value="<@spring.message "mod.user.Create_user"/>"></li>
+        <#else>
+            <li><input type="submit" value="<@spring.message "mod.user.Save_changes"/>"></li>
+            <#if (mod.hasPermission.deleteusers)!false>
+                <li><input name="delete" onclick="return confirm('<@spring.message "mod.user.Are_you_sure_you_want_to_permanently_delete_this_user_"/>');" type="submit" value="<@spring.message "mod.user.Delete_user"/>"></li>
+            </#if>
+        </#if>
     </ul>
 </form>
 
-{% if logs and logs|count > 0  %}
+<#if userPage.logs?? && userPage.logs?size gt 0>
     <table class="modlog" style="width:600px">
         <tr>
-            <th>{% trans 'IP address' %}</th>
-            <th>{% trans 'Time' %}</th>
-            <th>{% trans 'Board' %}</th>
-            <th>{% trans 'Action' %}</th>
+            <th><@spring.message "mod.user.IP_address"/></th>
+            <th><@spring.message "mod.user.Time"/></th>
+            <th><@spring.message "mod.user.Board"/></th>
+            <th><@spring.message "mod.user.Action"/></th>
         </tr>
-        {% for log in logs %}
+        <#list userPage.logs as log>
             <tr>
                 <td class="minimal">
-                    <a href="?/IP/{{ log.ip }}">{{ log.ip }}</a>
+                    <a href="?/IP/${log.ip}">${log.ip}</a>
                 </td>
                 <td class="minimal">
-                    <span title="{{ log.time|date(config.post_date) }}">{{ log.time|ago }}</span>
+                    <span title="${log.time?string[config.postDate]}">${log.last}</span>
                 </td>
                 <td class="minimal">
-                    {% if log.board %}
-                        <a href="?/{{ config.board_path|sprintf(log.board) }}{{ config.file_index }}">{{ config.board_abbreviation|sprintf(log.board) }}</a>
-                    {% else %}
+                    <#if log.board??>
+                        <a href="?/${config.boardPath?replace("{uri}", log.board)}${config.fileIndex}">${config.boardAbbreviation?replace("{uri}", log.board)}</a>
+                    <#else>
                         -
-                    {% endif %}
+                    </#if>
                 </td>
                 <td>
-                    {{ log.text }}
+                    ${log.text}
                 </td>
             </tr>
-        {% endfor %}
+        </#list>
     </table>
     <p style="text-align:center" class="unimportant">
-        <a href="?/log:{{ user.username|e }}">{% trans 'View more logs for this user.' %}</a>
+        <a href="?/log:${userPage.user.username}"><@spring.message "mod.user.View_more_logs_for_this_user_"/></a>
     </p>
-{% endif %}
+</#if>
 

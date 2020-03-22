@@ -1,17 +1,4 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- body
-  -- config.version
-  -- mod
-  -- page.boardlist.top
-  -- page.dataStylesheet
-  -- page.hideDashboardLink
-  -- page.pm
-  -- page.subtitle
-  -- page.title
-  -->
 <#import "/spring.ftl" as spring/>
 <!DOCTYPE html>
 <html lang="<@spring.message "page.lang"/>">

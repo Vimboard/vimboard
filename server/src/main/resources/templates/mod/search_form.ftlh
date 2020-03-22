@@ -1,14 +1,4 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- mod.hasPermission.modlog
-  -- mod.hasPermission.showIp
-  -- mod.hasPermission.viewBanlist
-  -- mod.hasPermission.viewNotes
-  -- searchForm.searchQuery
-  -- searchForm.searchType
-  -->
 <form style="display:inline" action="?/search" method="post">
     <label style="display:inline" for="search"><@spring.message "mod.searchForm.Phrase"/>:</label>
     <input id="search" name="query" type="text" size="60" value="${(searchForm.searchQuery)!""}">

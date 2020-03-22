@@ -1,10 +1,4 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- request.cookies
-  -- request.properties
-  -->
 <table class="modlog" style="width:auto">
     <caption><h2>Common properties</h2></caption>
     <tr>

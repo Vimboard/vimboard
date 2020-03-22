@@ -1,25 +1,4 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- config.additionalJavascript
-  -- config.additionalJavascriptCompile
-  -- config.additionalJavascriptUrl
-  -- config.countryFlagsCondensed
-  -- config.countryFlagsCondensedCss
-  -- config.default_stylesheet[1]
-  -- config.fontAwesome
-  -- config.fontAwesomeCss
-  -- config.metaKeywords
-  -- config.recaptcha
-  -- config.root
-  -- config.uriStylesheets
-  -- config.urlFavicon
-  -- config.urlJavascript
-  -- config.urlStylesheet
-  -- mod
-  -- page.nojavascript
-  -->
     <link rel="stylesheet" media="screen" href="${config.urlStylesheet}">
     <#if config.urlFavicon?has_content><link rel="shortcut icon" href="${config.urlFavicon}"></#if>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

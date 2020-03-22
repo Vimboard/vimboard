@@ -1,48 +1,4 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- dashboard.boards
-  -- dashboard.boards - board.title
-  -- dashboard.boards - board.uri
-  -- dashboard.logoutToken
-  -- dashboard.newerRelease
-  -- dashboard.newerRelease - massive
-  -- dashboard.newerRelease - major
-  -- dashboard.newerRelease - minor
-  -- dashboard.noticeboard
-  -- dashboard.noticeboard - id
-  -- dashboard.noticeboard - subject
-  -- dashboard.noticeboard - time
-  -- dashboard.noticeboard - username
-  -- dashboard.reports
-  -- dashboard.unreadPms
-  -- config.allowSubtitleHtml
-  -- config.banAppeals
-  -- config.boardAbbreviation
-  -- config.boardPath
-  -- config.debug
-  -- config.fileIndex
-  -- config.mod.dashboardLinks
-  -- config.postDate
-  -- mod.hasPermission.changePassword
-  -- mod.hasPermission.debugSql
-  -- mod.hasPermission.editConfig
-  -- mod.hasPermission.editPages
-  -- mod.hasPermission.manageboards
-  -- mod.hasPermission.manageusers
-  -- mod.hasPermission.modlog
-  -- mod.hasPermission.newboard
-  -- mod.hasPermission.noticeboard
-  -- mod.hasPermission.rebuild
-  -- mod.hasPermission.recent
-  -- mod.hasPermission.reports
-  -- mod.hasPermission.search
-  -- mod.hasPermission.themes
-  -- mod.hasPermission.viewBanAppeals
-  -- mod.hasPermission.viewBanlist
-  -- mod.id
-  -->
 <fieldset>
     <legend><@spring.message "mod.dashboard.Boards"/></legend>
 

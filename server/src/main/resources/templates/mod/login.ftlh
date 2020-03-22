@@ -1,9 +1,4 @@
 <#ftl output_format="HTML">
-<#--
-  -- Template attributes:
-  --
-  -- login.error
-  -->
 <#if (login.error)??><h2 style="text-align:center">${login.error}</h2></#if>
 <form action="" method="post">
     <table style="margin-top:25px;">
