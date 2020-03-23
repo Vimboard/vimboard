@@ -124,7 +124,7 @@
                     </#if>
                 </td>
                 <td>
-                    ${log.text}
+                    ${log.text?no_esc}
                 </td>
             </tr>
         </#list>

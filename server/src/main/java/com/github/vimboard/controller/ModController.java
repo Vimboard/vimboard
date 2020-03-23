@@ -324,6 +324,10 @@ public class ModController extends AbstractController {
                 logger.warn("Unauthorized login attempt!");
                 loginPage.setError(i18n("error.invalid"));
             } else {
+                final ModModel modModel = securityService.buildModModel();
+                ctx.model.addAttribute("mod", modModel);
+                ctx.setModModel(modModel);
+
                 securityService.log(ctx, "Logged in");
                 return redirectToDashboard(ctx.request, redirect);
             }
@@ -508,9 +512,8 @@ public class ModController extends AbstractController {
 
             Group type;
             try {
-                type = Group.valueOf(Short.parseShort(
-                        ctx.request.getParameter("password")));
-            } catch (NumberFormatException ex) {
+                type = Group.valueOf(ctx.request.getParameter("type"));
+            } catch (NullPointerException | IllegalArgumentException ex) {
                 type = null;
             }
             if (type == null || type == Group.DISABLED) {
