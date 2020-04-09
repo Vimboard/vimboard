@@ -3,6 +3,7 @@ package com.github.vimboard.controller;
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
+import com.github.vimboard.domain.Pms;
 import com.github.vimboard.model.ErrorPage;
 import com.github.vimboard.model.Page;
 import com.github.vimboard.model.domain.ModLogModel;
@@ -188,6 +189,11 @@ public class ModController extends AbstractController {
         // create a new user
         handlerMap.put(new UriPattern("/users/new", SECURED_POST), this::userNew);
 
+//        '/new_PM/([^/]+)'			=> 'secure_POST new_pm',	// create a new pm
+//        '/PM/(\d+)(/reply)?'			=> 'pm',			// read a pm
+        // pm inbox
+        handlerMap.put(new UriPattern("/inbox"), this::inbox);
+
         // debug request
         handlerMap.put(new UriPattern("/debug/http"), this::debugHttp);
 
@@ -308,6 +314,29 @@ public class ModController extends AbstractController {
                 i18n("mod.debugHttp.Debug__HTTP"), null);
     }
 
+    private String inbox(HandlerContext ctx) {
+        final ModModel modModel = ctx.modModel;
+
+        List<Pms> messages = pmsRepository.list(modModel.getId());
+
+        long unread = pmsRepository.countUnreaded(modModel.getId());
+
+//        foreach ($messages as &$message) {
+//            $message['snippet'] = pm_snippet($message['message']);
+//        }
+
+        ctx.model.addAttribute("inbox", new InboxPage() // TODO inbox -> inboxPage
+                .setMessages(messages)
+                .setUnread(unread));
+
+        final String unreadStr = (unread > 0
+                ? unread + " " + i18n("mod.inbox.unread")
+                : i18n("mod.inbox.empty"));
+
+        return modPage("mod/inbox.ftlh", ctx.model,
+                i18n("mod.inbox.PM_inbox_{unread}", unreadStr), null);
+    }
+
     private String login(HandlerContext ctx, String redirect) {
 
         final LoginPage loginPage = new LoginPage();
@@ -350,7 +379,7 @@ public class ModController extends AbstractController {
     }
 
     private String user(HandlerContext ctx) {
-        final ModModel modModel = getModModel(ctx);
+        final ModModel modModel = ctx.modModel;
         final int userId = Integer.parseInt(ctx.matcher.group(1));
         final String username = ctx.request.getParameter("username");
         final String password = ctx.request.getParameter("password");
@@ -469,7 +498,7 @@ public class ModController extends AbstractController {
     }
 
     private String userNew(HandlerContext ctx) {
-        final ModModel modModel = getModModel(ctx);
+        final ModModel modModel = ctx.modModel;
         final String username = ctx.request.getParameter("username");
         final String password = ctx.request.getParameter("password");
 
@@ -540,7 +569,7 @@ public class ModController extends AbstractController {
     }
 
     private String userPromote(HandlerContext ctx) {
-        final ModModel modModel = getModModel(ctx);
+        final ModModel modModel = ctx.modModel;
         final int userId = Integer.parseInt(ctx.matcher.group(1));
         final boolean isPromote = ctx.matcher.group(2).equals("promote");
 
@@ -570,7 +599,7 @@ public class ModController extends AbstractController {
     }
 
     private String users(HandlerContext ctx) {
-        final ModModel modModel = getModModel(ctx);
+        final ModModel modModel = ctx.modModel;
 
         if (modModel == null
                 || !modModel.getHasPermission().isManageusers()) {
@@ -596,15 +625,6 @@ public class ModController extends AbstractController {
 
         return modPage("error.ftlh", ctx.model,
                 i18n("error.Error"), i18n("error.An_error_has_occured_"));
-   }
-
-   private ModModel getModModel(HandlerContext ctx) {
-       Object model = ctx.model.getAttribute("mod");
-       if (model instanceof ModModel) {
-           return (ModModel) model;
-       } else {
-           return securityService.buildModModel();
-       }
    }
 
     // TODO move

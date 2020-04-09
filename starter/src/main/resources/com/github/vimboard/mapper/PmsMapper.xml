@@ -7,4 +7,16 @@
         SELECT count(*) FROM vmb.pms
     </select>
 
+    <select id="countUnreaded" resultType="long">
+        SELECT count(*) FROM vmb.pms WHERE "to" = #{mod} AND unread = TRUE
+    </select>
+
+    <select id="list" resultType="com.github.vimboard.domain.Pms">
+        SELECT p.id, p.sender, p.to, p.message, p.time, p.unread, m.username
+        FROM vmb.pms p
+        LEFT JOIN vmb.mods m ON m.id = p.sender
+        WHERE p.to = #{mod}
+        ORDER BY p.unread DESC, p.time DESC
+    </select>
+
 </mapper>

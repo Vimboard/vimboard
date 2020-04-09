@@ -177,7 +177,8 @@ public class SettingsBean {
         // Settings without dependencies
 
         sb.put("dashboardLinks", new HashMap<String, String>());
-        sb.put("noticeboardDashboard", 5L);
+        sb.put("noticeboardDashboard", 5);
+        sb.put("snippetLength", 75);
         // Mod permissions
         sb.put("changePassword", Group.JANITOR);
         sb.put("createPm", Group.JANITOR);

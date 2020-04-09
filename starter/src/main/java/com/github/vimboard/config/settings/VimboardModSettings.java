@@ -8,7 +8,8 @@ public class VimboardModSettings {
 
     // Mod settings
 
-    private Long noticeboardDashboard;
+    private Integer noticeboardDashboard;
+    private Integer snippetLength;
 
     // Mod permissions
 
@@ -46,12 +47,20 @@ public class VimboardModSettings {
     // Getters and setters (setters must return void)
     //------------------------------------------------------------------------
 
-    public Long getNoticeboardDashboard() {
+    public Integer getNoticeboardDashboard() {
         return noticeboardDashboard;
     }
 
-    public void setNoticeboardDashboard(Long noticeboardDashboard) {
+    public void setNoticeboardDashboard(Integer noticeboardDashboard) {
         this.noticeboardDashboard = noticeboardDashboard;
+    }
+
+    public Integer getSnippetLength() {
+        return snippetLength;
+    }
+
+    public void setSnippetLength(Integer snippetLength) {
+        this.snippetLength = snippetLength;
     }
 
     public Group getShowIp() {

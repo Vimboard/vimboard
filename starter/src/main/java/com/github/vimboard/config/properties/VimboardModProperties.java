@@ -13,7 +13,13 @@ public class VimboardModProperties {
     /**
      * Number of entries to summarize and display on the dashboard.
      */
-    private Long noticeboardDashboard;
+    private Integer noticeboardDashboard;
+
+    /**
+     * PM snippet (for ?/inbox) length in characters.
+     */
+    //$config['mod']['snippet_length'] = 75;
+    private Integer snippetLength;
 
     //------------------------------------------------------------------------
     // Mod permissions
@@ -147,12 +153,21 @@ public class VimboardModProperties {
     // Getters and setters
     //------------------------------------------------------------------------
 
-    public Long getNoticeboardDashboard() {
+    public Integer getNoticeboardDashboard() {
         return noticeboardDashboard;
     }
 
-    public VimboardModProperties setNoticeboardDashboard(Long noticeboardDashboard) {
+    public VimboardModProperties setNoticeboardDashboard(Integer noticeboardDashboard) {
         this.noticeboardDashboard = noticeboardDashboard;
+        return this;
+    }
+
+    public Integer getSnippetLength() {
+        return snippetLength;
+    }
+
+    public VimboardModProperties setSnippetLength(Integer snippetLength) {
+        this.snippetLength = snippetLength;
         return this;
     }
 

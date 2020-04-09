@@ -8,5 +8,5 @@ import java.util.List;
 @Mapper
 public interface NoticeboardMapper {
 
-    List<Noticeboard> preview(long limit);
+    List<Noticeboard> preview(int limit);
 }
