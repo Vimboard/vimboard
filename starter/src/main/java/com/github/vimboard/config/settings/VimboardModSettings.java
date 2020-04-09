@@ -23,6 +23,7 @@ public class VimboardModSettings {
     private Group newboard;
     private Group manageboards;
     private Group manageusers;
+    private Group masterPm;
     private Group promoteusers;
     private Group editusers;
     private Group changePassword;
@@ -117,6 +118,14 @@ public class VimboardModSettings {
 
     public void setManageusers(Group manageusers) {
         this.manageusers = manageusers;
+    }
+
+    public Group getMasterPm() {
+        return masterPm;
+    }
+
+    public void setMasterPm(Group masterPm) {
+        this.masterPm = masterPm;
     }
 
     public Group getPromoteusers() {

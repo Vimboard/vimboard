@@ -3,13 +3,9 @@ package com.github.vimboard.controller;
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
-import com.github.vimboard.domain.Pms;
 import com.github.vimboard.model.ErrorPage;
 import com.github.vimboard.model.Page;
-import com.github.vimboard.model.domain.ModLogModel;
-import com.github.vimboard.model.domain.ModModel;
-import com.github.vimboard.model.domain.ReleaseModel;
-import com.github.vimboard.model.domain.UserModel;
+import com.github.vimboard.model.domain.*;
 import com.github.vimboard.model.mod.*;
 import com.github.vimboard.repository.*;
 import com.github.vimboard.service.*;
@@ -139,6 +135,7 @@ public class ModController extends AbstractController {
     private final ModService modService;
     private final NoticeboardRepository noticeboardRepository;
     private final PmsRepository pmsRepository;
+    private final PmsService pmsService;
     private final ReportRepository reportRepository;
     private final SecurityService securityService;
     private final SettingsBean settingsBean;
@@ -157,6 +154,7 @@ public class ModController extends AbstractController {
             ModService modService,
             NoticeboardRepository noticeboardRepository,
             PmsRepository pmsRepository,
+            PmsService pmsService,
             ReportRepository reportRepository,
             SecurityService securityService,
             SettingsBean settingsBean) {
@@ -169,6 +167,7 @@ public class ModController extends AbstractController {
         this.modService = modService;
         this.noticeboardRepository = noticeboardRepository;
         this.pmsRepository = pmsRepository;
+        this.pmsService = pmsService;
         this.reportRepository = reportRepository;
         this.securityService = securityService;
         this.settingsBean = settingsBean;
@@ -190,7 +189,8 @@ public class ModController extends AbstractController {
         handlerMap.put(new UriPattern("/users/new", SECURED_POST), this::userNew);
 
 //        '/new_PM/([^/]+)'			=> 'secure_POST new_pm',	// create a new pm
-//        '/PM/(\d+)(/reply)?'			=> 'pm',			// read a pm
+        // read a pm
+        handlerMap.put(new UriPattern("/PM/(\\d+)(/reply)?"), this::pm);
         // pm inbox
         handlerMap.put(new UriPattern("/inbox"), this::inbox);
 
@@ -317,13 +317,9 @@ public class ModController extends AbstractController {
     private String inbox(HandlerContext ctx) {
         final ModModel modModel = ctx.modModel;
 
-        List<Pms> messages = pmsRepository.list(modModel.getId());
+        List<PmsModel> messages = pmsService.list(modModel.getId());
 
         long unread = pmsRepository.countUnreaded(modModel.getId());
-
-//        foreach ($messages as &$message) {
-//            $message['snippet'] = pm_snippet($message['message']);
-//        }
 
         ctx.model.addAttribute("inbox", new InboxPage() // TODO inbox -> inboxPage
                 .setMessages(messages)
@@ -371,6 +367,59 @@ public class ModController extends AbstractController {
 
         return modPage("mod/login.ftlh", ctx.model,
                 i18n("mod.login.Login"), null);
+    }
+
+    private String pm(HandlerContext ctx) {
+        final ModModel modModel = ctx.modModel;
+        final long id = Long.parseLong(ctx.matcher.group(1));
+        final boolean reply = (ctx.matcher.group(2) != null);
+
+        if (reply && !modModel.getHasPermission().isCreatePm()) {
+            return error(ctx.put("message", i18n("error.noaccess")));
+        }
+
+        PmsToModel pm = pmsService.find(id);
+
+        if (pm == null || pm.getTo() != modModel.getId()
+                && !modModel.getHasPermission().isMasterPm()) {
+            return error(ctx.put("message", i18n("error.404")));
+        }
+
+        if (ctx.request.getMethod().equals("POST")
+                && ctx.request.getParameter("delete") != null) {
+            pmsRepository.drop(id);
+
+            return redirectToDashboard(ctx.request, null);
+        }
+
+        if (pm.isUnread() && pm.getTo() == modModel.getId()) {
+            pmsRepository.setReaded(id);
+
+            securityService.log(ctx, "Read a PM");
+        }
+
+        if (reply) {
+            if (pm.getToUsername() == null) {
+                return error(ctx.put("message", i18n("error.404"))); // deleted?
+            }
+
+            ctx.model.addAttribute("newPm", new NewPmPage()
+                    .setId(pm.getSender())
+                    .setMessage(PmsService.quote(pm.getMessage(),
+                            settingsBean.getAll().getMinifyHtml()))
+                    .setToken(securityService.makeSecureLinkToken(
+                            "/new_PM/" + pm.getUsername()))
+                    .setUsername(pm.getUsername()));
+
+            return modPage("mod/new_pm.ftlh", ctx.model,
+                    i18n("mod.new_pm.New_PM_for_{username}",
+                            pm.getToUsername()), null);
+        } else {
+            ctx.model.addAttribute("pm", pm);
+
+            return modPage("mod/pm.ftlh", ctx.model,
+                    i18n("mod.pm.Private_message_{id}", id), null);
+        }
     }
 
     private String logout(HandlerContext ctx) {

@@ -108,6 +108,7 @@ public class SettingsBean {
         sb.put("fontAwesome", true);
         sb.put("fontAwesomeCss", "stylesheets/font-awesome/css/font-awesome.min.css");
         sb.put("metaKeywords", null);
+        sb.put("minifyHtml", true);
         sb.put("mod", buildModSettings(null, boardUri), this::convertMod);
         sb.put("postDate", "MM/dd/yy (EEE) HH:mm:ss");
         sb.put("recaptcha", false);
@@ -190,6 +191,7 @@ public class SettingsBean {
         sb.put("editusers", Group.ADMIN);
         sb.put("manageboards", Group.ADMIN);
         sb.put("manageusers", Group.MOD);
+        sb.put("masterPm", Group.ADMIN);
         sb.put("modlog", Group.ADMIN);
         sb.put("newboard", Group.ADMIN);
         sb.put("noticeboard", Group.JANITOR);

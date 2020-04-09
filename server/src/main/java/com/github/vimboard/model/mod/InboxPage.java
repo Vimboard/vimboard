@@ -1,23 +1,23 @@
 package com.github.vimboard.model.mod;
 
-import com.github.vimboard.domain.Pms;
+import com.github.vimboard.model.domain.PmsModel;
 
 import java.util.List;
 
 public class InboxPage {
 
-    private List<Pms> messages;
+    private List<PmsModel> messages;
     private long unread;
 
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
 
-    public List<Pms> getMessages() {
+    public List<PmsModel> getMessages() {
         return messages;
     }
 
-    public InboxPage setMessages(List<Pms> messages) {
+    public InboxPage setMessages(List<PmsModel> messages) {
         this.messages = messages;
         return this;
     }

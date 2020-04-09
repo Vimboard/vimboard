@@ -153,6 +153,12 @@ public class VimboardBoardProperties {
      */
     private Boolean boardlistWrapBracket;
 
+    /**
+     * Automatically remove unnecessary whitespace when compiling HTML files
+     * from templates.
+     */
+    private Boolean minifyHtml;
+
     //------------------------------------------------------------------------
     // Javascript
     //------------------------------------------------------------------------
@@ -426,6 +432,15 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
         this.boardlistWrapBracket = boardlistWrapBracket;
+        return this;
+    }
+
+    public Boolean getMinifyHtml() {
+        return minifyHtml;
+    }
+
+    public VimboardBoardProperties setMinifyHtml(Boolean minifyHtml) {
+        this.minifyHtml = minifyHtml;
         return this;
     }
 

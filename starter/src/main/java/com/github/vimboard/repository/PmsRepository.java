@@ -1,6 +1,7 @@
 package com.github.vimboard.repository;
 
 import com.github.vimboard.domain.Pms;
+import com.github.vimboard.domain.PmsTo;
 import com.github.vimboard.mapper.PmsMapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,24 @@ public class PmsRepository {
         return pmsMapper().countUnreaded(mod);
     }
 
+    @Transactional
+    public void drop(long id) {
+        pmsMapper().drop(id);
+    }
+
+    @Transactional(readOnly = true)
+    public PmsTo find(long id) {
+        return pmsMapper().find(id);
+    }
+
     @Transactional(readOnly = true)
     public List<Pms> list(int mod) {
         return pmsMapper().list(mod);
+    }
+
+    @Transactional
+    public void setReaded(long id) {
+        pmsMapper().setReaded(id);
     }
 
     private PmsMapper pmsMapper() {

@@ -18,7 +18,6 @@ public class VimboardModProperties {
     /**
      * PM snippet (for ?/inbox) length in characters.
      */
-    //$config['mod']['snippet_length'] = 75;
     private Integer snippetLength;
 
     //------------------------------------------------------------------------
@@ -97,8 +96,12 @@ public class VimboardModProperties {
     /**
      * Create a PM (viewing mod usernames).
      */
-    //$config['mod']['create_pm'] = JANITOR;
     private Group createPm;
+
+    /**
+     * Read any PM, sent to or from anybody.
+     */
+    private Group masterPm;
 
     /**
      * Search through posts, IP address notes and bans.
@@ -294,6 +297,15 @@ public class VimboardModProperties {
 
     public VimboardModProperties setCreatePm(Group createPm) {
         this.createPm = createPm;
+        return this;
+    }
+
+    public Group getMasterPm() {
+        return masterPm;
+    }
+
+    public VimboardModProperties setMasterPm(Group masterPm) {
+        this.masterPm = masterPm;
         return this;
     }
 

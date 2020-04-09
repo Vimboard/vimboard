@@ -186,6 +186,10 @@ vimboard:
     # Whether or not to put brackets around the whole board list.
     boardlist-wrap-bracket: false
 
+    # Automatically remove unnecessary whitespace when compiling HTML files
+    # from templates.
+    minify-html: true
+
     # ------------------------------------------------------------------------
     # Javascript
     # ------------------------------------------------------------------------
@@ -269,6 +273,9 @@ vimboard:
       # Number of entries to summarize and display on the dashboard.
       noticeboard-dashboard: 5
 
+      # PM snippet (for ?/inbox) length in characters.
+      snippet-length: 75
+
       # ----------------------------------------------------------------------
       # Mod permissions
       # ----------------------------------------------------------------------
@@ -315,6 +322,9 @@ vimboard:
 
       # Create a PM (viewing mod usernames).
       create-pm: JANITOR
+
+      # Read any PM, sent to or from anybody.
+      master-pm: ADMIN
 
       # Search through posts, IP address notes and bans.
       search: JANITOR

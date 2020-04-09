@@ -5,8 +5,8 @@ import java.util.Date;
 public class Pms {
 
     private long id;
-    private long sender;
-    private long to;
+    private int sender;
+    private int to;
     private String message;
     private Date time;
     private boolean unread;
@@ -25,20 +25,20 @@ public class Pms {
         return this;
     }
 
-    public long getSender() {
+    public int getSender() {
         return sender;
     }
 
-    public Pms setSender(long sender) {
+    public Pms setSender(int sender) {
         this.sender = sender;
         return this;
     }
 
-    public long getTo() {
+    public int getTo() {
         return to;
     }
 
-    public Pms setTo(long to) {
+    public Pms setTo(int to) {
         this.to = to;
         return this;
     }

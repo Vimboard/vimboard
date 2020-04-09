@@ -99,6 +99,9 @@ public class SecurityService {
                 if (group.hasRole(modSettings.getManageusers())) {
                     permissionModel.setManageusers(true);
                 }
+                if (group.hasRole(modSettings.getMasterPm())) {
+                    permissionModel.setMasterPm(true);
+                }
                 if (group.hasRole(modSettings.getModlog())) {
                     permissionModel.setModlog(true);
                 }

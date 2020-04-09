@@ -73,8 +73,8 @@
 
         CREATE TABLE vmb.pms (
             id         bigserial NOT NULL,
-            sender     bigint NOT NULL,
-            "to"       bigint NOT NULL,
+            sender     int NOT NULL,
+            "to"       int NOT NULL,
             message    text NOT NULL,
             time       timestamp NOT NULL,
             unread     boolean NOT NULL,

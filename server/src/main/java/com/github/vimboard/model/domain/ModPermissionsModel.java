@@ -12,6 +12,7 @@ public class ModPermissionsModel {
     private boolean editusers = false;
     private boolean manageboards = false;
     private boolean manageusers = false;
+    private boolean masterPm = false;
     private boolean modlog = false;
     private boolean newboard = false;
     private boolean noticeboard = false;
@@ -116,6 +117,15 @@ public class ModPermissionsModel {
 
     public ModPermissionsModel setManageusers(boolean manageusers) {
         this.manageusers = manageusers;
+        return this;
+    }
+
+    public boolean isMasterPm() {
+        return masterPm;
+    }
+
+    public ModPermissionsModel setMasterPm(boolean masterPm) {
+        this.masterPm = masterPm;
         return this;
     }
 

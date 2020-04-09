@@ -1,6 +1,7 @@
 package com.github.vimboard.mapper;
 
 import com.github.vimboard.domain.Pms;
+import com.github.vimboard.domain.PmsTo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,5 +13,11 @@ public interface PmsMapper {
 
     long countUnreaded(int mod);
 
+    PmsTo find(long id);
+
+    void drop(long id);
+
     List<Pms> list(int mod);
+
+    void setReaded(long id);
 }

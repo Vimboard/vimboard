@@ -49,6 +49,7 @@ public class VimboardBoardSettings {
     private String fontAwesomeCss;
     private Object[] boards;
     private Boolean boardlistWrapBracket;
+    private Boolean minifyHtml;
 
     // Javascript
 
@@ -235,6 +236,14 @@ public class VimboardBoardSettings {
 
     public void setBoardlistWrapBracket(Boolean boardlistWrapBracket) {
         this.boardlistWrapBracket = boardlistWrapBracket;
+    }
+
+    public Boolean getMinifyHtml() {
+        return minifyHtml;
+    }
+
+    public void setMinifyHtml(Boolean minifyHtml) {
+        this.minifyHtml = minifyHtml;
     }
 
     public String[] getAdditionalJavascript() {
