@@ -3,7 +3,7 @@
     <input type="hidden" name="token" value="${newPm.token}">
     <table>
         <tr>
-            <th><@spring.message "mod.new_pm.To"/></th>
+            <th><@spring.message "mod.newPm.To"/></th>
             <#if (mod.hasPermission.editusers)!false>
                 <td><a href="?/users/${newPm.id}">${newPm.username}</a></td>
             <#else>
@@ -16,5 +16,5 @@
         </tr>
     </table>
 
-    <p style="text-align:center"><input type="submit" value="<@spring.message "mod.new_pm.Send_message"/>"></p>
+    <p style="text-align:center"><input type="submit" value="<@spring.message "mod.newPm.Send_message"/>"></p>
 </form>

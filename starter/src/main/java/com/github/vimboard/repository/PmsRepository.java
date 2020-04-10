@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -28,6 +29,11 @@ public class PmsRepository {
     @Transactional(readOnly = true)
     public long countUnreaded(int mod) {
         return pmsMapper().countUnreaded(mod);
+    }
+
+    @Transactional
+    public void create(Pms pms) {
+        pmsMapper().create(pms);
     }
 
     @Transactional

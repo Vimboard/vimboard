@@ -3,6 +3,7 @@ package com.github.vimboard.controller;
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
+import com.github.vimboard.domain.Pms;
 import com.github.vimboard.model.ErrorPage;
 import com.github.vimboard.model.Page;
 import com.github.vimboard.model.domain.*;
@@ -27,6 +28,7 @@ import java.util.regex.Pattern;
 
 import static com.github.vimboard.controller.ModController.UriPatternType.SECURED;
 import static com.github.vimboard.controller.ModController.UriPatternType.SECURED_POST;
+import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
 @Controller
 @RequestMapping("/mod.php")
@@ -188,7 +190,8 @@ public class ModController extends AbstractController {
         // create a new user
         handlerMap.put(new UriPattern("/users/new", SECURED_POST), this::userNew);
 
-//        '/new_PM/([^/]+)'			=> 'secure_POST new_pm',	// create a new pm
+        // create a new pm
+        handlerMap.put(new UriPattern("/new_PM/([^/]+)", SECURED_POST), this::newPm);
         // read a pm
         handlerMap.put(new UriPattern("/PM/(\\d+)(/reply)?"), this::pm);
         // pm inbox
@@ -369,6 +372,61 @@ public class ModController extends AbstractController {
                 i18n("mod.login.Login"), null);
     }
 
+    private String newPm(HandlerContext ctx) {
+        final ModModel modModel = ctx.modModel;
+        final String username = ctx.matcher.group(1);
+
+        if (!modModel.getHasPermission().isCreatePm()) {
+            return error(ctx.put("message", i18n("error.noaccess")));
+        }
+
+        Mod m = modRepository.findByName(username);
+        if (m == null) {
+            // Old style ?/PM: by user ID
+            // TODO ^^^
+            try {
+                final int id = Integer.parseInt(username);
+                m = modRepository.find(id);
+            } catch (NumberFormatException ex) {
+                m = null;
+            }
+            if (m != null) {
+                return redirectToDashboard(ctx.request,
+                        "/new_PM/" + m.getUsername());
+            } else {
+                return error(ctx.put("message", i18n("error.404")));
+            }
+        }
+
+        String message = ctx.request.getParameter("message");
+        if (ctx.request.getMethod().equals("POST")
+                && message != null) {
+            message = Functions.escapeMarkupModifiers(message);
+            message = Functions.markup(message);
+
+            pmsRepository.create(new Pms()
+                    .setSender(modModel.getId())
+                    .setTo(m.getId())
+                    .setMessage(message)
+                    .setTime(new Date()));
+
+            securityService.log(ctx,
+                    "Sent a PM to " + htmlEscape(m.getUsername()));
+
+            return redirectToDashboard(ctx.request, null);
+        }
+
+        ctx.model.addAttribute("newPm", new NewPmPage()
+                .setId(m.getId())
+                .setMessage("")
+                .setToken(securityService.makeSecureLinkToken(
+                        "/new_PM/" + m.getUsername()))
+                .setUsername(m.getUsername()));
+
+        return modPage("mod/new_pm.ftlh", ctx.model,
+                i18n("mod.newPm.New_PM_for_{username}", m.getUsername()), null);
+    }
+
     private String pm(HandlerContext ctx) {
         final ModModel modModel = ctx.modModel;
         final long id = Long.parseLong(ctx.matcher.group(1));
@@ -412,7 +470,7 @@ public class ModController extends AbstractController {
                     .setUsername(pm.getUsername()));
 
             return modPage("mod/new_pm.ftlh", ctx.model,
-                    i18n("mod.new_pm.New_PM_for_{username}",
+                    i18n("mod.newPm.New_PM_for_{username}",
                             pm.getToUsername()), null);
         } else {
             ctx.model.addAttribute("pm", pm);
@@ -477,7 +535,8 @@ public class ModController extends AbstractController {
                     return error(ctx.put("message", i18n("error.noaccess")));
                 }
                 modRepository.drop(userId);
-                securityService.log(ctx, "Deleted user " + user.getUsername()
+                securityService.log(ctx, "Deleted user "
+                        + htmlEscape(user.getUsername())
                         + " <small>(#" + user.getId() + ")</small>");
                 return redirectToDashboard(ctx.request, "/users");
             }
@@ -490,14 +549,16 @@ public class ModController extends AbstractController {
             modRepository.alter(userId, username, boards);
 
             if (!user.getUsername().equals(username)) {
-                securityService.log(ctx, "Renamed user \"" + user.getUsername()
+                securityService.log(ctx, "Renamed user \""
+                        + htmlEscape(user.getUsername())
                         + "\" <small>(#" + user.getId() + ")</small>"
-                        + " to \"" + username + "\"");
+                        + " to \"" + htmlEscape(username) + "\"");
             }
 
             if (!password.isEmpty()) {
                 modRepository.changePassword(userId, password);
-                securityService.log(ctx, "Changed password for " + username
+                securityService.log(ctx, "Changed password for "
+                        + htmlEscape(username)
                         + " <small>(#" + user.getId() + ")</small>");
             }
 
@@ -602,7 +663,8 @@ public class ModController extends AbstractController {
             modRepository.create(username, password, type, boards);
             final Mod user = modRepository.findByName(username);
 
-            securityService.log(ctx, "Created a new user: " + username
+            securityService.log(ctx, "Created a new user: "
+                    + htmlEscape(username)
                     + " <small>(#" + user.getId() + ")</small>");
 
             return redirectToDashboard(ctx.request, "/users");
@@ -641,7 +703,7 @@ public class ModController extends AbstractController {
         modRepository.alterType(userId, newType);
 
         securityService.log(ctx, (isPromote ? "Promoted" : "Demoted")
-                + " user \"" + mod.getUsername()
+                + " user \"" + htmlEscape(mod.getUsername())
                 + "\" to " + newType.toString());
 
         return redirectToDashboard(ctx.request, "/users");

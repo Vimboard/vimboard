@@ -11,18 +11,23 @@
         SELECT count(*) FROM vmb.pms WHERE "to" = #{mod} AND unread = TRUE
     </select>
 
-    <select id="find" resultType="com.github.vimboard.domain.PmsTo">
-        SELECT p.id, p.sender, p.to, p.message, p.time, p.unread,
-               f.username, t.username AS to_username
-        FROM vmb.pms p
-        LEFT JOIN vmb.mods f ON f.id = p.sender
-        LEFT JOIN vmb.mods t ON t.id = p.to
-        WHERE p.id = #{id}
-    </select>
+    <insert id="create">
+        INSERT INTO vmb.pms(sender, "to", message, time, unread)
+        VALUES (#{sender}, #{to}, #{message}, #{time}, 1)
+    </insert>
 
     <delete id="drop">
         DELETE FROM vmb.pms WHERE id = #{id}
     </delete>
+
+    <select id="find" resultType="com.github.vimboard.domain.PmsTo">
+        SELECT p.id, p.sender, p.to, p.message, p.time, p.unread,
+               f.username, t.username AS to_username
+        FROM vmb.pms p
+                 LEFT JOIN vmb.mods f ON f.id = p.sender
+                 LEFT JOIN vmb.mods t ON t.id = p.to
+        WHERE p.id = #{id}
+    </select>
 
     <select id="list" resultType="com.github.vimboard.domain.Pms">
         SELECT p.id, p.sender, p.to, p.message, p.time, p.unread, f.username

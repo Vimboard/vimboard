@@ -13,6 +13,8 @@ public interface PmsMapper {
 
     long countUnreaded(int mod);
 
+    void create(Pms pms);
+
     PmsTo find(long id);
 
     void drop(long id);
