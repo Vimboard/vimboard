@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -19,11 +18,6 @@ public class PmsRepository {
     @Autowired
     public PmsRepository(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
-    }
-
-    @Transactional(readOnly = true)
-    public long count() {
-        return pmsMapper().count();
     }
 
     @Transactional(readOnly = true)

@@ -32,7 +32,7 @@
 
     <ul style="list-style:none;text-align:center;padding:0">
         <li style="padding:5px 0">
-            <input type="submit" name="delete" value="{% trans 'Delete forever' %}">
+            <input type="submit" name="delete" value="<@spring.message "mod.pm.Delete_forever"/>">
         </li>
         <#if (mod.hasPermission.createPm)!false>
             <li style="padding:5px 0">

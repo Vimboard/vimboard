@@ -3,17 +3,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.vimboard.mapper.PmsMapper">
 
-    <select id="count" resultType="long">
-        SELECT count(*) FROM vmb.pms
-    </select>
-
     <select id="countUnreaded" resultType="long">
         SELECT count(*) FROM vmb.pms WHERE "to" = #{mod} AND unread = TRUE
     </select>
 
     <insert id="create">
         INSERT INTO vmb.pms(sender, "to", message, time, unread)
-        VALUES (#{sender}, #{to}, #{message}, #{time}, 1)
+        VALUES (#{sender}, #{to}, #{message}, #{time}, TRUE)
     </insert>
 
     <delete id="drop">

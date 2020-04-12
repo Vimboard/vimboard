@@ -293,6 +293,8 @@ public class ModController extends AbstractController {
     }
 
     private String dashboard(HandlerContext ctx) {
+        final ModModel modModel = ctx.modModel;
+
         ctx.model.addAttribute("dashboard", new DashboardPage() // TODO dashboard -> dashboardPage
                 .setBoards(boardRepository.list())
                 .setLogoutToken(securityService.makeSecureLinkToken("/logout"))
@@ -302,7 +304,7 @@ public class ModController extends AbstractController {
                         .setMinor(4))
                 .setNoticeboard(noticeboardRepository.preview())
                 .setReports(reportRepository.count())
-                .setUnreadPms(pmsRepository.count()));
+                .setUnreadPms(pmsRepository.countUnreaded(modModel.getId())));
         return modPage("mod/dashboard.ftlh", ctx.model,
                 i18n("mod.dashboard.Dashboard"), null);
     }

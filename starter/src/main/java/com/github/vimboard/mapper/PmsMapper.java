@@ -9,8 +9,6 @@ import java.util.List;
 @Mapper
 public interface PmsMapper {
 
-    long count();
-
     long countUnreaded(int mod);
 
     void create(Pms pms);
