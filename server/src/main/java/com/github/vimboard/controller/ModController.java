@@ -197,6 +197,15 @@ public class ModController extends AbstractController {
         // pm inbox
         handlerMap.put(new UriPattern("/inbox"), this::inbox);
 
+        // ...
+
+        // edit board details
+        //handlerMap.put(new UriPattern("/edit/(\%b)", SECURED_POST), this::editBoard);
+        // create a new board
+        handlerMap.put(new UriPattern("/new-board", SECURED_POST), this::newBoard);
+
+        // ...
+
         // debug request
         handlerMap.put(new UriPattern("/debug/http"), this::debugHttp);
 
@@ -372,6 +381,40 @@ public class ModController extends AbstractController {
 
         return modPage("mod/login.ftlh", ctx.model,
                 i18n("mod.login.Login"), null);
+    }
+
+    private String newBoard(HandlerContext ctx) {
+        final ModModel modModel = ctx.modModel;
+
+        if (!modModel.getHasPermission().isNewboard()) {
+            return error(ctx.put("message", i18n("error.noaccess")));
+        }
+
+        final String uri = ctx.request.getParameter("uri");
+        final String title = ctx.request.getParameter("title");
+        final String subtitle = ctx.request.getParameter("subtitle");
+        if (ctx.request.getMethod().equals("POST")
+                && uri != null && title != null && subtitle != null) {
+            if (uri.isEmpty()) {
+                return error(ctx.put("message",
+                        i18n("error.required", "URI")));
+            }
+
+            if (title.isEmpty()) {
+                return error(ctx.put("message",
+                        i18n("error.required", "title")));
+            }
+
+            if (!uri.matches("^" + settingsBean.getAll().getBoardRegex() + "$")) {
+                return error(ctx.put("message",
+                        i18n("error.invalidfield", "URI")));
+            }
+
+            // TODO error 'Your filesystem cannot handle a board URI of that length'
+
+            // openBoard
+        }
+
     }
 
     private String newPm(HandlerContext ctx) {
