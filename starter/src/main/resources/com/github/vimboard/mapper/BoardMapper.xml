@@ -8,8 +8,45 @@
         VALUES (#{uri}, #{title}, #{subtitle})
     </insert>
 
+    <update id="createBoardTable" parameterType="String">
+        CREATE TABLE vmb.posts_#{uri} (
+            id               bigserial NOT NULL,
+            thread           bigint DEFAULT NULL,
+            subject          varchar(100) DEFAULT NULL,
+            email            varchar(30) DEFAULT NULL,
+            name             varchar(35) DEFAULT NULL,
+            trip             varchar(15) DEFAULT NULL,
+            capcode          varchar(50) DEFAULT NULL,
+            body             text NOT NULL,
+            body_nomarkup    text,
+            time             bigint NOT NULL,
+            bump             bigint DEFAULT NULL,
+            files            text DEFAULT NULL,
+            num_files        smallint DEFAULT 0,
+            filehash         text,
+            password         varchar(20) DEFAULT NULL,
+            ip               varchar(39) NOT NULL,
+            sticky           boolean NOT NULL,
+            locked           boolean NOT NULL,
+            cycle            boolean NOT NULL,
+            sage             boolean NOT NULL,
+            embed            text,
+            slug             varchar(256) DEFAULT NULL,
+            UNIQUE(id)
+        ) PARTITION BY LIST(boards);
+        CREATE INDEX ON vmb.posts_#{uri}(thread, id);
+        -- todo CREATE INDEX ON vmb.posts_#{uri}(left(filehash, 40)/* text_pattern_ops*/);
+        CREATE INDEX ON vmb.posts_#{uri}(time);
+        CREATE INDEX ON vmb.posts_#{uri}(ip);
+        CREATE INDEX ON vmb.posts_#{uri}(thread, sticky, bump);
+    </update>
+
+    <select id="findByUri" resultType="com.github.vimboard.domain.Board">
+        SELECT id, uri, title, subtitle FROM vmb.boards WHERE uri = #{uri}
+    </select>
+
     <select id="list" resultType="com.github.vimboard.domain.Board">
-        SELECT uri, title, subtitle FROM vmb.boards
+        SELECT id, uri, title, subtitle FROM vmb.boards
     </select>
 
 </mapper>

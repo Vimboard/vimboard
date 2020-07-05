@@ -24,6 +24,16 @@ public class BoardRepository {
         boardMapper().create(uri, title, subtitle);
     }
 
+    @Transactional
+    public void createBoardTable(String uri) {
+        boardMapper().createBoardTable(uri);
+    }
+
+    @Transactional(readOnly = true)
+    public Board findByUri(String uri) {
+        return boardMapper().findByUri(uri);
+    }
+
     @Transactional(readOnly = true)
     public List<Board> list() {
         return boardMapper().list();

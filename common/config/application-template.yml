@@ -245,6 +245,17 @@ vimboard:
     # Board directory, followed by a forward-slash (/).
     board-path: "{uri}/"
 
+    dir:
+
+      # Directory for images.
+      img: img/
+
+      # Directory for thumbnails.
+      thumb: thumb/
+
+      # Directory for resources.
+      res: res/
+
     # Set custom location for stylesheets file. This can be used for load
     # balancing across multiple servers or hostnames.
 #   url-stylesheet: http://static.example.org/style.css # main/base stylesheet
@@ -256,9 +267,17 @@ vimboard:
     # Website favicon.
 #   url-favicon: /favicon.gif
 
+    # Try not to build pages when we shouldn't have to.
+    try-smarter: true
+
     # ------------------------------------------------------------------------
     # Advanced build
     # ------------------------------------------------------------------------
+
+    # TODO update doc
+    generation-strategies:
+      - STRATEGY_SANE
+      - STRATEGY_IMMEDIATE
 
     # ------------------------------------------------------------------------
     # Mod settings

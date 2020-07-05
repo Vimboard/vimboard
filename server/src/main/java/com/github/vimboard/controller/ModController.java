@@ -412,9 +412,50 @@ public class ModController extends AbstractController {
 
             // TODO error 'Your filesystem cannot handle a board URI of that length'
 
-            // openBoard
+            final Map<String, Object> globals = new HashMap<>(); // TODO refactor (remove map)
+            globals.put("uri", uri);
+
+            try {
+                if (boardService.openBoard(globals)) {
+                    return error(ctx.put("message",
+                            i18n("error.boardexists", uri)));
+                }
+            } catch (ServiceException ex) {
+                return error(ctx.put("message", ex.getMessage()));
+            }
+
+            boardRepository.create(uri, title, subtitle);
+
+            securityService.log(ctx, "Created a new board: "
+                    + "".replace("{uri}", uri));
+
+            try {
+                if (!boardService.openBoard(globals)) {
+                    return error(ctx.put("message",
+                            i18n("error.boardnotcreated", uri)));
+                }
+            } catch (ServiceException ex) {
+                return error(ctx.put("message", ex.getMessage()));
+            }
+
+            boardRepository.createBoardTable(uri);
+
+            // Build the board
+            boardService.buildIndex();
+
+            rebuildThemes('boards');
+
+            return redirectToDashboard(ctx.request,
+                    "/" + uri + "/" + settingsBean.getAll().getFileIndex());
         }
 
+        ctx.model.addAttribute();
+
+        return modPage("mod/board.ftlh", ctx.model,
+                i18n("mod.board.New_board"), null);
+
+        mod_page(_('New board'), 'mod/board.html',
+                array('new' => true, 'token' => make_secure_link_token('new-board')));
     }
 
     private String newPm(HandlerContext ctx) {

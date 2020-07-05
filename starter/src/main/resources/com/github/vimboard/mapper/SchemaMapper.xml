@@ -14,12 +14,13 @@
         ----------------------------------------------------------------------
 
         CREATE TABLE vmb.boards (
+            id          serial NOT NULL,
             uri         varchar(58) NOT NULL,
             title       text NOT NULL,
             subtitle    text,
-            PRIMARY KEY(uri)
+            PRIMARY KEY(id),
+            UNIQUE(uri)
         );
-        CREATE INDEX ON vmb.boards(uri);
 
         ----------------------------------------------------------------------
 

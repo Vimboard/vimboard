@@ -1,5 +1,7 @@
 package com.github.vimboard.config.settings;
 
+import com.github.vimboard.domain.GenerationStrategy;
+
 import java.util.Map;
 
 public class VimboardBoardSettings {
@@ -67,11 +69,15 @@ public class VimboardBoardSettings {
     private String fileIndex;
     private String fileScript;
     private String boardPath;
+    private VimboardDirSettings dir;
     private String urlStylesheet;
     private String urlJavascript;
     private String urlFavicon;
+    private Boolean trySmarter;
 
     // Advanced build
+
+    private GenerationStrategy[] generationStrategies;
 
     // Mod settings
 
@@ -302,6 +308,14 @@ public class VimboardBoardSettings {
         this.boardPath = boardPath;
     }
 
+    public VimboardDirSettings getDir() {
+        return dir;
+    }
+
+    public void setDir(VimboardDirSettings dir) {
+        this.dir = dir;
+    }
+
     public String getUrlStylesheet() {
         return urlStylesheet;
     }
@@ -324,6 +338,22 @@ public class VimboardBoardSettings {
 
     public void setUrlFavicon(String urlFavicon) {
         this.urlFavicon = urlFavicon;
+    }
+
+    public Boolean getTrySmarter() {
+        return trySmarter;
+    }
+
+    public void setTrySmarter(Boolean trySmarter) {
+        this.trySmarter = trySmarter;
+    }
+
+    public GenerationStrategy[] getGenerationStrategies() {
+        return generationStrategies;
+    }
+
+    public void setGenerationStrategies(GenerationStrategy[] generationStrategies) {
+        this.generationStrategies = generationStrategies;
     }
 
     public VimboardModSettings getMod() {

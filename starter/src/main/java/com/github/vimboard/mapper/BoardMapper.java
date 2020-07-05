@@ -10,5 +10,9 @@ public interface BoardMapper {
 
     void create(String uri, String title, String subtitle);
 
+    void createBoardTable(String uri);
+
+    Board findByUri(String uri);
+
     List<Board> list();
 }

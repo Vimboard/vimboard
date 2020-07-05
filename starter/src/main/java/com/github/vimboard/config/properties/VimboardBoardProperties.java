@@ -1,5 +1,6 @@
 package com.github.vimboard.config.properties;
 
+import com.github.vimboard.domain.GenerationStrategy;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.Map;
@@ -36,6 +37,7 @@ public class VimboardBoardProperties {
     // Cookie settings
     //------------------------------------------------------------------------
 
+    @NestedConfigurationProperty
     private VimboardCookiesProperties cookies;
 
     //------------------------------------------------------------------------
@@ -213,6 +215,9 @@ public class VimboardBoardProperties {
      */
     private String boardPath;
 
+    @NestedConfigurationProperty
+    private VimboardDirProperties dir;
+
     /*
      * Set custom location for stylesheets file. This can be used for load
      * balancing across multiple servers or hostnames.
@@ -230,9 +235,66 @@ public class VimboardBoardProperties {
      */
     private String urlFavicon;
 
+    /**
+     * Try not to build pages when we shouldn't have to.
+     */
+    private Boolean trySmarter;
+
     //------------------------------------------------------------------------
     // Advanced build
     //------------------------------------------------------------------------
+
+    /**
+     * TODO update doc
+     *
+     * Strategies for file generation. Also known as an "advanced build". If you
+     * don't have performance issues, you can safely ignore that part, because
+     * it's hard to configure and won't even work on your free webhosting.
+     *
+     * A strategy is a function, that given the PHP environment and
+     * ($fun, $array) variable pair, returns an $action array or false.
+     *
+     * $fun - a controller function name, see inc/controller.php. This is named
+     * after functions, so that we can generate the files in daemon.
+     *
+     * $array - arguments to be passed
+     *
+     * $action - action to be taken. It's an array, and the first element of it
+     * is one of the following:
+     *  * "immediate" - generate the page immediately
+     *  * "defer" - defer page generation to a moment a worker daemon gets to build it (serving a stale
+     *              page in the meantime). The remaining arguments are daemon-specific. Daemon isn't
+     *              implemented yet :DDDD inb4 while(true) { generate(Queue::Get()) }; (which is probably it).
+     *  * "build_on_load" - defer page generation to a moment, when the user actually accesses the page.
+     *                      This is a smart_build behaviour. You shouldn't use this one too much, if you
+     *                      use it for active boards, the server may choke due to a possible race condition.
+     *                      See my blog post: https://engine.vichan.net/blog/res/2.html
+     * TODO update docs in GenerationAction
+     *
+     * So, let's assume we want to build a thread 1324 on board /b/, because a
+     * new post appeared there. We try the first strategy, giving it arguments:
+     * 'sb_thread', array('b', 1324). The strategy will now return a value
+     * $action, denoting an action to do. If $action is false, we try another
+     * strategy.
+     *
+     * As I said, configuration isn't easy.
+     *
+     * 1. chmod 0777 directories: tmp/locks/ and tmp/queue/.
+     * 2. serve 403 and 404 requests to go thru smart_build.php
+     *    for nginx, this blog post contains config snippets:
+     *    https://engine.vichan.net/blog/res/2.html
+     * 3. disable indexes in your webserver
+     * 4. launch any number of daemons (eg. twice your number of threads?) using
+     *    the command:
+     *    $ tools/worker.php
+     *    You don't need to do that step if you are not going to use the "defer"
+     *    option.
+     * 5. enable smart_build_helper (see below)
+     * 6. edit the strategies (see inc/functions.php for the builtin ones). You
+     *    can use lambdas. I will test various ones and include one that works
+     *    best for me.
+     */
+    private GenerationStrategy[] generationStrategies;
 
     //------------------------------------------------------------------------
     // Mod settings
@@ -507,6 +569,15 @@ public class VimboardBoardProperties {
         return this;
     }
 
+    public VimboardDirProperties getDir() {
+        return dir;
+    }
+
+    public VimboardBoardProperties setDir(VimboardDirProperties dir) {
+        this.dir = dir;
+        return this;
+    }
+
     public String getUrlStylesheet() {
         return urlStylesheet;
     }
@@ -531,6 +602,24 @@ public class VimboardBoardProperties {
 
     public VimboardBoardProperties setUrlFavicon(String urlFavicon) {
         this.urlFavicon = urlFavicon;
+        return this;
+    }
+
+    public Boolean getTrySmarter() {
+        return trySmarter;
+    }
+
+    public VimboardBoardProperties setTrySmarter(Boolean trySmarter) {
+        this.trySmarter = trySmarter;
+        return this;
+    }
+
+    public GenerationStrategy[] getGenerationStrategies() {
+        return generationStrategies;
+    }
+
+    public VimboardBoardProperties setGenerationStrategies(GenerationStrategy[] generationStrategies) {
+        this.generationStrategies = generationStrategies;
         return this;
     }
 

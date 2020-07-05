@@ -1,13 +1,8 @@
 package com.github.vimboard.config;
 
-import com.github.vimboard.config.properties.VimboardBoardProperties;
-import com.github.vimboard.config.properties.VimboardCookiesProperties;
-import com.github.vimboard.config.properties.VimboardModProperties;
-import com.github.vimboard.config.properties.VimboardProperties;
-import com.github.vimboard.config.settings.VimboardBoardSettings;
-import com.github.vimboard.config.settings.VimboardCookiesSettings;
-import com.github.vimboard.config.settings.VimboardModSettings;
-import com.github.vimboard.config.settings.VimboardSettings;
+import com.github.vimboard.config.properties.*;
+import com.github.vimboard.config.settings.*;
+import com.github.vimboard.domain.GenerationStrategy;
 import com.github.vimboard.domain.Group;
 
 import javax.validation.ValidationException;
@@ -103,10 +98,15 @@ public class SettingsBean {
         sb.put("countryFlagsCondensed", true);
         sb.put("countryFlagsCondensedCss", "static/flags/flags.css");
         sb.put("debug", false);
+        sb.put("dir", buildDirSettings(null, boardUri), this::convertDir);
         sb.put("fileIndex", "index.html");
         final String fileScript = (String) sb.put("fileScript", "main.js");
         sb.put("fontAwesome", true);
         sb.put("fontAwesomeCss", "stylesheets/font-awesome/css/font-awesome.min.css");
+        sb.put("generationStrategies", new GenerationStrategy[] {
+                GenerationStrategy.STRATEGY_SANE,
+                GenerationStrategy.STRATEGY_IMMEDIATE
+        });
         sb.put("metaKeywords", null);
         sb.put("minifyHtml", true);
         sb.put("mod", buildModSettings(null, boardUri), this::convertMod);
@@ -122,6 +122,7 @@ public class SettingsBean {
             //noinspection unchecked
             stylesheets = (Map<String, String>) sb.put("stylesheets", defaultValue);
         }
+        sb.put("trySmarter", true);
         sb.put("version", VimboardVersion.get());
 
         // Settings with dependencies
@@ -158,6 +159,28 @@ public class SettingsBean {
         sb.put("salt", "abcdefghijklmnopqrstuvwxyz09123456789!@#$%^&*()");
 
         return (VimboardCookiesSettings) sb.build();
+    }
+
+    private VimboardDirSettings buildDirSettings(
+            VimboardDirProperties p, String boardUri) {
+        final VimboardDirSettings a = (boardUri == null
+                ? null
+                : vimboardSettings.getAll().getDir());
+
+        final SettingsBuilder sb =
+                new SettingsBuilder(boardUri, "dir", p, a) {
+
+                    @Override
+                    protected Object createSettings() {
+                        return new VimboardDirSettings();
+                    }
+                };
+
+        sb.put("img", "img/");
+        sb.put("thumb", "thumb/");
+        sb.put("res", "res/");
+
+        return (VimboardDirSettings) sb.build();
     }
 
     private VimboardModSettings buildModSettings(
@@ -259,6 +282,11 @@ public class SettingsBean {
     private Object convertCookies(SettingsBuilder sb, Object value) {
         final VimboardCookiesProperties p = (VimboardCookiesProperties) value;
         return buildCookiesSettings(p, sb.boardUri);
+    }
+
+    private Object convertDir(SettingsBuilder sb, Object value) {
+        final VimboardDirProperties p = (VimboardDirProperties) value;
+        return buildDirSettings(p, sb.boardUri);
     }
 
     private Object convertMod(SettingsBuilder sb, Object value) {
