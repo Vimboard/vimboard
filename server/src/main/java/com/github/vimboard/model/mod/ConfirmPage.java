@@ -13,7 +13,7 @@ public class ConfirmPage {
     private String token;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public String getRequest() {

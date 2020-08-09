@@ -21,7 +21,7 @@ public class ReleaseModel {
     private int minor;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public int getMassive() {

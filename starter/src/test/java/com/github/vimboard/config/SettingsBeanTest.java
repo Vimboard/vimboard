@@ -43,7 +43,7 @@ public class SettingsBeanTest {
                             "b", new VimboardBoardProperties()
                                     .setBoards(null)));
 
-            SettingsBean bean = new SettingsBean(vimboardProperties);
+            SettingsBean bean = new SettingsBean(vimboardProperties, false);
 
             final Object[] all = bean.getCustom(null).getBoards();
 
@@ -80,7 +80,7 @@ public class SettingsBeanTest {
                     .setAll(new VimboardBoardProperties()
                             .setBoards(null));
 
-            SettingsBean bean = new SettingsBean(vimboardProperties);
+            SettingsBean bean = new SettingsBean(vimboardProperties, false);
             assertNull(bean.getAll().getBoards());
         }
     }

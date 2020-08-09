@@ -10,18 +10,25 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * TODO
+ */
 public class SettingsBean {
 
     private static final String INVALID_PROPERTY = "Invalid '%s' property value";
 
     private final VimboardSettings vimboardSettings;
 
-    public SettingsBean(VimboardProperties vimboardProperties) {
+    public SettingsBean(VimboardProperties vimboardProperties,
+            boolean runAsCli) {
+
         vimboardSettings = new VimboardSettings();
 
         final String www = vimboardProperties.getWww();
         vimboardSettings.setWww(www == null || www.isEmpty()
                 ? "/var/www/vimboard/public/" : www);
+
+        // Board settings
 
         vimboardSettings.setAll(buildBoardSettings(
                 vimboardProperties.getAll(), null));
@@ -34,6 +41,12 @@ public class SettingsBean {
             }
         }
         vimboardSettings.setCustom(customSettings);
+
+        // Read-only settings
+
+        vimboardSettings.setRunAsCli(runAsCli);
+
+        vimboardSettings.setWww(VimboardVersion.get());
     }
 
     /**
@@ -66,6 +79,26 @@ public class SettingsBean {
         return result == null ? vimboardSettings.getAll() : result;
     }
 
+    private VimboardApiSettings buildApiSettings(
+            VimboardApiProperties p, String boardUri) {
+        final VimboardApiSettings a = (boardUri == null
+                ? null
+                : vimboardSettings.getAll().getApi());
+
+        final SettingsBuilder sb =
+                new SettingsBuilder(boardUri, "api", p, a) {
+
+                    @Override
+                    protected Object createSettings() {
+                        return new VimboardCookiesSettings();
+                    }
+                };
+
+        sb.put("enabled", true);
+
+        return (VimboardApiSettings) sb.build();
+    }
+
     private VimboardBoardSettings buildBoardSettings(
             VimboardBoardProperties p, String boardUri) {
         final VimboardBoardSettings a = (boardUri == null
@@ -88,6 +121,7 @@ public class SettingsBean {
         });
         sb.put("additionalJavascriptCompile", false);
         sb.put("allowSubtitleHtml", false);
+        sb.put("api", buildApiSettings(null, boardUri), this::convertApi);
         sb.put("banAppeals", false);
         sb.put("boardAbbreviation", "/{uri}/");
         sb.put("boardPath", "{uri}/");
@@ -123,7 +157,6 @@ public class SettingsBean {
             stylesheets = (Map<String, String>) sb.put("stylesheets", defaultValue);
         }
         sb.put("trySmarter", true);
-        sb.put("version", VimboardVersion.get());
 
         // Settings with dependencies
 
@@ -231,6 +264,11 @@ public class SettingsBean {
         // Settings with dependencies
 
         return (VimboardModSettings) sb.build();
+    }
+
+    private Object convertApi(SettingsBuilder sb, Object value) {
+        final VimboardApiProperties p = (VimboardApiProperties) value;
+        return buildApiSettings(p, sb.boardUri);
     }
 
     @SuppressWarnings("rawtypes")

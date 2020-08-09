@@ -2,7 +2,7 @@ package com.github.vimboard.service;
 
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.config.settings.VimboardModSettings;
-import com.github.vimboard.controller.ModController;
+import com.github.vimboard.controller.context.HandlerContext;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
 import com.github.vimboard.domain.ModLog;
@@ -212,7 +212,7 @@ public class SecurityService {
         return false;
     }
 
-    public void log(ModController.HandlerContext ctx, String action) { // TODO abstract context, see auth.php#modLog
+    public void log(HandlerContext ctx, String action) { // TODO abstract context, see auth.php#modLog
         ModLog modLog = new ModLog()
                 .setMod(ctx.modModel == null ? -1 : ctx.modModel.getId())
                 .setIp(ctx.request.getRemoteAddr())

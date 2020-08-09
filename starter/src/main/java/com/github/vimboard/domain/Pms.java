@@ -13,7 +13,7 @@ public class Pms {
     private String username;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public long getId() {

@@ -49,7 +49,7 @@ public class Page {
     private String title;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public BoardListModel getBoardlist() {

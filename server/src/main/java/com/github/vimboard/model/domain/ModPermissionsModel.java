@@ -27,7 +27,7 @@ public class ModPermissionsModel {
     private boolean viewNotes = false;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public boolean isChangePassword() {

@@ -1,5 +1,8 @@
 package com.github.vimboard.config.properties;
 
+/**
+ * Cookie settings mapping to Spring Boot application properties.
+ */
 public class VimboardCookiesProperties {
 
     /**
@@ -8,13 +11,24 @@ public class VimboardCookiesProperties {
     private String salt;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
+    /**
+     * Getter for {@link #salt}.
+     *
+     * @return field value.
+     */
     public String getSalt() {
         return salt;
     }
 
+    /**
+     * Setter for {@link #salt}.
+     *
+     * @param salt new field value.
+     * @return {@code this}.
+     */
     public VimboardCookiesProperties setSalt(String salt) {
         this.salt = salt;
         return this;

@@ -10,7 +10,7 @@ public class User extends Mod {
     private String action;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public Date getLast() {

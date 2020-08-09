@@ -16,7 +16,7 @@ public class UserModel {
     private String demoteToken;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public int getId() {

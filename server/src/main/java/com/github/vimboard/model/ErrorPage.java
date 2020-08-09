@@ -8,7 +8,7 @@ public class ErrorPage {
     private String message;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public String getMessage() {

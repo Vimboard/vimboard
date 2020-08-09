@@ -15,7 +15,7 @@ public class Report {
     private String reason;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public long getId() {

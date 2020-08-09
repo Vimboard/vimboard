@@ -8,7 +8,7 @@ public class NewPmPage {
     private String username;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public int getId() {

@@ -15,7 +15,7 @@ public class Noticeboard {
     private String body;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public long getId() {

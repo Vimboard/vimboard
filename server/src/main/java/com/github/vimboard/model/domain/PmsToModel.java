@@ -7,7 +7,7 @@ public class PmsToModel extends PmsTo {
     private String last;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public String getLast() {

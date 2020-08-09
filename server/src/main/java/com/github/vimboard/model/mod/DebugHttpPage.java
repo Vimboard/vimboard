@@ -11,7 +11,7 @@ public class DebugHttpPage {
     private Map<String, String> parameters;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public Map<String, String> getProperties() {

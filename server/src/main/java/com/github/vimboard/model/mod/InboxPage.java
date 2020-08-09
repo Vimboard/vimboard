@@ -10,7 +10,7 @@ public class InboxPage {
     private long unread;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public List<PmsModel> getMessages() {

@@ -8,7 +8,7 @@ public class PmsModel extends Pms {
     private String snippet;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public String getUsername() {

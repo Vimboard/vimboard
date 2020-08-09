@@ -6,7 +6,7 @@ public class LoginPage {
     private String username;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public String getError() {

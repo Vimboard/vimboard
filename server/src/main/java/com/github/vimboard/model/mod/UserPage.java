@@ -17,7 +17,7 @@ public class UserPage {
     private Mod user = null;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public List<Board> getBoards() {

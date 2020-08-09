@@ -13,7 +13,7 @@ public class ModModel {
     private ModPermissionsModel hasPermission = new ModPermissionsModel();
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public int getId() {

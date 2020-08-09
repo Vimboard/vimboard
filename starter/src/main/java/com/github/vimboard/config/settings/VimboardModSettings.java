@@ -4,6 +4,9 @@ import com.github.vimboard.domain.Group;
 
 import java.util.Map;
 
+/**
+ * Mod settings. TODO
+ */
 public class VimboardModSettings {
 
     // Mod settings
@@ -45,7 +48,7 @@ public class VimboardModSettings {
     private Map<String, String> dashboardLinks;
 
     //------------------------------------------------------------------------
-    // Getters and setters (setters must return void)
+    // Getters and setters
     //------------------------------------------------------------------------
 
     public Integer getNoticeboardDashboard() {

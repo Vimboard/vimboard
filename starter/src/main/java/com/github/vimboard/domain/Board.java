@@ -27,7 +27,7 @@ public class Board {
     private String subtitle;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public int getId() {

@@ -5,7 +5,7 @@ public class PmsTo extends Pms {
     private String toUsername;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public String getToUsername() {

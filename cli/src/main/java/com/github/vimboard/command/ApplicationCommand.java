@@ -26,7 +26,7 @@ public class ApplicationCommand {
         DBVersion dbVersion = schemaRepository.version();
         return "Database server: " + dbVersion.getServerVersion()
                 + System.lineSeparator()
-                + "Vimboard application: " + settingsBean.getAll().getVersion()
+                + "Vimboard application: " + settingsBean.get().getVersion()
                 + System.lineSeparator()
                 + "Vimboard database: " + dbVersion.getSchemaVersion();
     }

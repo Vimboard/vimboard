@@ -18,6 +18,6 @@ public class VimboardConfig {
 
     @Bean
     public SettingsBean getConfig(VimboardProperties vimboardProperties) {
-        return new SettingsBean(vimboardProperties);
+        return new SettingsBean(vimboardProperties, false); // TODO: runAsCli parameter
     }
 }

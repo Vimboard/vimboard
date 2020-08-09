@@ -9,7 +9,7 @@ public class UsersPage {
     private List<UserModel> list;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public List<UserModel> getList() {

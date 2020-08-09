@@ -16,7 +16,7 @@ public class DBVersion {
     private String serverVersion;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public String getSchemaVersion() {

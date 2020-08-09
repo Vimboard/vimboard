@@ -68,7 +68,7 @@ public class Mod implements UserDetails {
     }
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public int getId() {

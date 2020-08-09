@@ -22,7 +22,7 @@ public class SchemaRepository {
 
     @Transactional
     public void create() {
-        schemaMapper().create(settingsBean.getAll().getVersion());
+        schemaMapper().create(settingsBean.get().getVersion());
     }
 
     @Transactional

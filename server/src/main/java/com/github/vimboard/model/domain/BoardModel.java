@@ -19,7 +19,7 @@ public class BoardModel extends Board {
     }
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public String getName() {

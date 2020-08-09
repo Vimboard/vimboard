@@ -14,7 +14,7 @@ public class ModLogModel {
     private String text;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
 

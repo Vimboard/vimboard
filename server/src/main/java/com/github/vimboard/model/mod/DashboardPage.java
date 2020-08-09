@@ -21,7 +21,7 @@ public class DashboardPage {
     private long reports = 0L;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public List<Board> getBoards() {

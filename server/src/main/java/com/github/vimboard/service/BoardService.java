@@ -2,6 +2,7 @@ package com.github.vimboard.service;
 
 import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.config.settings.VimboardBoardSettings;
+import com.github.vimboard.controller.context.NewBoardContext;
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.domain.GenerationStrategy;
 import com.github.vimboard.model.domain.BoardListModel;
@@ -11,6 +12,7 @@ import com.github.vimboard.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -132,15 +134,32 @@ public class BoardService {
         }
     }
 
-    public void buildIndex() {
-        buildIndex(true);
+    public void buildIndex(NewBoardContext context) {
+        buildIndex(context, true);
     }
 
     /**
      * @param globalApi TODO: true = "yes", false = "skip"
      */
-    public void buildIndex(boolean globalApi) {
+    public void buildIndex(NewBoardContext context, boolean globalApi) {
+        final VimboardBoardSettings customCfg =
+                settingsBean.getCustom(context.board.getUri());
 
+        final GenerationAction catalogApiAction;
+        {
+            final Object[] array = new Object[1];
+            array[0] = context.board.getUri();
+            catalogApiAction = generationStrategy(
+                    "sb_api", array, context.handlerContext.request);
+        }
+
+        $pages = null;
+        $antibot = null;
+
+        if (customCfg.getApi().getEnabled()) {
+            $api = new Api();
+            $catalog = array();
+        }
     }
 
     /**
@@ -157,7 +176,15 @@ public class BoardService {
         return boardSet;
     }
 
-    public GenerationAction generationStrategy(final String fun, Object[] array) {
+    /**
+     * TODO
+     * @param fun
+     * @param array
+     * @param request
+     * @return TODO null or GenerationAction
+     */
+    public GenerationAction generationStrategy(final String fun, Object[] array,
+            final HttpServletRequest request) {
         String action = null;
 
         loop: for(GenerationStrategy gs :
@@ -173,15 +200,18 @@ public class BoardService {
                     break loop;
 
                 case STRATEGY_SANE:
-                    if (php_sapi_name() == 'cli') {
+                    if (settingsBean.get().isRunAsCli()) {
                         break;
                     }
-                    if (isset($_POST['mod'])) {
+                    if (request.getMethod().equals("POST")
+                            && request.getParameter("mod") != null) { // TODO: refactor $_POST['mod']
                         break;
                     }
                     // Thread needs to be done instantly. Same with a board page, but only if posting a new thread.
                     if (fun.equals("sb_thread")
-                            || (fun.equals("sb_board") && (int) array[1] == 1 && isset($_POST['page']))) {
+                            || (fun.equals("sb_board") && (int) array[1] == 1 // TODO: refactor array
+                                    && request.getMethod().equals("POST")
+                                    && request.getParameter("mod") != null)) { // TODO: refactor $_POST['page']
                         action = "immediate";
                         break loop;
                     }
@@ -189,18 +219,18 @@ public class BoardService {
 
                 case STRATEGY_FIRST:
                     switch (fun) {
-                        case "sb_thread":
-                        case "sb_api":
-                        case "sb_catalog":
-                        case "sb_ukko":
+                        case "sb_thread":  // TODO: inc/functions.buildThread('sb_thread', array($board['uri'], $id))
+                        case "sb_api":     // TODO: inc/functions.buildIndex('sb_api', array($board['uri']))
+                        case "sb_catalog": // TODO: themes/catalog.catalog_build("sb_catalog", array($board))
+                        case "sb_ukko":    // TODO: themes/ukko.ukko_build('sb_ukko', array())
                             action = "defer";
                             break loop;
-                        case "sb_board":
-                            action = ((int) array[1] > 8)
+                        case "sb_board":   // TODO: inc/functions.buildIndex('sb_board', array($board['uri'], $page))
+                            action = ((int) array[1] > 8) // TODO: refactor array
                                     ? "build_on_load" : "defer";
                             break loop;
-                        case "sb_recent":
-                        case "sb_sitemap":
+                        case "sb_recent":  // TODO: themes/recent.build('sb_recent', array())
+                        case "sb_sitemap": // TODO: themes/site_map.sitemap_build('sb_sitemap', array())
                             action = "build_on_load";
                             break loop;
                     }
@@ -209,7 +239,11 @@ public class BoardService {
             }
         }
 
-        switch (action) { // TODO NullPointer
+        if (action == null) {
+            return null;
+        }
+
+        switch (action) {
             case "immediate":
                 return GenerationAction.REBUILD;
             case "defer":
@@ -223,10 +257,10 @@ public class BoardService {
     }
 
     // TODO
-    public boolean openBoard(Map<String, Object> globals)
+    public boolean openBoard(NewBoardContext context)
             throws ServiceException {
-        Board board = (Board) globals.get("board");
-        final String uri = (String) globals.get("uri");
+        Board board = context.board;
+        final String uri = context.uri;
 
         if (settingsBean.getAll().getTrySmarter()) {
             // TODO $build_pages = array();
@@ -239,7 +273,7 @@ public class BoardService {
 
         board = boardRepository.findByUri(uri);
         if (board != null) {
-            setupBoard(globals, board);
+            setupBoard(context, board);
 
             // TODO call after_open_board, from vichan
 
@@ -249,12 +283,13 @@ public class BoardService {
         return false;
     }
 
-    private void setupBoard(Map<String, Object> globals, Board board)
+    private void setupBoard(NewBoardContext context, Board board)
             throws ServiceException {
         final String uri = board.getUri();
         final VimboardBoardSettings config = settingsBean.getCustom(uri);
 
-        globals.put("board", board);
+        context.setBoard(board)
+                .setConfig(config);
 
         final BoardModel boardModel = new BoardModel(board);
 
@@ -265,7 +300,7 @@ public class BoardService {
         boardModel.setDir(dir);
         boardModel.setUrl(config.getBoardAbbreviation().replace("{uri}", uri));
 
-        // loadConfig(); TODO no need here, from vichan
+        // loadConfig(); TODO switch from AllBoards() to CustomBoard() ---> context.setConfig
 
         final FileAttribute<Set<PosixFilePermission>> mod777 =
                 PosixFilePermissions.asFileAttribute(

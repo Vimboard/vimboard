@@ -9,7 +9,7 @@ public class PersonalMessageModel {
     private long waiting;
 
     //------------------------------------------------------------------------
-    // Getters and setters
+    // Getters and builder setters
     //------------------------------------------------------------------------
 
     public long getId() {

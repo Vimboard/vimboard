@@ -1,6 +1,8 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.SettingsBean;
+import com.github.vimboard.controller.context.HandlerContext;
+import com.github.vimboard.controller.context.NewBoardContext;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
 import com.github.vimboard.domain.Pms;
@@ -65,58 +67,6 @@ public class ModController extends AbstractController {
                     pattern = Pattern.compile("^" + regex
                             + "(?:&[^&=]+=[^&]*)*$");
             }
-        }
-    }
-
-    public static class HandlerContext {
-
-        public HttpServletRequest request;
-        public HttpServletResponse response;
-        public ModModel modModel;
-        public Model model;
-        public Matcher matcher;
-        public Map<String, Object> args;
-
-        public Object get(String argKey) {
-            return args.get(argKey);
-        }
-
-        public HandlerContext put(String argKey, Object argValue) {
-            if (args == null) {
-                args = new HashMap<>();
-            }
-            args.put(argKey, argValue);
-            return this;
-        }
-
-        public HandlerContext setRequest(HttpServletRequest request) {
-            this.request = request;
-            return this;
-        }
-
-        public HandlerContext setResponse(HttpServletResponse response) {
-            this.response = response;
-            return this;
-        }
-
-        public HandlerContext setModModel(ModModel modModel) {
-            this.modModel = modModel;
-            return this;
-        }
-
-        public HandlerContext setModel(Model model) {
-            this.model = model;
-            return this;
-        }
-
-        public HandlerContext setMatcher(Matcher matcher) {
-            this.matcher = matcher;
-            return this;
-        }
-
-        public HandlerContext setArgs(Map<String, Object> args) {
-            this.args = args;
-            return this;
         }
     }
 
@@ -412,11 +362,12 @@ public class ModController extends AbstractController {
 
             // TODO error 'Your filesystem cannot handle a board URI of that length'
 
-            final Map<String, Object> globals = new HashMap<>(); // TODO refactor (remove map)
-            globals.put("uri", uri);
+            final NewBoardContext newBoardContext = new NewBoardContext() // TODO: refactor (move)
+                    .setHandlerContext(ctx)
+                    .setUri(uri);
 
             try {
-                if (boardService.openBoard(globals)) {
+                if (boardService.openBoard(newBoardContext)) {
                     return error(ctx.put("message",
                             i18n("error.boardexists", uri)));
                 }
@@ -430,7 +381,7 @@ public class ModController extends AbstractController {
                     + "".replace("{uri}", uri));
 
             try {
-                if (!boardService.openBoard(globals)) {
+                if (!boardService.openBoard(newBoardContext)) {
                     return error(ctx.put("message",
                             i18n("error.boardnotcreated", uri)));
                 }
@@ -440,8 +391,10 @@ public class ModController extends AbstractController {
 
             boardRepository.createBoardTable(uri);
 
+            // TODO ^^^^^^^^^^^^^^
+
             // Build the board
-            boardService.buildIndex();
+            boardService.buildIndex(newBoardContext);
 
             rebuildThemes('boards');
 
