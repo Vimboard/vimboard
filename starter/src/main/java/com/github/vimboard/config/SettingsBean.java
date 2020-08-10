@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO
+ * TODO: refactor with SettingsBuilder
  */
 public class SettingsBean {
 
@@ -50,34 +50,15 @@ public class SettingsBean {
     }
 
     /**
-     * Returns the vimboard settings.
+     * TODO:
      *
-     * @return vimboard settings.
+     * @return
      */
-    public VimboardSettings get() {
+    public VimboardSettings build() {
         return vimboardSettings;
     }
 
-    /**
-     * Returns board settings for all boards.
-     *
-     * @return board settings.
-     */
-    public VimboardBoardSettings getAll() {
-        return vimboardSettings.getAll();
-    }
-
-    /**
-     * Returns board settings by the board uri.
-     *
-     * @param boardUri the board uri.
-     * @return board settings.
-     */
-    public VimboardBoardSettings getCustom(String boardUri) {
-        final VimboardBoardSettings result =
-                vimboardSettings.getCustom().get(boardUri);
-        return result == null ? vimboardSettings.getAll() : result;
-    }
+    // Builders --------------------------------------------------------------
 
     private VimboardApiSettings buildApiSettings(
             VimboardApiProperties p, String boardUri) {
@@ -85,18 +66,14 @@ public class SettingsBean {
                 ? null
                 : vimboardSettings.getAll().getApi());
 
-        final SettingsBuilder sb =
-                new SettingsBuilder(boardUri, "api", p, a) {
+        final VimboardApiSettings r = new VimboardApiSettings();
 
-                    @Override
-                    protected Object createSettings() {
-                        return new VimboardCookiesSettings();
-                    }
-                };
+        final SettingsBuilder<VimboardApiProperties, VimboardApiSettings> sb =
+                new SettingsBuilder<>(boardUri, "api", p, a, r);
 
         sb.put("enabled", true);
 
-        return (VimboardApiSettings) sb.build();
+        return sb.build();
     }
 
     private VimboardBoardSettings buildBoardSettings(
@@ -105,13 +82,10 @@ public class SettingsBean {
                 ? null
                 : vimboardSettings.getAll());
 
-        final SettingsBuilder sb = new SettingsBuilder(boardUri, "", p, a) {
+        final VimboardBoardSettings r = new VimboardBoardSettings();
 
-            @Override
-            protected VimboardBoardSettings createSettings() {
-                return new VimboardBoardSettings();
-            }
-        };
+        final SettingsBuilder<VimboardBoardProperties, VimboardBoardSettings> sb =
+                new SettingsBuilder<>(boardUri, "", p, a, r);
 
         // Settings without dependencies
 
@@ -171,7 +145,7 @@ public class SettingsBean {
         sb.put("urlJavascript", root + fileScript);
         sb.put("urlStylesheet", uriStylesheets + "style.css");
 
-        return (VimboardBoardSettings) sb.build();
+        return sb.build();
     }
 
     private VimboardCookiesSettings buildCookiesSettings(
@@ -180,18 +154,14 @@ public class SettingsBean {
                 ? null
                 : vimboardSettings.getAll().getCookies());
 
-        final SettingsBuilder sb =
-                new SettingsBuilder(boardUri, "cookies", p, a) {
+        final VimboardCookiesSettings r = new VimboardCookiesSettings();
 
-                    @Override
-                    protected Object createSettings() {
-                        return new VimboardCookiesSettings();
-                    }
-                };
+        final SettingsBuilder<VimboardCookiesProperties, VimboardCookiesSettings> sb =
+                new SettingsBuilder<>(boardUri, "cookies", p, a, r);
 
         sb.put("salt", "abcdefghijklmnopqrstuvwxyz09123456789!@#$%^&*()");
 
-        return (VimboardCookiesSettings) sb.build();
+        return sb.build();
     }
 
     private VimboardDirSettings buildDirSettings(
@@ -200,20 +170,16 @@ public class SettingsBean {
                 ? null
                 : vimboardSettings.getAll().getDir());
 
-        final SettingsBuilder sb =
-                new SettingsBuilder(boardUri, "dir", p, a) {
+        final VimboardDirSettings r = new VimboardDirSettings();
 
-                    @Override
-                    protected Object createSettings() {
-                        return new VimboardDirSettings();
-                    }
-                };
+        final SettingsBuilder<VimboardDirProperties, VimboardDirSettings> sb =
+                new SettingsBuilder<>(boardUri, "dir", p, a, r);
 
         sb.put("img", "img/");
         sb.put("thumb", "thumb/");
         sb.put("res", "res/");
 
-        return (VimboardDirSettings) sb.build();
+        return sb.build();
     }
 
     private VimboardModSettings buildModSettings(
@@ -222,14 +188,10 @@ public class SettingsBean {
                 ? null
                 : vimboardSettings.getAll().getMod());
 
-        final SettingsBuilder sb =
-                new SettingsBuilder(boardUri, "mod", p, a) {
+        final VimboardModSettings r = new VimboardModSettings();
 
-                    @Override
-                    protected VimboardModSettings createSettings() {
-                        return new VimboardModSettings();
-                    }
-                };
+        final SettingsBuilder<VimboardModProperties, VimboardModSettings> sb =
+                new SettingsBuilder<>(boardUri, "mod", p, a, r);
 
         // Settings without dependencies
 
@@ -263,8 +225,10 @@ public class SettingsBean {
 
         // Settings with dependencies
 
-        return (VimboardModSettings) sb.build();
+        return sb.build();
     }
+
+    // Converters ------------------------------------------------------------
 
     private Object convertApi(SettingsBuilder sb, Object value) {
         final VimboardApiProperties p = (VimboardApiProperties) value;
@@ -331,6 +295,8 @@ public class SettingsBean {
         final VimboardModProperties p = (VimboardModProperties) value;
         return buildModSettings(p, sb.boardUri);
     }
+
+    // Other -----------------------------------------------------------------
 
     private void throwInvalid(String boardUri) {
         throw new ValidationException(String.format(INVALID_PROPERTY,

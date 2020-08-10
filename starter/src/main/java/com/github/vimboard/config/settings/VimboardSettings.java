@@ -28,12 +28,23 @@ public class VimboardSettings {
     private boolean runAsCli;
 
     /**
-     * TODO
+     * Vimboard version.
      */
     private String version;
 
+    /**
+     * Returns board settings by the board uri.
+     *
+     * @param boardUri the board uri.
+     * @return board settings.
+     */
+    public VimboardBoardSettings getCustom(String boardUri) {
+        final VimboardBoardSettings result =  getCustom().get(boardUri);
+        return result == null ? getAll() : result;
+    }
+
     //------------------------------------------------------------------------
-    // Getters and builder setters
+    // Getters and setters
     //------------------------------------------------------------------------
 
     /**
@@ -49,11 +60,9 @@ public class VimboardSettings {
      * Setter for {@link #www}.
      *
      * @param www new field value.
-     * @return {@code this}.
      */
-    public VimboardSettings setWww(String www) {
+    public void setWww(String www) {
         this.www = www;
-        return this;
     }
 
     /**
@@ -69,11 +78,9 @@ public class VimboardSettings {
      * Setter for {@link #all}.
      *
      * @param all new field value.
-     * @return {@code this}.
      */
-    public VimboardSettings setAll(VimboardBoardSettings all) {
+    public void setAll(VimboardBoardSettings all) {
         this.all = all;
-        return this;
     }
 
     /**
@@ -89,11 +96,9 @@ public class VimboardSettings {
      * Setter for {@link #custom}.
      *
      * @param custom new field value.
-     * @return {@code this}.
      */
-    public VimboardSettings setCustom(Map<String, VimboardBoardSettings> custom) {
+    public void setCustom(Map<String, VimboardBoardSettings> custom) {
         this.custom = custom;
-        return this;
     }
 
     /**
@@ -109,11 +114,9 @@ public class VimboardSettings {
      * Setter for {@link #runAsCli}.
      *
      * @param runAsCli new field value.
-     * @return {@code this}.
      */
-    public VimboardSettings setRunAsCli(boolean runAsCli) {
+    public void setRunAsCli(boolean runAsCli) {
         this.runAsCli = runAsCli;
-        return this;
     }
 
     /**
@@ -129,10 +132,8 @@ public class VimboardSettings {
      * Setter for {@link #version}.
      *
      * @param version new field value.
-     * @return {@code this}.
      */
-    public VimboardSettings setVersion(String version) {
+    public void setVersion(String version) {
         this.version = version;
-        return this;
     }
 }

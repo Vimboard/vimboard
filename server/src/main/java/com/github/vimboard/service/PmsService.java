@@ -1,6 +1,6 @@
 package com.github.vimboard.service;
 
-import com.github.vimboard.config.SettingsBean;
+import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.domain.Pms;
 import com.github.vimboard.domain.PmsTo;
 import com.github.vimboard.model.domain.PmsModel;
@@ -19,12 +19,12 @@ import java.util.List;
 public class PmsService {
 
     private final PmsRepository pmsRepository;
-    private final SettingsBean settingsBean;
+    private final VimboardSettings settings;
 
     @Autowired
-    public PmsService(PmsRepository pmsRepository, SettingsBean settingsBean) {
+    public PmsService(PmsRepository pmsRepository, VimboardSettings settings) {
         this.pmsRepository = pmsRepository;
-        this.settingsBean = settingsBean;
+        this.settings = settings;
     }
 
     public PmsToModel find(long id) {
@@ -48,7 +48,7 @@ public class PmsService {
         for (Pms pms : pmsRepository.list(mod)) {
             result.add((PmsModel) new PmsModel()
                     .setSnippet(snippet(pms.getMessage(),
-                            settingsBean.getAll().getMod().getSnippetLength()))
+                            settings.getAll().getMod().getSnippetLength()))
                     .setId(pms.getId())
                     .setSender(pms.getSender())
                     .setTo(pms.getTo())

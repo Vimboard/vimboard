@@ -1,6 +1,6 @@
 package com.github.vimboard.controller;
 
-import com.github.vimboard.config.SettingsBean;
+import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.controller.context.HandlerContext;
 import com.github.vimboard.controller.context.NewBoardContext;
 import com.github.vimboard.domain.Group;
@@ -90,7 +90,7 @@ public class ModController extends AbstractController {
     private final PmsService pmsService;
     private final ReportRepository reportRepository;
     private final SecurityService securityService;
-    private final SettingsBean settingsBean;
+    private final VimboardSettings settings;
 
     private final Map<UriPattern, Handler> handlerMap = new LinkedHashMap<>();
     private final Pattern removeTokenPattern;
@@ -109,7 +109,7 @@ public class ModController extends AbstractController {
             PmsService pmsService,
             ReportRepository reportRepository,
             SecurityService securityService,
-            SettingsBean settingsBean) {
+            VimboardSettings settings) {
         super(messageSource);
         this.boardRepository = boardRepository;
         this.boardService = boardService;
@@ -122,7 +122,7 @@ public class ModController extends AbstractController {
         this.pmsService = pmsService;
         this.reportRepository = reportRepository;
         this.securityService = securityService;
-        this.settingsBean = settingsBean;
+        this.settings = settings;
 
         // dashboard
         handlerMap.put(new UriPattern("/"), this::dashboard);
@@ -355,7 +355,7 @@ public class ModController extends AbstractController {
                         i18n("error.required", "title")));
             }
 
-            if (!uri.matches("^" + settingsBean.getAll().getBoardRegex() + "$")) {
+            if (!uri.matches("^" + settings.getAll().getBoardRegex() + "$")) {
                 return error(ctx.put("message",
                         i18n("error.invalidfield", "URI")));
             }
@@ -399,7 +399,7 @@ public class ModController extends AbstractController {
             rebuildThemes('boards');
 
             return redirectToDashboard(ctx.request,
-                    "/" + uri + "/" + settingsBean.getAll().getFileIndex());
+                    "/" + uri + "/" + settings.getAll().getFileIndex());
         }
 
         ctx.model.addAttribute();
@@ -503,7 +503,7 @@ public class ModController extends AbstractController {
             ctx.model.addAttribute("newPm", new NewPmPage()
                     .setId(pm.getSender())
                     .setMessage(PmsService.quote(pm.getMessage(),
-                            settingsBean.getAll().getMinifyHtml()))
+                            settings.getAll().getMinifyHtml()))
                     .setToken(securityService.makeSecureLinkToken(
                             "/new_PM/" + pm.getUsername()))
                     .setUsername(pm.getUsername()));
@@ -555,7 +555,7 @@ public class ModController extends AbstractController {
                 final Enumeration<String> paramNames =
                         ctx.request.getParameterNames();
                 final Pattern pattern = Pattern.compile("^board_("
-                        + settingsBean.getAll().getBoardRegex() + ")$");
+                        + settings.getAll().getBoardRegex() + ")$");
                 while (paramNames.hasMoreElements()) {
                     final Matcher mather = pattern.matcher(
                             paramNames.nextElement());
@@ -674,7 +674,7 @@ public class ModController extends AbstractController {
                 final Enumeration<String> paramNames =
                         ctx.request.getParameterNames();
                 final Pattern pattern = Pattern.compile("^board_("
-                        + settingsBean.getAll().getBoardRegex() + ")$");
+                        + settings.getAll().getBoardRegex() + ")$");
                 while (paramNames.hasMoreElements()) {
                     final Matcher mather = pattern.matcher(
                             paramNames.nextElement());
@@ -783,9 +783,9 @@ public class ModController extends AbstractController {
 
         model.addAttribute("body", bodyTemplate);
 
-        model.addAttribute("config", settingsBean.getAll());
+        model.addAttribute("config", settings.getAll());
 
-        String dataStylesheet = settingsBean.getAll().getDefaultStylesheet()[1];
+        String dataStylesheet = settings.getAll().getDefaultStylesheet()[1];
         if (dataStylesheet == null || dataStylesheet.isEmpty()) {
             dataStylesheet = "default"; // TODO: если нигде не используется, то можно перенести в загрузку конфига
         }
@@ -803,7 +803,7 @@ public class ModController extends AbstractController {
     private String redirectToDashboard(HttpServletRequest request,
             String redirect) {
         request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE,
-                HttpStatus.valueOf(settingsBean.getAll().getRedirectHttp()));
+                HttpStatus.valueOf(settings.getAll().getRedirectHttp()));
         return "redirect:/mod.php?" + (redirect == null ? "/" : redirect);
     }
 }

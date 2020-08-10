@@ -1,7 +1,7 @@
 package com.github.vimboard.service;
 
-import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.config.settings.VimboardBoardSettings;
+import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.controller.context.NewBoardContext;
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.domain.GenerationStrategy;
@@ -30,16 +30,16 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final SecurityService securityService;
-    private final SettingsBean settingsBean;
+    private final VimboardSettings settings;
 
     @Autowired
     public BoardService(
             BoardRepository boardRepository,
             SecurityService securityService,
-            SettingsBean settingsBean) {
+            VimboardSettings settings) {
         this.boardRepository = boardRepository;
         this.securityService = securityService;
-        this.settingsBean = settingsBean;
+        this.settings = settings;
     }
 
     /**
@@ -58,7 +58,7 @@ public class BoardService {
      * @return the board list bar model.
      */
     public BoardListModel buildBoardList(String boardUri) {
-        final Object[] boards = settingsBean.getCustom(boardUri).getBoards();
+        final Object[] boards = settings.getCustom(boardUri).getBoards();
 
         if (boards == null) {
             return new BoardListModel()
@@ -77,7 +77,7 @@ public class BoardService {
                 boards,
                 securityService.isMod()
                         ? "?/"
-                        : settingsBean.getAll().getRoot(),
+                        : settings.getAll().getRoot(),
                 enabledBoards);
         final String body = sb.toString();
 
@@ -121,7 +121,7 @@ public class BoardService {
                         .append(root)
                         .append(boardUri)
                         .append("/")
-                        .append(settingsBean.getCustom(boardUri).getFileIndex())
+                        .append(settings.getCustom(boardUri).getFileIndex())
                         .append("\"")
                         .append(titleAttr)
                         .append(">")
@@ -143,7 +143,7 @@ public class BoardService {
      */
     public void buildIndex(NewBoardContext context, boolean globalApi) {
         final VimboardBoardSettings customCfg =
-                settingsBean.getCustom(context.board.getUri());
+                settings.getCustom(context.board.getUri());
 
         final GenerationAction catalogApiAction;
         {
@@ -188,7 +188,7 @@ public class BoardService {
         String action = null;
 
         loop: for(GenerationStrategy gs :
-                settingsBean.getAll().getGenerationStrategies()) {
+                settings.getAll().getGenerationStrategies()) {
             switch (gs) {
 
                 case STRATEGY_IMMEDIATE:
@@ -200,7 +200,7 @@ public class BoardService {
                     break loop;
 
                 case STRATEGY_SANE:
-                    if (settingsBean.get().isRunAsCli()) {
+                    if (settings.isRunAsCli()) {
                         break;
                     }
                     if (request.getMethod().equals("POST")
@@ -262,7 +262,7 @@ public class BoardService {
         Board board = context.board;
         final String uri = context.uri;
 
-        if (settingsBean.getAll().getTrySmarter()) {
+        if (settings.getAll().getTrySmarter()) {
             // TODO $build_pages = array();
             // globals.put("buildPages", );
         }
@@ -286,7 +286,7 @@ public class BoardService {
     private void setupBoard(NewBoardContext context, Board board)
             throws ServiceException {
         final String uri = board.getUri();
-        final VimboardBoardSettings config = settingsBean.getCustom(uri);
+        final VimboardBoardSettings config = settings.getCustom(uri);
 
         context.setBoard(board)
                 .setConfig(config);

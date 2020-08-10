@@ -10,15 +10,15 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class SettingsBuilder {
+public class SettingsBuilder<P, S> {
 
     private static final String INVALID_BEAN = "Invalid '%s' bean";
     private static final String INVALID_BEAN_METHOD = "Can't find method for '%s' bean poperty";
     private static final String INVALID_BEAN_PROPERTY = "Invalid '%s' bean poperty";
 
-    public interface SettingsBuilderConverter {
+    public interface SettingsBuilderConverter<P, S> {
 
-        Object convert(SettingsBuilder reader, Object value);
+        Object convert(SettingsBuilder<P, S> reader, Object value);
     }
 
     final String boardUri;
@@ -26,21 +26,23 @@ public abstract class SettingsBuilder {
     final Map<String, Object> propertiesMap;
     final Map<String, Object> allSettingsMap;
     final Map<String, Object> settingsMap;
+    final S resultSettings;
 
     public SettingsBuilder(String boardUri, String basePath,
-            Object properties, Object allSettings) {
+            P properties, S allSettings, S resultSettings) {
         this.boardUri = boardUri;
         this.basePath = basePath;
         propertiesMap = objectToMap(properties);
         allSettingsMap = objectToMap(allSettings);
         this.settingsMap = new HashMap<>();
+        this.resultSettings = resultSettings;
     }
 
-    public Object build() {
-        final Object result = createSettings();
+    public S build() {
+        //final Object result = createSettings();
         final BeanInfo info;
         try {
-            info = Introspector.getBeanInfo(result.getClass());
+            info = Introspector.getBeanInfo(resultSettings.getClass());
         } catch (IntrospectionException ex) {
             throw new ValidationException(String.format(INVALID_BEAN,
                     propertyPath(boardUri)));
@@ -55,16 +57,16 @@ public abstract class SettingsBuilder {
                         "setter: " + propertyPath(boardUri) + "." + pd.getName()));
             }
             try {
-                setter.invoke(result, settingsMap.get(pd.getName()));
+                setter.invoke(resultSettings, settingsMap.get(pd.getName()));
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new ValidationException(String.format(INVALID_BEAN_PROPERTY,
                         propertyPath(boardUri) + "." + pd.getName()));
             }
         }
-        return result;
+        return resultSettings;
     }
 
-    protected abstract Object createSettings();
+//    protected abstract Object createSettings();
 
     public Object put(String fieldName, Object defaultValue) {
         if (propertiesMap == null || propertiesMap.get(fieldName) == null) {

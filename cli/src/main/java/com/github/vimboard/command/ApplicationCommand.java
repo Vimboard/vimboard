@@ -1,6 +1,6 @@
 package com.github.vimboard.command;
 
-import com.github.vimboard.config.SettingsBean;
+import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.domain.DBVersion;
 import com.github.vimboard.repository.SchemaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +11,14 @@ import org.springframework.shell.standard.ShellMethod;
 public class ApplicationCommand {
 
     private final SchemaRepository schemaRepository;
-    private final SettingsBean settingsBean;
+    private final VimboardSettings settings;
 
     @Autowired
     public ApplicationCommand(
             SchemaRepository schemaRepository,
-            SettingsBean settingsBean) {
+            VimboardSettings settings) {
         this.schemaRepository = schemaRepository;
-        this.settingsBean = settingsBean;
+        this.settings = settings;
     }
 
     @ShellMethod("Print version info.")
@@ -26,7 +26,7 @@ public class ApplicationCommand {
         DBVersion dbVersion = schemaRepository.version();
         return "Database server: " + dbVersion.getServerVersion()
                 + System.lineSeparator()
-                + "Vimboard application: " + settingsBean.get().getVersion()
+                + "Vimboard application: " + settings.getVersion()
                 + System.lineSeparator()
                 + "Vimboard database: " + dbVersion.getSchemaVersion();
     }

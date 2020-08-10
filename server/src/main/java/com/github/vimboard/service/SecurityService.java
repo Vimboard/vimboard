@@ -1,7 +1,7 @@
 package com.github.vimboard.service;
 
-import com.github.vimboard.config.SettingsBean;
 import com.github.vimboard.config.settings.VimboardModSettings;
+import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.controller.context.HandlerContext;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
@@ -29,14 +29,14 @@ public class SecurityService {
     private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
 
     private final ModLogRepository modLogRepository;
-    private final SettingsBean settingsBean;
+    private final VimboardSettings settings;
 
     @Autowired
     public SecurityService(
             ModLogRepository modLogRepository,
-            SettingsBean settingsBean) {
+            VimboardSettings settings) {
         this.modLogRepository = modLogRepository;
-        this.settingsBean = settingsBean;
+        this.settings = settings;
     }
 
     /**
@@ -65,7 +65,7 @@ public class SecurityService {
 
     public void fillPermissionsModel(ModPermissionsModel permissionModel,
             Authentication auth) {
-        final VimboardModSettings modSettings = settingsBean.getAll().getMod();
+        final VimboardModSettings modSettings = settings.getAll().getMod();
         for (GrantedAuthority ga : auth.getAuthorities()) {
             if (ga instanceof Group) {
                 final Group group = (Group) ga;
@@ -249,7 +249,7 @@ public class SecurityService {
      * @return the token.
      */
     public String makeSecureLinkToken(String uri) {
-        final String token = settingsBean.getAll().getCookies().getSalt()
+        final String token = settings.getAll().getCookies().getSalt()
                 + "-" + uri.substring(1)
                 + "-" + getMod().getId();
         return SecurityUtils.sha1(token).substring(0, 8);

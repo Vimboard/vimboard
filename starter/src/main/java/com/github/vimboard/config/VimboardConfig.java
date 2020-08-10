@@ -1,6 +1,7 @@
 package com.github.vimboard.config;
 
 import com.github.vimboard.config.properties.VimboardProperties;
+import com.github.vimboard.config.settings.VimboardSettings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ public class VimboardConfig {
     }
 
     @Bean
-    public SettingsBean getConfig(VimboardProperties vimboardProperties) {
-        return new SettingsBean(vimboardProperties, false); // TODO: runAsCli parameter
+    public VimboardSettings getConfig(VimboardProperties vimboardProperties) {
+        return new SettingsBean(vimboardProperties, false).build(); // TODO: runAsCli parameter
     }
 }

@@ -1,7 +1,5 @@
 package com.github.vimboard.model.domain;
 
-import com.github.vimboard.domain.ModLog;
-
 import java.util.Date;
 
 public class ModLogModel {

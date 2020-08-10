@@ -2,13 +2,15 @@ package com.github.vimboard.config;
 
 import com.github.vimboard.config.properties.VimboardBoardProperties;
 import com.github.vimboard.config.properties.VimboardProperties;
+import com.github.vimboard.config.settings.VimboardSettings;
 import org.junit.Test;
-import static com.github.vimboard.utils.ArrayCheck.*;
-import static com.github.vimboard.utils.EntryCheck.*;
-import static org.junit.Assert.*;
 
 import java.util.Map;
-import static java.util.Map.*;
+
+import static com.github.vimboard.utils.ArrayCheck.checkArray;
+import static com.github.vimboard.utils.EntryCheck.checkEntry;
+import static java.util.Map.entry;
+import static org.junit.Assert.*;
 
 public class SettingsBeanTest {
 
@@ -43,12 +45,13 @@ public class SettingsBeanTest {
                             "b", new VimboardBoardProperties()
                                     .setBoards(null)));
 
-            SettingsBean bean = new SettingsBean(vimboardProperties, false);
+            VimboardSettings settings =
+                    new SettingsBean(vimboardProperties, false).build();
 
-            final Object[] all = bean.getCustom(null).getBoards();
+            final Object[] all = settings.getCustom(null).getBoards();
 
-            assertNotSame(all, bean.getCustom("a").getBoards());
-            assertSame(all, bean.getCustom("b").getBoards());
+            assertNotSame(all, settings.getCustom("a").getBoards());
+            assertSame(all, settings.getCustom("b").getBoards());
 
             assertTrue(checkArray(all, Object[].class, 5)
                     .item(i -> assertTrue(checkEntry(i, "Foo")
@@ -71,7 +74,7 @@ public class SettingsBeanTest {
                                                     .item(i5 -> assertTrue(checkEntry(i5, "h", "http://example.org/h")))))))))
                     .end());
 
-            assertTrue(checkArray(bean.getCustom("a").getBoards(), Object.class, 1)
+            assertTrue(checkArray(settings.getCustom("a").getBoards(), Object.class, 1)
                     .item(i -> assertEquals("a", i))
                     .end());
         }
@@ -80,8 +83,9 @@ public class SettingsBeanTest {
                     .setAll(new VimboardBoardProperties()
                             .setBoards(null));
 
-            SettingsBean bean = new SettingsBean(vimboardProperties, false);
-            assertNull(bean.getAll().getBoards());
+            VimboardSettings settings =
+                    new SettingsBean(vimboardProperties, false).build();
+            assertNull(settings.getAll().getBoards());
         }
     }
 }

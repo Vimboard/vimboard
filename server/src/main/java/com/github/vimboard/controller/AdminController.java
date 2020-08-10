@@ -1,6 +1,6 @@
 package com.github.vimboard.controller;
 
-import com.github.vimboard.config.SettingsBean;
+import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.service.ICityService;
 import freemarker.template.Configuration;
@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
@@ -30,18 +28,18 @@ public class AdminController {
     private final ApplicationContext applicationContext;
     private final ICityService cityService;
     private final Configuration freemarkerCfg;
-    private final SettingsBean settingsBean;
+    private final VimboardSettings settings;
 
     @Autowired
     public AdminController(
             ApplicationContext applicationContext,
             ICityService cityService,
             Configuration freemarkerCfg,
-            SettingsBean settingsBean) {
+            VimboardSettings settings) {
         this.applicationContext = applicationContext;
         this.cityService = cityService;
         this.freemarkerCfg = freemarkerCfg;
-        this.settingsBean = settingsBean;
+        this.settings = settings;
     }
 
     @GetMapping("/shutdown")
@@ -56,7 +54,7 @@ public class AdminController {
     @GetMapping("/write")
     @Deprecated
     String home() throws Exception {
-        Writer file = new FileWriter(new File(settingsBean.get().getWww() + "/index.html"));
+        Writer file = new FileWriter(new File(settings.getWww() + "/index.html"));
         Template template = freemarkerCfg.getTemplate("write.ftlh");
         template.process(null, file);
         file.flush();

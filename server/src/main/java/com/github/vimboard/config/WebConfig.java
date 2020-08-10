@@ -1,5 +1,6 @@
 package com.github.vimboard.config;
 
+import com.github.vimboard.config.settings.VimboardSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +25,11 @@ public class WebConfig {
     @EnableWebMvc
     public static class WebMvcConfig implements WebMvcConfigurer {
 
-        private final SettingsBean settingsBean;
+        private final VimboardSettings settings;
 
         @Autowired
-        public WebMvcConfig(SettingsBean settingsBean) {
-            this.settingsBean = settingsBean;
+        public WebMvcConfig(VimboardSettings settings) {
+            this.settings = settings;
         }
 
         @Bean
@@ -57,7 +58,7 @@ public class WebConfig {
             registry
                 .addResourceHandler("/**")
                 .addResourceLocations(
-                        "file:" + settingsBean.get().getWww(),
+                        "file:" + settings.getWww(),
                         "classpath:/static/");
         }
     }
