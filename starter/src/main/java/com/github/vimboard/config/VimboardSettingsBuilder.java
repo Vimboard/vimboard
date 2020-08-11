@@ -5,21 +5,26 @@ import com.github.vimboard.config.settings.*;
 import com.github.vimboard.domain.GenerationStrategy;
 import com.github.vimboard.domain.Group;
 
-import javax.validation.ValidationException;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * TODO: refactor with SettingsBuilder
- */
-public class SettingsBean {
+import static com.github.vimboard.config.SettingsBuilder.throwInvalidProperty;
 
-    private static final String INVALID_PROPERTY = "Invalid '%s' property value";
+/**
+ * Builder of Vimboard settings.
+ */
+public class VimboardSettingsBuilder {
 
     private final VimboardSettings vimboardSettings;
 
-    public SettingsBean(VimboardProperties vimboardProperties,
+    /**
+     * Constructs builder.
+     *
+     * @param vimboardProperties Vimboard properties.
+     * @param runAsCli value for {@link VimboardSettings#isRunAsCli()}.
+     */
+    public VimboardSettingsBuilder(VimboardProperties vimboardProperties,
             boolean runAsCli) {
 
         vimboardSettings = new VimboardSettings();
@@ -50,9 +55,9 @@ public class SettingsBean {
     }
 
     /**
-     * TODO:
+     * Builds Vimboard settings.
      *
-     * @return
+     * @return Vimboard settings.
      */
     public VimboardSettings build() {
         return vimboardSettings;
@@ -230,14 +235,14 @@ public class SettingsBean {
 
     // Converters ------------------------------------------------------------
 
-    private Object convertApi(SettingsBuilder sb, Object value) {
+    private Object convertApi(String boardUri, Object value) {
         final VimboardApiProperties p = (VimboardApiProperties) value;
-        return buildApiSettings(p, sb.boardUri);
+        return buildApiSettings(p, boardUri);
     }
 
     @SuppressWarnings("rawtypes")
-    private Object[] convertBoards(SettingsBuilder sb, Object value) {
-        final String boardUri = sb.boardUri;
+    private Object[] convertBoards(String boardUri, Object value) {
+        final String fieldName = "boards";
         final Map boards = (Map) value;
         if (boards == null) {
             return null;
@@ -247,65 +252,54 @@ public class SettingsBean {
         for (int i = 0; i < len; i++) {
             Object obj = boards.get(Integer.toString(i));
             if (obj == null) {
-                throwInvalid(boardUri);
+                throwInvalidProperty("", boardUri, fieldName);
             } else if (obj instanceof Map) {
                 Map map = (Map) obj;
                 if (map.keySet().size() != 1) {
-                    throwInvalid(boardUri);
+                    throwInvalidProperty("", boardUri, fieldName);
                 }
                 for (Object key : map.keySet()) {
                     if (!(key instanceof String)) {
-                        throwInvalid(boardUri);
+                        throwInvalidProperty("", boardUri, fieldName);
                     }
                     Object val = map.get(key);
                     if (val instanceof Map) {
-                        result[i] = new AbstractMap.SimpleEntry<>(key, convertBoards(sb, val));
+                        result[i] = new AbstractMap.SimpleEntry<>(
+                                key, convertBoards(boardUri, val));
                     } else if (val instanceof String) {
                         result[i] = new AbstractMap.SimpleEntry<>(key, val);
                     } else {
-                        throwInvalid(boardUri);
+                        throwInvalidProperty("", boardUri, fieldName);
                     }
                 }
             } else if (obj instanceof String) {
                 result[i] = obj;
             } else {
-                throwInvalid(boardUri);
+                throwInvalidProperty("", boardUri, fieldName);
             }
         }
         return result;
     }
 
-    private Object convertDefaultStylesheet(SettingsBuilder sb, Object value,
+    private Object convertDefaultStylesheet(String boardUri, Object value,
             Map<String, String> stylesheets) {
         final String defaultStylesheet = (String) value;
-        return new String[] { defaultStylesheet, stylesheets.get(defaultStylesheet) };
+        return new String[] {
+                defaultStylesheet, stylesheets.get(defaultStylesheet) };
     }
 
-    private Object convertCookies(SettingsBuilder sb, Object value) {
+    private Object convertCookies(String boardUri, Object value) {
         final VimboardCookiesProperties p = (VimboardCookiesProperties) value;
-        return buildCookiesSettings(p, sb.boardUri);
+        return buildCookiesSettings(p, boardUri);
     }
 
-    private Object convertDir(SettingsBuilder sb, Object value) {
+    private Object convertDir(String boardUri, Object value) {
         final VimboardDirProperties p = (VimboardDirProperties) value;
-        return buildDirSettings(p, sb.boardUri);
+        return buildDirSettings(p, boardUri);
     }
 
-    private Object convertMod(SettingsBuilder sb, Object value) {
+    private Object convertMod(String boardUri, Object value) {
         final VimboardModProperties p = (VimboardModProperties) value;
-        return buildModSettings(p, sb.boardUri);
-    }
-
-    // Other -----------------------------------------------------------------
-
-    private void throwInvalid(String boardUri) {
-        throw new ValidationException(String.format(INVALID_PROPERTY,
-                propertyPath(boardUri) + ".boards"));
-    }
-
-    private String propertyPath(String boardUri) {
-        return boardUri == null
-                ? "vimboard.all"
-                : "vimboard.custom." + boardUri + "";
+        return buildModSettings(p, boardUri);
     }
 }

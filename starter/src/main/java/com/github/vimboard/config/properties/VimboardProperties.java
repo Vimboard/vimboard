@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import java.util.Map;
 
 /**
- * Application settings mapping to Spring Boot application properties.
+ * Vimboard settings mapping to Spring Boot application properties.
  */
 public class VimboardProperties {
 

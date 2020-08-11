@@ -12,7 +12,7 @@ import static com.github.vimboard.utils.EntryCheck.checkEntry;
 import static java.util.Map.entry;
 import static org.junit.Assert.*;
 
-public class SettingsBeanTest {
+public class VimboardSettingsBuilderTest {
 
     @Test
     public void getTest() {
@@ -46,7 +46,7 @@ public class SettingsBeanTest {
                                     .setBoards(null)));
 
             VimboardSettings settings =
-                    new SettingsBean(vimboardProperties, false).build();
+                    new VimboardSettingsBuilder(vimboardProperties, false).build();
 
             final Object[] all = settings.getCustom(null).getBoards();
 
@@ -84,7 +84,7 @@ public class SettingsBeanTest {
                             .setBoards(null));
 
             VimboardSettings settings =
-                    new SettingsBean(vimboardProperties, false).build();
+                    new VimboardSettingsBuilder(vimboardProperties, false).build();
             assertNull(settings.getAll().getBoards());
         }
     }

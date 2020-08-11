@@ -5,7 +5,7 @@ import com.github.vimboard.config.properties.VimboardProperties;
 import java.util.Map;
 
 /**
- * Application settings.
+ * Vimboard settings.
  */
 public class VimboardSettings {
 
