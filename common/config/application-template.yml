@@ -69,6 +69,16 @@ vimboard:
     # Cache, lock and queue settings
     # ------------------------------------------------------------------------
 
+    lock:
+
+      # Define a lock driver.
+      enabled: FS
+
+    queue:
+
+      # Define a queue driver.
+      enabled: FS
+
     # ------------------------------------------------------------------------
     # Cookie settings
     # ------------------------------------------------------------------------
@@ -113,6 +123,19 @@ vimboard:
     # ------------------------------------------------------------------------
     # Board settings
     # ------------------------------------------------------------------------
+
+    # Maximum amount of threads to display per page.
+    threads-per-page: 10
+
+    # Maximum number of pages. Content past the last page is automatically
+    # purged.
+    max-pages: 10
+
+    # Replies to show per thread on the board index page.
+    threads-preview: 5
+
+    # Same as above, but for stickied threads.
+    threads-preview-sticky: 1
 
     # How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
     # This doesn't change the URL. Find {@link #boardPath} if you wish to
@@ -238,6 +261,9 @@ vimboard:
 
     # Name of the index page file.
     file-index: index.html
+
+    # Name of the page file.
+    file-page: "{no}.html" # NB: page is both an index page and a thread
 
     # Name of the main script file.
     file-script: main.js
@@ -398,6 +424,14 @@ vimboard:
       # Whether or not to enable the 4chan-compatible API, disabled by default.
       # See https://github.com/4chan/4chan-API for API specification.
       enabled: true
+
+      # TODO docs
+      # Extra fields in to be shown in the array that are not in the 4chan-API.
+      # You can get these by taking a look at the schema for posts_ tables. The
+      # array should be formatted as $db_column => $translated_name.
+      # Example: Adding the pre-markup post body to the API as "com_nomarkup".
+#     extra-fields:
+#       body_nomarkup: com_nomarkup
 
     # ------------------------------------------------------------------------
     # NNTPChan settings

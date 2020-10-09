@@ -2,14 +2,23 @@ package com.github.vimboard.controller.context;
 
 import com.github.vimboard.config.settings.VimboardBoardSettings;
 import com.github.vimboard.domain.Board;
+import com.github.vimboard.model.domain.BoardModel;
+
+import java.util.List;
 
 /**
- * Context of ModController#newBoard.
+ * TODO:
  */
-public class NewBoardContext {
+public class GlobalContext {
 
     /** Current opened board. */
     public Board board;
+
+    /** Current opened board model */
+    public BoardModel boardModel;
+
+    /** TODO: ??? */
+    public List<Integer> buildPages;
 
     /** Custom board config. */
     public VimboardBoardSettings config;
@@ -26,8 +35,30 @@ public class NewBoardContext {
      * @param board new field value.
      * @return {@code this}.
      */
-    public NewBoardContext setBoard(Board board) {
+    public GlobalContext setBoard(Board board) {
         this.board = board;
+        return this;
+    }
+
+    /**
+     * Setter for {@link #boardModel}.
+     *
+     * @param boardModel new field value.
+     * @return {@code this}.
+     */
+    public GlobalContext setBoardModel(BoardModel boardModel) {
+        this.boardModel = boardModel;
+        return this;
+    }
+
+    /**
+     * Setter for {@link #buildPages}.
+     *
+     * @param buildPages new field value.
+     * @return {@code this}.
+     */
+    public GlobalContext setBuildPages(List<Integer> buildPages) {
+        this.buildPages = buildPages;
         return this;
     }
 
@@ -37,7 +68,7 @@ public class NewBoardContext {
      * @param config new field value.
      * @return {@code this}.
      */
-    public NewBoardContext setConfig(VimboardBoardSettings config) {
+    public GlobalContext setConfig(VimboardBoardSettings config) {
         this.config = config;
         return this;
     }
@@ -48,7 +79,7 @@ public class NewBoardContext {
      * @param handlerContext new field value.
      * @return {@code this}.
      */
-    public NewBoardContext setHandlerContext(HandlerContext handlerContext) {
+    public GlobalContext setHandlerContext(HandlerContext handlerContext) {
         this.handlerContext = handlerContext;
         return this;
     }
@@ -59,7 +90,7 @@ public class NewBoardContext {
      * @param uri new field value.
      * @return {@code this}.
      */
-    public NewBoardContext setUri(String uri) {
+    public GlobalContext setUri(String uri) {
         this.uri = uri;
         return this;
     }

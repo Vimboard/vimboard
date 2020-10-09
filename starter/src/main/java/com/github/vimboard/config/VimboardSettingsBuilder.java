@@ -4,6 +4,8 @@ import com.github.vimboard.config.properties.*;
 import com.github.vimboard.config.settings.*;
 import com.github.vimboard.domain.GenerationStrategy;
 import com.github.vimboard.domain.Group;
+import com.github.vimboard.domain.LockDriver;
+import com.github.vimboard.domain.QueueDriver;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -77,6 +79,7 @@ public class VimboardSettingsBuilder {
                 new SettingsBuilder<>(boardUri, "api", p, a, r);
 
         sb.put("enabled", true);
+        sb.put("extraFields", new HashMap<String, String>());
 
         return sb.build();
     }
@@ -113,6 +116,7 @@ public class VimboardSettingsBuilder {
         sb.put("debug", false);
         sb.put("dir", buildDirSettings(null, boardUri), this::convertDir);
         sb.put("fileIndex", "index.html");
+        sb.put("filePage", "{no}.html");
         final String fileScript = (String) sb.put("fileScript", "main.js");
         sb.put("fontAwesome", true);
         sb.put("fontAwesomeCss", "stylesheets/font-awesome/css/font-awesome.min.css");
@@ -120,10 +124,13 @@ public class VimboardSettingsBuilder {
                 GenerationStrategy.STRATEGY_SANE,
                 GenerationStrategy.STRATEGY_IMMEDIATE
         });
+        sb.put("lock", buildLockSettings(null, boardUri), this::convertLock);
+        sb.put("maxPages", 10);
         sb.put("metaKeywords", null);
         sb.put("minifyHtml", true);
         sb.put("mod", buildModSettings(null, boardUri), this::convertMod);
         sb.put("postDate", "MM/dd/yy (EEE) HH:mm:ss");
+        sb.put("queue", buildQueueSettings(null, boardUri), this::convertQueue);
         sb.put("recaptcha", false);
         sb.put("redirectHttp", (short) 303);
         final String root = (String) sb.put("root", "/");
@@ -135,6 +142,9 @@ public class VimboardSettingsBuilder {
             //noinspection unchecked
             stylesheets = (Map<String, String>) sb.put("stylesheets", defaultValue);
         }
+        sb.put("threadsPerPage", 10);
+        sb.put("threadsPreview", 5);
+        sb.put("threadsPreviewSticky", 1);
         sb.put("trySmarter", true);
 
         // Settings with dependencies
@@ -187,6 +197,22 @@ public class VimboardSettingsBuilder {
         return sb.build();
     }
 
+    private VimboardLockSettings buildLockSettings(
+            VimboardLockProperties p, String boardUri) {
+        final VimboardLockSettings a = (boardUri == null
+                ? null
+                : vimboardSettings.getAll().getLock());
+
+        final VimboardLockSettings r = new VimboardLockSettings();
+
+        final SettingsBuilder<VimboardLockProperties, VimboardLockSettings> sb =
+                new SettingsBuilder<>(boardUri, "lock", p, a, r);
+
+        sb.put("enabled", LockDriver.FS);
+
+        return sb.build();
+    }
+
     private VimboardModSettings buildModSettings(
             VimboardModProperties p, String boardUri) {
         final VimboardModSettings a = (boardUri == null
@@ -229,6 +255,22 @@ public class VimboardSettingsBuilder {
         sb.put("viewNotes", Group.JANITOR);
 
         // Settings with dependencies
+
+        return sb.build();
+    }
+
+    private VimboardQueueSettings buildQueueSettings(
+            VimboardQueueProperties p, String boardUri) {
+        final VimboardQueueSettings a = (boardUri == null
+                ? null
+                : vimboardSettings.getAll().getQueue());
+
+        final VimboardQueueSettings r = new VimboardQueueSettings();
+
+        final SettingsBuilder<VimboardQueueProperties, VimboardQueueSettings> sb =
+                new SettingsBuilder<>(boardUri, "queue", p, a, r);
+
+        sb.put("enabled", QueueDriver.FS);
 
         return sb.build();
     }
@@ -298,8 +340,18 @@ public class VimboardSettingsBuilder {
         return buildDirSettings(p, boardUri);
     }
 
+    private Object convertLock(String boardUri, Object value) {
+        final VimboardLockProperties p = (VimboardLockProperties) value;
+        return buildLockSettings(p, boardUri);
+    }
+
     private Object convertMod(String boardUri, Object value) {
         final VimboardModProperties p = (VimboardModProperties) value;
         return buildModSettings(p, boardUri);
+    }
+
+    private Object convertQueue(String boardUri, Object value) {
+        final VimboardQueueProperties p = (VimboardQueueProperties) value;
+        return buildQueueSettings(p, boardUri);
     }
 }

@@ -33,7 +33,7 @@
             embed            text,
             slug             varchar(256) DEFAULT NULL,
             UNIQUE(id)
-        ) PARTITION BY LIST(boards);
+        );
         CREATE INDEX ON vmb.posts_#{uri}(thread, id);
         -- todo CREATE INDEX ON vmb.posts_#{uri}(left(filehash, 40)/* text_pattern_ops*/);
         CREATE INDEX ON vmb.posts_#{uri}(time);

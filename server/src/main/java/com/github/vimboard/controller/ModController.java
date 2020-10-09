@@ -2,7 +2,7 @@ package com.github.vimboard.controller;
 
 import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.controller.context.HandlerContext;
-import com.github.vimboard.controller.context.NewBoardContext;
+import com.github.vimboard.controller.context.GlobalContext;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
 import com.github.vimboard.domain.Pms;
@@ -82,6 +82,7 @@ public class ModController extends AbstractController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final DebugService debugService;
+    private final Functions functions;
     private final ModLogService modLogService;
     private final ModRepository modRepository;
     private final ModService modService;
@@ -101,6 +102,7 @@ public class ModController extends AbstractController {
             BoardRepository boardRepository,
             BoardService boardService,
             DebugService debugService,
+            Functions functions,
             ModLogService modLogService,
             ModRepository modRepository,
             ModService modService,
@@ -114,6 +116,7 @@ public class ModController extends AbstractController {
         this.boardRepository = boardRepository;
         this.boardService = boardService;
         this.debugService = debugService;
+        this.functions = functions;
         this.modLogService = modLogService;
         this.modRepository = modRepository;
         this.modService = modService;
@@ -362,12 +365,12 @@ public class ModController extends AbstractController {
 
             // TODO error 'Your filesystem cannot handle a board URI of that length'
 
-            final NewBoardContext newBoardContext = new NewBoardContext() // TODO: refactor (move)
+            final GlobalContext globalContext = new GlobalContext() // TODO: refactor (move)
                     .setHandlerContext(ctx)
                     .setUri(uri);
 
             try {
-                if (boardService.openBoard(newBoardContext)) {
+                if (functions.openBoard(globalContext)) {
                     return error(ctx.put("message",
                             i18n("error.boardexists", uri)));
                 }
@@ -381,7 +384,7 @@ public class ModController extends AbstractController {
                     + "".replace("{uri}", uri));
 
             try {
-                if (!boardService.openBoard(newBoardContext)) {
+                if (!functions.openBoard(globalContext)) {
                     return error(ctx.put("message",
                             i18n("error.boardnotcreated", uri)));
                 }
@@ -394,7 +397,7 @@ public class ModController extends AbstractController {
             // TODO ^^^^^^^^^^^^^^
 
             // Build the board
-            boardService.buildIndex(newBoardContext);
+            functions.buildIndex(globalContext);
 
             rebuildThemes('boards');
 

@@ -36,6 +36,12 @@ public class VimboardBoardProperties {
     // Cache, lock and queue settings
     //------------------------------------------------------------------------
 
+    @NestedConfigurationProperty
+    private VimboardLockProperties lock;
+
+    @NestedConfigurationProperty
+    private VimboardQueueProperties queue;
+
     //------------------------------------------------------------------------
     // Cookie settings
     //------------------------------------------------------------------------
@@ -86,6 +92,27 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
     // Board settings
     //------------------------------------------------------------------------
+
+    /**
+     * Maximum amount of threads to display per page.
+     */
+    private Integer threadsPerPage;
+
+    /**
+     * Maximum number of pages. Content past the last page is automatically
+     * purged.
+     */
+    private Integer maxPages;
+
+    /**
+     * Replies to show per thread on the board index page.
+     */
+    private Integer threadsPreview;
+
+    /**
+     * Same as above, but for stickied threads.
+     */
+    private Integer threadsPreviewSticky;
 
     /**
      * How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
@@ -207,6 +234,17 @@ public class VimboardBoardProperties {
      * Name of the index page file.
      */
     private String fileIndex;
+
+    /**
+     * Name of the page file.
+     */
+    private String filePage;
+
+//    $config['file_page50'] = '%d+50.html';
+//    $config['file_page_slug'] = '%d-%s.html';
+//    $config['file_page50_slug'] = '%d-%s+50.html';
+//    $config['file_mod'] = 'mod.php';
+//    $config['file_post'] = 'post.php';
 
     /**
      * Name of the main script file.
@@ -391,6 +429,46 @@ public class VimboardBoardProperties {
     }
 
     /**
+     * Getter for {@link #lock}.
+     *
+     * @return field value.
+     */
+    public VimboardLockProperties getLock() {
+        return lock;
+    }
+
+    /**
+     * Setter for {@link #lock}.
+     *
+     * @param lock new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setLock(VimboardLockProperties lock) {
+        this.lock = lock;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #queue}.
+     *
+     * @return field value.
+     */
+    public VimboardQueueProperties getQueue() {
+        return queue;
+    }
+
+    /**
+     * Setter for {@link #queue}.
+     *
+     * @param queue new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setQueue(VimboardQueueProperties queue) {
+        this.queue = queue;
+        return this;
+    }
+
+    /**
      * Getter for {@link #cookies}.
      *
      * @return field value.
@@ -487,6 +565,86 @@ public class VimboardBoardProperties {
      */
     public VimboardBoardProperties setBanAppeals(Boolean banAppeals) {
         this.banAppeals = banAppeals;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #threadsPerPage}.
+     *
+     * @return field value.
+     */
+    public Integer getThreadsPerPage() {
+        return threadsPerPage;
+    }
+
+    /**
+     * Setter for {@link #threadsPerPage}.
+     *
+     * @param threadsPerPage new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setThreadsPerPage(Integer threadsPerPage) {
+        this.threadsPerPage = threadsPerPage;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #maxPages}.
+     *
+     * @return field value.
+     */
+    public Integer getMaxPages() {
+        return maxPages;
+    }
+
+    /**
+     * Setter for {@link #maxPages}.
+     *
+     * @param maxPages new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setMaxPages(Integer maxPages) {
+        this.maxPages = maxPages;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #threadsPreview}.
+     *
+     * @return field value.
+     */
+    public Integer getThreadsPreview() {
+        return threadsPreview;
+    }
+
+    /**
+     * Setter for {@link #threadsPreview}.
+     *
+     * @param threadsPreview new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setThreadsPreview(Integer threadsPreview) {
+        this.threadsPreview = threadsPreview;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #threadsPreviewSticky}.
+     *
+     * @return field value.
+     */
+    public Integer getThreadsPreviewSticky() {
+        return threadsPreviewSticky;
+    }
+
+    /**
+     * Setter for {@link #threadsPreviewSticky}.
+     *
+     * @param threadsPreviewSticky new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setThreadsPreviewSticky(Integer threadsPreviewSticky) {
+        this.threadsPreviewSticky = threadsPreviewSticky;
         return this;
     }
 
@@ -807,6 +965,26 @@ public class VimboardBoardProperties {
      */
     public VimboardBoardProperties setFileIndex(String fileIndex) {
         this.fileIndex = fileIndex;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #filePage}.
+     *
+     * @return field value.
+     */
+    public String getFilePage() {
+        return filePage;
+    }
+
+    /**
+     * Setter for {@link #filePage}.
+     *
+     * @param filePage new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setFilePage(String filePage) {
+        this.filePage = filePage;
         return this;
     }
 

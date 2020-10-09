@@ -21,6 +21,11 @@ public class VimboardBoardSettings {
 
     // Cache, lock and queue settings
 
+    /** {@link VimboardBoardProperties#getLock()} */
+    private VimboardLockSettings lock;
+    /** {@link VimboardBoardProperties#getQueue()} */
+    private VimboardQueueSettings queue;
+
     // Cookie settings
 
     /** {@link VimboardBoardProperties#getCookies()} */
@@ -48,6 +53,15 @@ public class VimboardBoardSettings {
     // Image settings
 
     // Board settings
+
+    /** {@link VimboardBoardProperties#getThreadsPerPage()} */
+    private Integer threadsPerPage;
+    /** {@link VimboardBoardProperties#getMaxPages()} */
+    private Integer maxPages;
+    /** {@link VimboardBoardProperties#getThreadsPreview()} */
+    private Integer threadsPreview;
+    /** {@link VimboardBoardProperties#getThreadsPreviewSticky()} */
+    private Integer threadsPreviewSticky;
 
     /** {@link VimboardBoardProperties#getBoardAbbreviation()} */
     private String boardAbbreviation;
@@ -94,6 +108,8 @@ public class VimboardBoardSettings {
     private String root;
     /** {@link VimboardBoardProperties#getFileIndex()} */
     private String fileIndex;
+    /** {@link VimboardBoardProperties#getFilePage()} */
+    private String filePage;
     /** {@link VimboardBoardProperties#getFileScript()} */
     private String fileScript;
     /** {@link VimboardBoardProperties#getBoardPath()} */
@@ -179,6 +195,42 @@ public class VimboardBoardSettings {
      */
     public void setRedirectHttp(Short redirectHttp) {
         this.redirectHttp = redirectHttp;
+    }
+
+    /**
+     * Getter for {@link #lock}.
+     *
+     * @return field value.
+     */
+    public VimboardLockSettings getLock() {
+        return lock;
+    }
+
+    /**
+     * Setter for {@link #lock}.
+     *
+     * @param lock new field value.
+     */
+    public void setLock(VimboardLockSettings lock) {
+        this.lock = lock;
+    }
+
+    /**
+     * Getter for {@link #queue}.
+     *
+     * @return field value.
+     */
+    public VimboardQueueSettings getQueue() {
+        return queue;
+    }
+
+    /**
+     * Setter for {@link #queue}.
+     *
+     * @param queue new field value.
+     */
+    public void setQueue(VimboardQueueSettings queue) {
+        this.queue = queue;
     }
 
     /**
@@ -269,6 +321,78 @@ public class VimboardBoardSettings {
      */
     public void setBanAppeals(Boolean banAppeals) {
         this.banAppeals = banAppeals;
+    }
+
+    /**
+     * Getter for {@link #threadsPerPage}.
+     *
+     * @return field value.
+     */
+    public Integer getThreadsPerPage() {
+        return threadsPerPage;
+    }
+
+    /**
+     * Setter for {@link #threadsPerPage}.
+     *
+     * @param threadsPerPage new field value.
+     */
+    public void setThreadsPerPage(Integer threadsPerPage) {
+        this.threadsPerPage = threadsPerPage;
+    }
+
+    /**
+     * Getter for {@link #maxPages}.
+     *
+     * @return field value.
+     */
+    public Integer getMaxPages() {
+        return maxPages;
+    }
+
+    /**
+     * Setter for {@link #maxPages}.
+     *
+     * @param maxPages new field value.
+     */
+    public void setMaxPages(Integer maxPages) {
+        this.maxPages = maxPages;
+    }
+
+    /**
+     * Getter for {@link #threadsPreview}.
+     *
+     * @return field value.
+     */
+    public Integer getThreadsPreview() {
+        return threadsPreview;
+    }
+
+    /**
+     * Setter for {@link #threadsPreview}.
+     *
+     * @param threadsPreview new field value.
+     */
+    public void setThreadsPreview(Integer threadsPreview) {
+        this.threadsPreview = threadsPreview;
+    }
+
+    /**
+     * Getter for {@link #threadsPreviewSticky}.
+     *
+     * @return field value.
+     */
+    public Integer getThreadsPreviewSticky() {
+        return threadsPreviewSticky;
+    }
+
+    /**
+     * Setter for {@link #threadsPreviewSticky}.
+     *
+     * @param threadsPreviewSticky new field value.
+     */
+    public void setThreadsPreviewSticky(Integer threadsPreviewSticky) {
+        this.threadsPreviewSticky = threadsPreviewSticky;
     }
 
     /**
@@ -557,6 +681,24 @@ public class VimboardBoardSettings {
      */
     public void setFileIndex(String fileIndex) {
         this.fileIndex = fileIndex;
+    }
+
+    /**
+     * Getter for {@link #filePage}.
+     *
+     * @return field value.
+     */
+    public String getFilePage() {
+        return filePage;
+    }
+
+    /**
+     * Setter for {@link #filePage}.
+     *
+     * @param filePage new field value.
+     */
+    public void setFilePage(String filePage) {
+        this.filePage = filePage;
     }
 
     /**
