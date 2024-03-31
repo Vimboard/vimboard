@@ -2,7 +2,7 @@ package com.github.vimboard.service;
 
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.dashboard.User;
-import com.github.vimboard.model.domain.UserModel;
+import com.github.vimboard.model.UserModel;
 import com.github.vimboard.repository.ModRepository;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.github.vimboard.service;
 
 import com.github.vimboard.domain.ModLog;
-import com.github.vimboard.model.domain.ModLogModel;
+import com.github.vimboard.model.ModLogModel;
 import com.github.vimboard.repository.ModLogRepository;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;

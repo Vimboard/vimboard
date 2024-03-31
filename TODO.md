@@ -48,4 +48,4 @@ https://www.baeldung.com/spring-boot-app-as-a-service
  - spring-mvc static resources - https://www.baeldung.com/spring-mvc-static-resources
  - http://aerexu.github.io/java/2016/04/10/Use-external-configuration-to-get-Datasource-in-Spring-boot
  - https://dzone.com/articles/defining-bean-dependencies-with-java-config-in-spring-framework
- 
+ - https://regex101.com/ 

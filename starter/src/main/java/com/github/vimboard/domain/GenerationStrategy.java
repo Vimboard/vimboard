@@ -12,14 +12,14 @@ public enum GenerationStrategy {
     STRATEGY_IMMEDIATE,
 
     /**
-     * NOT RECOMMENDED.
+     * NOT RECOMMENDED:
      * Instead of an all-"immediate" strategy, you can use
      * an all-"build_on_load" one (used to be initialized using
      * $config['smart_build']; ) for all pages instead of those to be build
      * immediately. A rebuild done in this mode should remove all your static
      * files.
      *
-     * TODO $config['smart_build'] (not used in vichan)
+     * TODO $config['smart_build'] (disabled by default)
      */
     STRATEGY_SMART_BUILD,
 

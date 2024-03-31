@@ -21,7 +21,7 @@ ${page.boardlist.top?no_esc}
         <#if mod?? && !page.hideDashboardLink><p><a href="?/"><@spring.message "page.Return_to_dashboard"/></a></p></#if>
     </div>
 </header>
-<#include body>
+<#include page.body>
 <hr>
 <footer>
     <p class="unimportant" style="margin-top:20px;text-align:center;">- Tinyboard +

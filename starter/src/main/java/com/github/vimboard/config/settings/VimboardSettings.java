@@ -9,6 +9,8 @@ import java.util.Map;
  */
 public class VimboardSettings {
 
+    /** {@link VimboardProperties#getTmp()} */
+    private String tmp;
     /** {@link VimboardProperties#getWww()} */
     private String www;
 
@@ -39,13 +41,31 @@ public class VimboardSettings {
      * @return board settings.
      */
     public VimboardBoardSettings getCustom(String boardUri) {
-        final VimboardBoardSettings result =  getCustom().get(boardUri);
+        final VimboardBoardSettings result = getCustom().get(boardUri);
         return result == null ? getAll() : result;
     }
 
     //------------------------------------------------------------------------
     // Getters and setters
     //------------------------------------------------------------------------
+
+    /**
+     * Getter for {@link #tmp}.
+     *
+     * @return field value.
+     */
+    public String getTmp() {
+        return tmp;
+    }
+
+    /**
+     * Setter for {@link #tmp}.
+     *
+     * @param tmp new field value.
+     */
+    public void setTmp(String tmp) {
+        this.tmp = tmp;
+    }
 
     /**
      * Getter for {@link #www}.

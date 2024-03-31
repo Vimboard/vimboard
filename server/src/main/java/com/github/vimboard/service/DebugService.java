@@ -1,6 +1,6 @@
 package com.github.vimboard.service;
 
-import com.github.vimboard.model.mod.DebugHttpPage;
+import com.github.vimboard.page.mod.DebugHttpPage;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;

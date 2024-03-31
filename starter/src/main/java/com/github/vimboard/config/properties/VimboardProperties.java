@@ -10,6 +10,11 @@ import java.util.Map;
 public class VimboardProperties {
 
     /**
+     * Temporary folder location.
+     */
+    private String tmp;
+
+    /**
      * Static content location.
      */
     private String www;
@@ -33,6 +38,26 @@ public class VimboardProperties {
     //------------------------------------------------------------------------
     // Getters and builder setters
     //------------------------------------------------------------------------
+
+    /**
+     * Getter for {@link #tmp}.
+     *
+     * @return field value.
+     */
+    public String getTmp() {
+        return tmp;
+    }
+
+    /**
+     * Setter for {@link #tmp}.
+     *
+     * @param tmp new field value.
+     * @return {@code this}.
+     */
+    public VimboardProperties setTmp(String tmp) {
+        this.tmp = tmp;
+        return this;
+    }
 
     /**
      * Getter for {@link #www}.

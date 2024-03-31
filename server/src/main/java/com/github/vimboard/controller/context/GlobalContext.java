@@ -2,12 +2,12 @@ package com.github.vimboard.controller.context;
 
 import com.github.vimboard.config.settings.VimboardBoardSettings;
 import com.github.vimboard.domain.Board;
-import com.github.vimboard.model.domain.BoardModel;
+import com.github.vimboard.model.BoardModel;
 
 import java.util.List;
 
 /**
- * TODO:
+ * TODO: временный аналог переменных `global`
  */
 public class GlobalContext {
 

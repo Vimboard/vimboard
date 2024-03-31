@@ -1,15 +1,15 @@
 package com.github.vimboard.controller;
 
 import com.github.vimboard.config.settings.VimboardSettings;
-import com.github.vimboard.controller.context.HandlerContext;
 import com.github.vimboard.controller.context.GlobalContext;
+import com.github.vimboard.controller.context.HandlerContext;
 import com.github.vimboard.domain.Group;
 import com.github.vimboard.domain.Mod;
 import com.github.vimboard.domain.Pms;
-import com.github.vimboard.model.ErrorPage;
-import com.github.vimboard.model.Page;
-import com.github.vimboard.model.domain.*;
-import com.github.vimboard.model.mod.*;
+import com.github.vimboard.model.*;
+import com.github.vimboard.page.ErrorPage;
+import com.github.vimboard.page.Page;
+import com.github.vimboard.page.mod.*;
 import com.github.vimboard.repository.*;
 import com.github.vimboard.service.*;
 import org.slf4j.Logger;
@@ -155,7 +155,7 @@ public class ModController extends AbstractController {
         // edit board details
         //handlerMap.put(new UriPattern("/edit/(\%b)", SECURED_POST), this::editBoard);
         // create a new board
-        handlerMap.put(new UriPattern("/new-board", SECURED_POST), this::newBoard);
+        handlerMap.put(new UriPattern("/new-board", SECURED_POST), this::newBoard); // TODO
 
         // ...
 
@@ -363,7 +363,7 @@ public class ModController extends AbstractController {
                         i18n("error.invalidfield", "URI")));
             }
 
-            // TODO error 'Your filesystem cannot handle a board URI of that length'
+            // TODO: error 'Your filesystem cannot handle a board URI of that length'
 
             final GlobalContext globalContext = new GlobalContext() // TODO: refactor (move)
                     .setHandlerContext(ctx)
@@ -380,8 +380,8 @@ public class ModController extends AbstractController {
 
             boardRepository.create(uri, title, subtitle);
 
-            securityService.log(ctx, "Created a new board: "
-                    + "".replace("{uri}", uri));
+            securityService.log(ctx, "Created a new board: " + settings
+                    .getAll().getBoardAbbreviation().replace("{uri}", uri));
 
             try {
                 if (!functions.openBoard(globalContext)) {
@@ -397,21 +397,22 @@ public class ModController extends AbstractController {
             // TODO ^^^^^^^^^^^^^^
 
             // Build the board
-            functions.buildIndex(globalContext);
+            functions.buildIndex(globalContext); // TODO: CURRENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-            rebuildThemes('boards');
+            // rebuildThemes('boards'); TODO: NEXT =======
 
             return redirectToDashboard(ctx.request,
                     "/" + uri + "/" + settings.getAll().getFileIndex());
         }
 
-        ctx.model.addAttribute();
+        // ctx.model.addAttribute(); TODO: NEXT =======
 
         return modPage("mod/board.ftlh", ctx.model,
                 i18n("mod.board.New_board"), null);
 
+        /* TODO: ---------------------
         mod_page(_('New board'), 'mod/board.html',
-                array('new' => true, 'token' => make_secure_link_token('new-board')));
+                array('new' => true, 'token' => make_secure_link_token('new-board')));*/
     }
 
     private String newPm(HandlerContext ctx) {
@@ -784,8 +785,6 @@ public class ModController extends AbstractController {
     private String modPage(String bodyTemplate, Model model,
             String pageTitle, String pageSubTitle) {
 
-        model.addAttribute("body", bodyTemplate);
-
         model.addAttribute("config", settings.getAll());
 
         String dataStylesheet = settings.getAll().getDefaultStylesheet()[1];
@@ -795,6 +794,7 @@ public class ModController extends AbstractController {
 
         model.addAttribute("page", new Page()
                 .setBoardlist(boardService.buildBoardList())
+                .setBody(bodyTemplate)
                 .setDataStylesheet(dataStylesheet)
                 .setHideDashboardLink(bodyTemplate.equals("mod/dashboard.ftlh"))
                 .setTitle(pageTitle)

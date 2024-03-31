@@ -4,8 +4,6 @@ import com.github.vimboard.config.properties.*;
 import com.github.vimboard.config.settings.*;
 import com.github.vimboard.domain.GenerationStrategy;
 import com.github.vimboard.domain.Group;
-import com.github.vimboard.domain.LockDriver;
-import com.github.vimboard.domain.QueueDriver;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -30,6 +28,10 @@ public class VimboardSettingsBuilder {
             boolean runAsCli) {
 
         vimboardSettings = new VimboardSettings();
+
+        final String tmp = vimboardProperties.getTmp();
+        vimboardSettings.setTmp(tmp == null || tmp.isEmpty()
+                ? "/tmp/vimboard/" : tmp);
 
         final String www = vimboardProperties.getWww();
         vimboardSettings.setWww(www == null || www.isEmpty()
@@ -103,6 +105,7 @@ public class VimboardSettingsBuilder {
         });
         sb.put("additionalJavascriptCompile", false);
         sb.put("allowSubtitleHtml", false);
+        sb.put("alwaysRegenerateMarkup", false);
         sb.put("api", buildApiSettings(null, boardUri), this::convertApi);
         sb.put("banAppeals", false);
         sb.put("boardAbbreviation", "/{uri}/");
@@ -115,6 +118,33 @@ public class VimboardSettingsBuilder {
         sb.put("countryFlagsCondensedCss", "static/flags/flags.css");
         sb.put("debug", false);
         sb.put("dir", buildDirSettings(null, boardUri), this::convertDir);
+        sb.put("embedding", new String[][] {
+                {
+                        "/^https?:\\/\\/(\\w+\\.)?youtube\\.com\\/watch\\?v=([a-zA-Z0-9\\-_]{10,11})(&.+)?$/i",
+                        "<iframe style=\"float: left; margin: 10px 20px;\" width=\"%%tb_width%%\" height=\"%%tb_height%%\" frameborder=\"0\" id=\"ytplayer\" src=\"http://www.youtube.com/embed/$2\"></iframe>"
+                },
+                {
+                        "/^https?:\\/\\/(\\w+\\.)?vimeo\\.com\\/(\\d{2,10})(\\?.+)?$/i",
+                        "<iframe style=\"float: left; margin: 10px 20px;\" width=\"%%tb_width%%\" height=\"%%tb_height%%\" src=\"https://player.vimeo.com/video/$2\" frameborder=\"0\"></iframe>"
+                },
+                {
+                        "/^https?:\\/\\/(\\w+\\.)?dailymotion\\.com\\/video\\/([a-zA-Z0-9]{2,10})(_.+)?$/i",
+                        "<object style=\"float: left; margin: 10px 20px;\" width=\"%%tb_width%%\" height=\"%%tb_height%%\"><param name=\"movie\" value=\"http://www.dailymotion.com/swf/video/$2\"><param name=\"allowFullScreen\" value=\"true\"><param name=\"allowScriptAccess\" value=\"always\"><param name=\"wmode\" value=\"transparent\"><embed type=\"application/x-shockwave-flash\" src=\"http://www.dailymotion.com/swf/video/$2\" width=\"%%tb_width%%\" height=\"%%tb_height%%\" wmode=\"transparent\" allowfullscreen=\"true\" allowscriptaccess=\"always\"></object>"
+                },
+                {
+                        "/^https?:\\/\\/(\\w+\\.)?metacafe\\.com\\/watch\\/(\\d+)\\/([a-zA-Z0-9_\\-.]+)\\/(\\?[^'\"<>]+)?$/i",
+                        "<div style=\"float: left; margin: 10px 20px; width: %%tb_width%%px; height: %%tb_height%%px\"><embed flashVars=\"playerVars=showStats=no|autoPlay=no\" src=\"http://www.metacafe.com/fplayer/$2/$3.swf\" width=\"%%tb_width%%\" height=\"%%tb_height%%\" wmode=\"transparent\" allowFullScreen=\"true\" allowScriptAccess=\"always\" name=\"Metacafe_$2\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\" type=\"application/x-shockwave-flash\"></div>"
+                },
+                {
+                        "/^https?:\\/\\/video\\.google\\.com\\/videoplay\\?docid=(\\d+)([&#](.+)?)?$/i",
+                        "<embed src=\"http://video.google.com/googleplayer.swf?docid=$1&hl=en&fs=true\" style=\"width: %%tb_width%%px; height: %%tb_height%%px; float: left; margin: 10px 20px\" allowFullScreen=\"true\" allowScriptAccess=\"always\" type=\"application/x-shockwave-flash\"></embed>"
+                },
+                {
+                        "/^https?:\\/\\/(\\w+\\.)?vocaroo\\.com\\/i\\/([a-zA-Z0-9]{2,15})$/i",
+                        "<object style=\"float: left; margin: 10px 20px;\" width=\"148\" height=\"44\"><param name=\"movie\" value=\"http://vocaroo.com/player.swf?playMediaID=$2&autoplay=0\"><param name=\"wmode\" value=\"transparent\"><embed src=\"http://vocaroo.com/player.swf?playMediaID=$2&autoplay=0\" width=\"148\" height=\"44\" wmode=\"transparent\" type=\"application/x-shockwave-flash\"></object>"
+                }
+        });
+        sb.put("fileBoard", false);
         sb.put("fileIndex", "index.html");
         sb.put("filePage", "{no}.html");
         final String fileScript = (String) sb.put("fileScript", "main.js");
@@ -124,13 +154,13 @@ public class VimboardSettingsBuilder {
                 GenerationStrategy.STRATEGY_SANE,
                 GenerationStrategy.STRATEGY_IMMEDIATE
         });
-        sb.put("lock", buildLockSettings(null, boardUri), this::convertLock);
         sb.put("maxPages", 10);
         sb.put("metaKeywords", null);
         sb.put("minifyHtml", true);
         sb.put("mod", buildModSettings(null, boardUri), this::convertMod);
+        sb.put("noko50Count", 50);
+        sb.put("noko50Min", 100);
         sb.put("postDate", "MM/dd/yy (EEE) HH:mm:ss");
-        sb.put("queue", buildQueueSettings(null, boardUri), this::convertQueue);
         sb.put("recaptcha", false);
         sb.put("redirectHttp", (short) 303);
         final String root = (String) sb.put("root", "/");
@@ -197,22 +227,6 @@ public class VimboardSettingsBuilder {
         return sb.build();
     }
 
-    private VimboardLockSettings buildLockSettings(
-            VimboardLockProperties p, String boardUri) {
-        final VimboardLockSettings a = (boardUri == null
-                ? null
-                : vimboardSettings.getAll().getLock());
-
-        final VimboardLockSettings r = new VimboardLockSettings();
-
-        final SettingsBuilder<VimboardLockProperties, VimboardLockSettings> sb =
-                new SettingsBuilder<>(boardUri, "lock", p, a, r);
-
-        sb.put("enabled", LockDriver.FS);
-
-        return sb.build();
-    }
-
     private VimboardModSettings buildModSettings(
             VimboardModProperties p, String boardUri) {
         final VimboardModSettings a = (boardUri == null
@@ -255,22 +269,6 @@ public class VimboardSettingsBuilder {
         sb.put("viewNotes", Group.JANITOR);
 
         // Settings with dependencies
-
-        return sb.build();
-    }
-
-    private VimboardQueueSettings buildQueueSettings(
-            VimboardQueueProperties p, String boardUri) {
-        final VimboardQueueSettings a = (boardUri == null
-                ? null
-                : vimboardSettings.getAll().getQueue());
-
-        final VimboardQueueSettings r = new VimboardQueueSettings();
-
-        final SettingsBuilder<VimboardQueueProperties, VimboardQueueSettings> sb =
-                new SettingsBuilder<>(boardUri, "queue", p, a, r);
-
-        sb.put("enabled", QueueDriver.FS);
 
         return sb.build();
     }
@@ -340,18 +338,8 @@ public class VimboardSettingsBuilder {
         return buildDirSettings(p, boardUri);
     }
 
-    private Object convertLock(String boardUri, Object value) {
-        final VimboardLockProperties p = (VimboardLockProperties) value;
-        return buildLockSettings(p, boardUri);
-    }
-
     private Object convertMod(String boardUri, Object value) {
         final VimboardModProperties p = (VimboardModProperties) value;
         return buildModSettings(p, boardUri);
-    }
-
-    private Object convertQueue(String boardUri, Object value) {
-        final VimboardQueueProperties p = (VimboardQueueProperties) value;
-        return buildQueueSettings(p, boardUri);
     }
 }

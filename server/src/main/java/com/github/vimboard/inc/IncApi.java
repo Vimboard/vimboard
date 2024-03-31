@@ -1,6 +1,7 @@
 package com.github.vimboard.inc;
 
 import com.github.vimboard.config.settings.VimboardBoardSettings;
+import com.github.vimboard.inc.display.IncPost;
 import com.github.vimboard.inc.display.IncThread;
 
 import java.util.*;
@@ -71,7 +72,7 @@ public class IncApi {
             postFields.putAll(config.getApi().getExtraFields());
         }
     }
-
+/* TODO: CURRENT
     private void translateFields($fields, $object, &$apiPost) {
         foreach ($fields as $local => $translated) {
             if (!isset($object->$local))
@@ -168,8 +169,8 @@ public class IncApi {
         posts.add(op);
         foreach ($thread->posts as $p) {
             $apiPosts['posts'][] = $this->translatePost($p, $threadsPage);
-        }
-        for ( thread.getPosts()) {
+        } // TODO
+        for (IncPost p : thread.getPosts()) {
             posts.add(translatePost(p, threadsPage));
         }
         apiPosts.put("posts", posts);
@@ -206,5 +207,5 @@ public class IncApi {
         }
 
         return $apiCatalog;
-    }
+    }*/
 }

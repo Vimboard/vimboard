@@ -1,6 +1,6 @@
 package com.github.vimboard.controller.context;
 
-import com.github.vimboard.model.domain.ModModel;
+import com.github.vimboard.model.ModModel;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+/**
+ * Контекст обработчика запроса.
+ */
 public class HandlerContext {
 
     public HttpServletRequest request;

@@ -3,6 +3,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.vimboard.mapper.PostMapper">
 
+    <select id="listPosts" resultType="com.github.vimboard.domain.Post">
+        SELECT
+            id,
+            thread,
+            subject,
+            email,
+            name,
+            trip,
+            capcode,
+            body,
+            body_nomarkup,
+            time,
+            bump,
+            files,
+            num_files,
+            filehash,
+            password,
+            ip,
+            sticky,
+            locked,
+            cycle,
+            sage,
+            embed,
+            slug
+        FROM vmb.posts_#{uri}
+        WHERE thread = #{id}
+        ORDER BY id DESC
+        LIMIT #{limit}
+    </select>
+
     <select id="listThreads" resultType="com.github.vimboard.domain.Post">
         SELECT
             id,
@@ -32,6 +62,14 @@
         ORDER BY sticky DESC, bump DESC
         LIMIT #{limit}
         OFFSET #{offset}
+    </select>
+
+    <select id="numPosts" resultType="com.github.vimboard.domain.NumPosts">
+        SELECT
+            count(*) AS replies,
+            sum(num_files) AS images
+        FROM vmb.posts_#{uri}
+        WHERE thread = #{id}
     </select>
 
 </mapper>

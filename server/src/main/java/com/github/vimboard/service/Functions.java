@@ -5,14 +5,21 @@ import com.github.vimboard.config.settings.VimboardSettings;
 import com.github.vimboard.controller.context.GlobalContext;
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.domain.GenerationStrategy;
+import com.github.vimboard.domain.NumPosts;
 import com.github.vimboard.domain.Post;
-import com.github.vimboard.model.domain.BoardModel;
-import com.github.vimboard.model.domain.BoardModelFileboard;
-import com.github.vimboard.model.domain.GenerationAction;
+import com.github.vimboard.inc.display.IncPost;
+import com.github.vimboard.inc.display.IncThread;
+import com.github.vimboard.model.BoardModel;
+import com.github.vimboard.model.BoardModelFileboard;
+import com.github.vimboard.model.ContentModel;
+import com.github.vimboard.model.GenerationAction;
+import com.github.vimboard.page.FileboardPage;
+import com.github.vimboard.page.IndexPage;
 import com.github.vimboard.repository.BoardRepository;
 import com.github.vimboard.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Files;
@@ -21,9 +28,9 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class Functions {
@@ -45,7 +52,13 @@ public class Functions {
         this.settings = settings;
     }
 
-    // TODO: line: 532
+    /**
+     * Помещает в контекст указанную доску и её конфиг.
+     *
+     * @param context
+     * @param board
+     * @throws ServiceException
+     */
     private void setupBoard(GlobalContext context, Board board)
             throws ServiceException {
         final String uri = board.getUri();
@@ -55,9 +68,6 @@ public class Functions {
                 .setConfig(config);
 
         final BoardModel boardModel = new BoardModel(board);
-
-        // TODO older versions
-        boardModel.setName(board.getTitle());
 
         final String dir = config.getBoardPath().replace("{uri}", uri);
         boardModel.setDir(dir);
@@ -91,7 +101,15 @@ public class Functions {
         }
     }
 
-    // TODO: line: 563
+    /**
+     * Открывает (помещает в контекст), если не открыта ещё, доску по uri
+     * из контекста.
+     *
+     * @param context
+     * @return {@code true} если в контексте находится доска, uri которой
+     *     совпадает с uri из контекста.
+     * @throws ServiceException
+     */
     public boolean openBoard(GlobalContext context)
             throws ServiceException {
         Board board = context.board;
@@ -109,7 +127,8 @@ public class Functions {
         if (board != null) {
             setupBoard(context, board);
 
-            // TODO call after_open_board, from vichan
+            // TODO: call after_open_board
+            // TODO: Эта функция существует только в /smart_build.php и /tools/worker.php
 
             return true;
         }
@@ -117,25 +136,22 @@ public class Functions {
         return false;
     }
 
-    // TODO: line: 1369
     private Object index(GlobalContext context, int page) {
         return index(context, page, false, false);
     }
 
-    // TODO: line: 1369
     private Object index(GlobalContext context, int page, boolean mod) {
         return index(context, page, mod, false);
     }
 
     // $brief means that we won't need to generate anything yet
-    // TODO: line: 1369
-    private Object index(GlobalContext context, int page, boolean mod, boolean brief) {
+    private ContentModel index(GlobalContext context, int page, boolean mod, boolean brief) {/* TODO: CURRENT
         final BoardModelFileboard board =
                 new BoardModelFileboard(context.boardModel);
         final VimboardBoardSettings config = context.config;
 
-        String body = "";
-        int offset = (page - 1)*config.getThreadsPerPage();
+        StringBuilder body = new StringBuilder();
+        long offset = (long) (page - 1) * config.getThreadsPerPage();
 
         List<Post> query = postRepository.listThreads(
                 board.getUri(), config.getThreadsPerPage(), offset);
@@ -145,93 +161,94 @@ public class Functions {
         }
 
         if (query.size() < 1 && page > 1) {
-            return false;
+            return null;
         }
 
-        final List<ThreadObj> threads = new ArrayList<>();
+        final List<IncThread> threads = new ArrayList<>();
 
         for (Post th : query) {
-            ThreadObj thread = new ThreadObj($th, $mod ? '?/' : $config['root'], $mod);
+            IncThread thread = new IncThread(config, th, mod ? "?/" : config.getRoot(), mod);  // TODO: WAIT FOR DEV ========================================================
 
-            if ($config['cache']['enabled']) {
-                $cached = cache::get("thread_index_{$board['uri']}_{$th['id']}");
-                if (isset($cached['replies'], $cached['omitted'])) {
-                    $replies = $cached['replies'];
-                    $omitted = $cached['omitted'];
-                } else {
-                    unset($cached);
-                }
+            List<Post> posts = postRepository.listPosts(
+                    board.getUri(), th.getId(), (th.isSticky() ? config.getThreadsPreviewSticky() : config.getThreadsPreview()));
+
+            List<Post> replies = new ArrayList<>(posts);
+            Collections.reverse(replies);
+
+            final Map omitted;
+            if (replies.size() == ((th.isSticky() ? config.getThreadsPreviewSticky() : config.getThreadsPreview()))) {
+                NumPosts count = numPosts(context, th.getId());
+                omitted = new HashMap(); // TODO: удалить через рефакторинг
+                omitted.put("post_count", count.getReplies());
+                omitted.put("image_count", count.getImages());
+            } else {
+                omitted = null;
             }
 
-            if (!isset($cached)) {
-                $posts = prepare(sprintf("SELECT * FROM ``posts_%s`` WHERE `thread` = :id ORDER BY `id` DESC LIMIT :limit", $board['uri']));
-                $posts->bindValue(':id', $th['id']);
-                $posts->bindValue(':limit', ($th['sticky'] ? $config['threads_preview_sticky'] : $config['threads_preview']), PDO::PARAM_INT);
-                $posts->execute() or error(db_error($posts));
-
-                $replies = array_reverse($posts->fetchAll(PDO::FETCH_ASSOC));
-
-                if (count($replies) == ($th['sticky'] ? $config['threads_preview_sticky'] : $config['threads_preview'])) {
-                    $count = numPosts($th['id']);
-                    $omitted = array('post_count' => $count['replies'], 'image_count' => $count['images']);
-                } else {
-                    $omitted = false;
+            int numImages = 0;
+            for (Post po : replies) {
+                if (po.getNumFiles() > 0) {
+                    numImages += po.getNumFiles();
                 }
 
-                if ($config['cache']['enabled'])
-                    cache::set("thread_index_{$board['uri']}_{$th['id']}", array(
-                        'replies' => $replies,
-                        'omitted' => $omitted,
-				));
+                thread.add(new IncPost(po, mod ? "?/" : config.getRoot(), mod));
             }
 
-            $num_images = 0;
-            foreach ($replies as $po) {
-                if ($po['num_files'])
-                    $num_images+=$po['num_files'];
+            thread.setImages(numImages);
+            thread.setReplies(omitted != null && omitted.get("post_count") != null
+                    ? (int) omitted.get("post_count") : replies.size()); // TODO: (int) list object
 
-                $thread->add(new Post($po, $mod ? '?/' : $config['root'], $mod));
+            if (omitted != null) {
+                thread.setOmitted((int) omitted.get("post_count") - (th.isSticky() ? config.getThreadsPreviewSticky() : config.getThreadsPreview()));
+                thread.setOmittedImages((int) omitted.get("image_count") - numImages);
             }
 
-            $thread->images = $num_images;
-            $thread->replies = isset($omitted['post_count']) ? $omitted['post_count'] : count($replies);
+            threads.add(thread);
 
-            if ($omitted) {
-                $thread->omitted = $omitted['post_count'] - ($th['sticky'] ? $config['threads_preview_sticky'] : $config['threads_preview']);
-                $thread->omitted_images = $omitted['image_count'] - $num_images;
-            }
-
-            $threads[] = $thread;
-
-            if (!$brief) {
-                $body .= $thread->build(true);
+            if (!brief) {
+                body.append(thread.build(context, true)); // TODO:
             }
         }
 
+        if (config.getFileBoard()) {
+            final IndexPage indexPage = new IndexPage()
+                    .setBody("fileboard.ftlh");
+            put("fileboard", new FileboardPage()
+                    .setBody()
+                    .setMod());
+
+        }
         if ($config['file_board']) {
             $body = Element('fileboard.html', array('body' => $body, 'mod' => $mod));
         }
 
         return array(
                 'board' => $board,
-        'body' => $body,
+                'body' => $body,
                 'post_url' => $config['post_url'],
                 'config' => $config,
                 'boardlist' => createBoardlist($mod),
                 'threads' => $threads,
-	    );
+	    );TODO: CURRENT */ return null;
     }
 
-    // TODO: line: 1661
+    // Returns an associative array with 'replies' and 'images' keys
+    public NumPosts numPosts(GlobalContext context, long id) {
+        final BoardModelFileboard board =
+                new BoardModelFileboard(context.boardModel);
+
+        return postRepository.numPosts(board.getUri(), id);
+    }
+
     public void buildIndex(GlobalContext context) {
-        buildIndex(context, true);
+        buildIndex(context, "yes");
     }
 
     /**
      * @param globalApi TODO: true = "yes", false = "skip"
      */
-    // TODO: line: 1661
     public void buildIndex(GlobalContext context, String globalApi) {
+        /* TODO: CURRENT
         final BoardModel board = context.boardModel;
         final VimboardBoardSettings config =
                 settings.getCustom(board.getUri());
@@ -271,7 +288,7 @@ public class Functions {
                     context.handlerContext.request);
             if (action.equals(GenerationAction.REBUILD)
                     || catalogApiAction.equals(GenerationAction.REBUILD)) {
-                content = index(context, page, false, wontBuildThisPage);
+                ContentModel content = index(context, page, false, wontBuildThisPage); // TODO: CURRENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 if (content == null) {
                     break;
                 }
@@ -284,7 +301,9 @@ public class Functions {
 
                     $catalog[$page-1] = $threads;
 
-                    if ($wont_build_this_page) continue;
+                    if ($wont_build_this_page) {
+                        continue;
+                    }
                 }
 
                 if ($config['try_smarter']) {
@@ -345,14 +364,34 @@ public class Functions {
 
         if ($config['try_smarter'])
             $build_pages = array();
+         */
     }
 
-    // TODO: line: 1943
+    public static Map<String, String> extractModifiers(String body) {
+        Map<String, String> modifiers = new HashMap<>();
+
+        Pattern pattern = Pattern.compile("<tinyboard ([\\w\\s]+)>(.*?)</tinyboard>");
+        Matcher matcher = pattern.matcher(body);
+        while (matcher.find()) {
+            final String group1 = matcher.group(1);
+            if (group1.startsWith("escape ")) {
+                continue;
+            }
+            modifiers.put(group1, HtmlUtils.htmlUnescape(matcher.group(2)));
+        }
+
+    	return modifiers;
+    }
+
+    public static String removeModifiers(String body) {
+        return body
+                .replaceAll("<tinyboard ([\\w\\s]+)>(.*?)</tinyboard>", "");
+    }
+
     public static String markup(String body) {
         return body; // TODO
     }
 
-    // TODO: line: 2204
     public static String escapeMarkupModifiers(String string) {
         return string.replaceAll("(?i)<(tinyboard) ([\\w\\s]+)>",
                 "<$1 escape $2>");
@@ -360,26 +399,29 @@ public class Functions {
 
     /**
      * TODO
-     * @param fun
-     * @param array
+     * @param fun идентификатор стратегии и имя функции для построения через очередь.
+     * @param array ??? Какой-то контекст. 0 элемент - uri доски. 1 элемент - какая-то цифра
      * @param request
      * @return TODO null or GenerationAction
      */
-    // TODO: line: 2806
     public GenerationAction generationStrategy(final String fun, Object[] array,
             final HttpServletRequest request) {
+        final String ACT_BUILD_ON_LOAD = "build_on_load";
+        final String ACT_DEFER = "defer";
+        final String ACT_IMMEDIATE = "immediate";
+
         String action = null;
 
-        loop: for(GenerationStrategy gs :
+        loop: for (GenerationStrategy gs :
                 settings.getAll().getGenerationStrategies()) {
             switch (gs) {
 
                 case STRATEGY_IMMEDIATE:
-                    action = "immediate";
+                    action = ACT_IMMEDIATE;
                     break loop;
 
                 case STRATEGY_SMART_BUILD:
-                    action = "build_on_load";
+                    action = ACT_BUILD_ON_LOAD;
                     break loop;
 
                 case STRATEGY_SANE:
@@ -387,38 +429,38 @@ public class Functions {
                         break;
                     }
                     if (request.getMethod().equals("POST")
-                            && request.getParameter("mod") != null) { // TODO: refactor $_POST['mod']
+                            && request.getParameter("mod") != null) { // TODO: признак модератора определять не через request
                         break;
                     }
                     // Thread needs to be done instantly. Same with a board page, but only if posting a new thread.
                     if (fun.equals("sb_thread")
-                            || (fun.equals("sb_board") && (int) array[1] == 1 // TODO: refactor array
-                            && request.getMethod().equals("POST")
-                            && request.getParameter("mod") != null)) { // TODO: refactor $_POST['page']
-                        action = "immediate";
+                            || (fun.equals("sb_board")
+                                    && (int) array[1] == 1 // TODO: refactor array. массив здесь контекст, и параметр стоит явно назвать
+                                    && request.getMethod().equals("POST")
+                                    && request.getParameter("page") != null)) { // TODO: refactor $_POST['page'] тоже не стоит брать напрямую из запроса
+                        action = ACT_IMMEDIATE;
                         break loop;
                     }
                     break;
 
                 case STRATEGY_FIRST:
+                    // My first, test strategy.
                     switch (fun) {
                         case "sb_thread":  // TODO: inc/functions.buildThread('sb_thread', array($board['uri'], $id))
                         case "sb_api":     // TODO: inc/functions.buildIndex('sb_api', array($board['uri']))
                         case "sb_catalog": // TODO: themes/catalog.catalog_build("sb_catalog", array($board))
                         case "sb_ukko":    // TODO: themes/ukko.ukko_build('sb_ukko', array())
-                            action = "defer";
+                            action = ACT_DEFER;
                             break loop;
                         case "sb_board":   // TODO: inc/functions.buildIndex('sb_board', array($board['uri'], $page))
                             action = ((int) array[1] > 8) // TODO: refactor array
-                                    ? "build_on_load" : "defer";
+                                    ? ACT_BUILD_ON_LOAD : ACT_DEFER;
                             break loop;
                         case "sb_recent":  // TODO: themes/recent.build('sb_recent', array())
                         case "sb_sitemap": // TODO: themes/site_map.sitemap_build('sb_sitemap', array())
-                            action = "build_on_load";
+                            action = ACT_BUILD_ON_LOAD;
                             break loop;
                     }
-
-                    // TODO need default:
             }
         }
 
@@ -427,15 +469,23 @@ public class Functions {
         }
 
         switch (action) {
-            case "immediate":
+            case ACT_IMMEDIATE:
                 return GenerationAction.REBUILD;
-            case "defer":
+            case ACT_DEFER:
                 // Ok, it gets interesting here :)
-                get_queue('generate')->push(serialize(array('build', $fun, $array, $action)));
+                // TODO: get_queue('generate')->push(serialize(array('build', $fun, $array, $action)));
+                // TODO: Очередь используется только одним демоном /tools/worker.php, который из очереди дёргает функции ($fun, $array)
+                // TODO: Можно заменить очередью из которой ест поток
+                // TODO: Сделаю ближе к концу.
                 return GenerationAction.IGNORE;
-            case "build_on_load":
+            case ACT_BUILD_ON_LOAD:
                 return GenerationAction.DELETE;
-            // TODO need default:
         }
+
+        return null; // TODO: CURRENT
     }
+
+    //------------------------------------------------------------------------
+
+
 }

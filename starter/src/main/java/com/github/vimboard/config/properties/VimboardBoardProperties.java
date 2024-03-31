@@ -33,14 +33,8 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
 
     //------------------------------------------------------------------------
-    // Cache, lock and queue settings
+    // Cache, lock and queue settings TODO: вырезано
     //------------------------------------------------------------------------
-
-    @NestedConfigurationProperty
-    private VimboardLockProperties lock;
-
-    @NestedConfigurationProperty
-    private VimboardQueueProperties queue;
 
     //------------------------------------------------------------------------
     // Cookie settings
@@ -85,9 +79,26 @@ public class VimboardBoardProperties {
     // Markup settings
     //------------------------------------------------------------------------
 
+    // Always regenerate markup. This isn't recommended and should only be used
+    // for debugging; by default, Tinyboard only parses post markup when it
+    // needs to, and keeps post-markup HTML in the database. This will
+    // significantly impact performance when enabled.
+    private Boolean alwaysRegenerateMarkup;
+
     //------------------------------------------------------------------------
     // Image settings
     //------------------------------------------------------------------------
+
+    /**
+     * Number of posts in a "View Last X Posts" page.
+     */
+    private Integer noko50Count;
+
+    /**
+     * Number of posts a thread needs before it gets a "View Last X Posts" page.
+     * Set to an arbitrarily large value to disable.
+     */
+    private Integer noko50Min;
 
     //------------------------------------------------------------------------
     // Board settings
@@ -215,6 +226,23 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
     // Video embedding
     //------------------------------------------------------------------------
+
+    /**
+     * Custom embedding (YouTube, vimeo, etc.)
+     * It's very important that you match the entire input (with ^ and $)
+     * or things will not work correctly.
+     */
+    private String[][] embedding;
+
+    /*
+     * Embedding width.
+     */
+    private Integer embedWidth;
+
+    /*
+     * Embedding height.
+     */
+    private Integer embedHeight;
 
     //------------------------------------------------------------------------
     // Error messages
@@ -348,6 +376,11 @@ public class VimboardBoardProperties {
     // Mod permissions
     //------------------------------------------------------------------------
 
+    /**
+     * File board. Like 4chan /f/
+     */
+    private Boolean fileBoard;
+
     //------------------------------------------------------------------------
     // Public pages
     //------------------------------------------------------------------------
@@ -364,7 +397,7 @@ public class VimboardBoardProperties {
     private VimboardApiProperties api;
 
     //------------------------------------------------------------------------
-    // NNTPChan settings
+    // NNTPChan settings TODO: вырезано
     //------------------------------------------------------------------------
 
     //------------------------------------------------------------------------
@@ -425,46 +458,6 @@ public class VimboardBoardProperties {
      */
     public VimboardBoardProperties setRedirectHttp(Short redirectHttp) {
         this.redirectHttp = redirectHttp;
-        return this;
-    }
-
-    /**
-     * Getter for {@link #lock}.
-     *
-     * @return field value.
-     */
-    public VimboardLockProperties getLock() {
-        return lock;
-    }
-
-    /**
-     * Setter for {@link #lock}.
-     *
-     * @param lock new field value.
-     * @return {@code this}.
-     */
-    public VimboardBoardProperties setLock(VimboardLockProperties lock) {
-        this.lock = lock;
-        return this;
-    }
-
-    /**
-     * Getter for {@link #queue}.
-     *
-     * @return field value.
-     */
-    public VimboardQueueProperties getQueue() {
-        return queue;
-    }
-
-    /**
-     * Setter for {@link #queue}.
-     *
-     * @param queue new field value.
-     * @return {@code this}.
-     */
-    public VimboardBoardProperties setQueue(VimboardQueueProperties queue) {
-        this.queue = queue;
         return this;
     }
 
@@ -565,6 +558,66 @@ public class VimboardBoardProperties {
      */
     public VimboardBoardProperties setBanAppeals(Boolean banAppeals) {
         this.banAppeals = banAppeals;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #alwaysRegenerateMarkup}.
+     *
+     * @return field value.
+     */
+    public Boolean getAlwaysRegenerateMarkup() {
+        return alwaysRegenerateMarkup;
+    }
+
+    /**
+     * Setter for {@link #alwaysRegenerateMarkup}.
+     *
+     * @param alwaysRegenerateMarkup new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setAlwaysRegenerateMarkup(Boolean alwaysRegenerateMarkup) {
+        this.alwaysRegenerateMarkup = alwaysRegenerateMarkup;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #noko50Count}.
+     *
+     * @return field value.
+     */
+    public Integer getNoko50Count() {
+        return noko50Count;
+    }
+
+    /**
+     * Setter for {@link #noko50Count}.
+     *
+     * @param noko50Count new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setNoko50Count(Integer noko50Count) {
+        this.noko50Count = noko50Count;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #noko50Min}.
+     *
+     * @return field value.
+     */
+    public Integer getNoko50Min() {
+        return noko50Min;
+    }
+
+    /**
+     * Setter for {@link #noko50Min}.
+     *
+     * @param noko50Min new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setNoko50Min(Integer noko50Min) {
+        this.noko50Min = noko50Min;
         return this;
     }
 
@@ -929,6 +982,66 @@ public class VimboardBoardProperties {
     }
 
     /**
+     * Getter for {@link #embedding}.
+     *
+     * @return field value.
+     */
+    public String[][] getEmbedding() {
+        return embedding;
+    }
+
+    /**
+     * Setter for {@link #embedding}.
+     *
+     * @param embedding new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setEmbedding(String[][] embedding) {
+        this.embedding = embedding;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #embedWidth}.
+     *
+     * @return field value.
+     */
+    public Integer getEmbedWidth() {
+        return embedWidth;
+    }
+
+    /**
+     * Setter for {@link #embedWidth}.
+     *
+     * @param embedWidth new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setEmbedWidth(Integer embedWidth) {
+        this.embedWidth = embedWidth;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #embedHeight}.
+     *
+     * @return field value.
+     */
+    public Integer getEmbedHeight() {
+        return embedHeight;
+    }
+
+    /**
+     * Setter for {@link #embedHeight}.
+     *
+     * @param embedHeight new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setEmbedHeight(Integer embedHeight) {
+        this.embedHeight = embedHeight;
+        return this;
+    }
+
+    /**
      * Getter for {@link #root}.
      *
      * @return field value.
@@ -1165,6 +1278,26 @@ public class VimboardBoardProperties {
      */
     public VimboardBoardProperties setMod(VimboardModProperties mod) {
         this.mod = mod;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #fileBoard}.
+     *
+     * @return field value.
+     */
+    public Boolean getFileBoard() {
+        return fileBoard;
+    }
+
+    /**
+     * Setter for {@link #fileBoard}.
+     *
+     * @param fileBoard new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setFileBoard(Boolean fileBoard) {
+        this.fileBoard = fileBoard;
         return this;
     }
 

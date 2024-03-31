@@ -20,4 +20,3 @@ run-cli:
 run-cli-createdb:
 	cd target; java -jar vimboard-cli.jar drop-schema
 	cd target; java -jar vimboard-cli.jar create-schema
-

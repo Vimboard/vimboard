@@ -1,62 +1,181 @@
 package com.github.vimboard.inc.display;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.vimboard.config.settings.VimboardBoardSettings;
+import com.github.vimboard.controller.context.GlobalContext;
+import com.github.vimboard.domain.Post;
+import com.github.vimboard.model.BoardModelFileboard;
+import com.github.vimboard.service.Functions;
+import org.apache.logging.log4j.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
-public class IncThread {
+import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
-    private final VimboardBoardSettings config;
+public class IncThread extends IncPost {
 
-    /**
-     *
-     * @param root TODO: null or value
-     */
-    public IncThread( $post, String root = null, $mod = false, $hr = true) {
+    private static final Logger logger = LoggerFactory.getLogger(IncThread.class);
+
+    private final boolean mod;
+    private final String root;
+    private final boolean hr;
+
+    private final List<IncPost> posts;
+    private int omitted;
+    private int omittedImages;
+    private int images;
+    private int replies;
+
+    public IncThread(VimboardBoardSettings config, Post post) {
+        this(config, post, null, false, true);
+    }
+
+    public IncThread(VimboardBoardSettings config, Post post, String root) {
+        this(config, post, root, false, true);
+    }
+
+    public IncThread(VimboardBoardSettings config, Post post, String root, boolean mod) {
+        this(config, post, root, mod, true);
+    }
+
+    public IncThread(VimboardBoardSettings config, Post post, String root, boolean mod, boolean hr) {
+        super(config);
+
         if (root == null) {
             root = config.getRoot();
         }
 
-        for ()
-        foreach ($post as $key => $value) {
-            $this->{$key} = $value;
+        setId(post.getId());
+        setThread(post.getThread());
+        setEmail(post.getEmail());
+        setTrip(post.getTrip());
+        setCapcode(post.getCapcode());
+        setBodyNomarkup(post.getBodyNomarkup());
+        setTime(post.getTime());
+        setBump(post.getBump());
+        setNumFiles(post.getNumFiles());
+        setFilehash(post.getFilehash());
+        setPassword(post.getPassword());
+        setIp(post.getIp());
+        setSticky(post.isSticky());
+        setLocked(post.isLocked());
+        setCycle(post.isCycle());
+        setSage(post.isSage());
+        setSlug(post.getSlug());
+
+        if (!Strings.isEmpty(post.getFiles())) {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                setFiles(mapper.readValue(post.getFiles(), new TypeReference<>(){}));
+            } catch (JsonProcessingException ex) {
+                logger.error("Invalid post files value", ex);
+            }
         }
 
-        if (isset($this->files))
-            $this->files = @json_decode($this->files);
+        setSubject(htmlEscape(post.getSubject()));
+        setName(htmlEscape(post.getName()));
+        this.mod = mod;
+        this.root = root;
+        this.hr = hr;
 
-        $this->subject = utf8tohtml($this->subject);
-        $this->name = utf8tohtml($this->name);
-        $this->mod = $mod;
-        $this->root = $root;
-        $this->hr = $hr;
+        posts = new ArrayList<>();
+        omitted = 0;
+        omittedImages = 0;
 
-        $this->posts = array();
-        $this->omitted = 0;
-        $this->omitted_images = 0;
-
-        if ($this->embed)
-            $this->embed = embed_html($this->embed);
-
-        $this->modifiers = extract_modifiers($this->body_nomarkup);
-
-        if ($config['always_regenerate_markup']) {
-            $this->body = $this->body_nomarkup;
-            markup($this->body);
+        if (!Strings.isEmpty(post.getEmbed())) {
+            setEmbed(embedHtml(post.getEmbed()));
         }
 
-        if ($this->mod)
+        setModifiers(Functions.extractModifiers(getBodyNomarkup()));
+
+        if (config.getAlwaysRegenerateMarkup()) {
+            setBody(getBodyNomarkup());
+            Functions.markup($this->body);
+        }
+
+        if (this.mod) {
             // Fix internal links
             // Very complicated regex
-            $this->body = preg_replace(
-                    '/<a((([a-zA-Z]+="[^"]+")|[a-zA-Z]+=[a-zA-Z]+|\s)*)href="' . preg_quote($config['root'], '/') . '(' . sprintf(preg_quote($config['board_path'], '/'), $config['board_regex']) . ')/u',
-                '<a $1href="?/$4',
-                $this->body
-			);
+            setBody(fixInternalLinks(getBody(),
+                    config.getRoot(),
+                    config.getBoardPath(),
+                    config.getBoardRegex()));
+        }
     }
 
-    public List<Object> getPosts() {
-        throw new RuntimeException("TODO getPosts"); // TODO: posts
+    public void add(IncPost post) {
+        posts.add(post);
+    }
+
+    public String build(GlobalContext context) {
+        return build(context, false, false);
+    }
+
+    public String build(GlobalContext context, boolean index) {
+        return build(context, index, false);
+    }
+
+    public String build(GlobalContext context, boolean index, boolean isnoko50) {
+        final BoardModelFileboard board =
+                new BoardModelFileboard(context.boardModel);
+        final VimboardBoardSettings config = context.config;
+
+        final boolean hasnoko50 = (postCount() >= config.getNoko50Min());
+
+        /* TODO: CURRENT
+        event('show-thread', $this);
+
+        $file = ($index && $config['file_board']) ? 'post_thread_fileboard.html' : 'post_thread.html';
+        $built = Element($file, array('config' => $config, 'board' => $board, 'post' => &$this, 'index' => $index, 'hasnoko50' => $hasnoko50, 'isnoko50' => $isnoko50, 'mod' => $this->mod));
+
+        return $built;*/return null;// TODO: CURRENT
+    }
+
+    public List<IncPost> getPosts() {
+        throw new RuntimeException("TODO getPosts"); // TODO: CURRENT
+    }
+
+    public int postCount() {
+        return posts.size() + omitted;
+    }
+
+    public void setImages(int images) {
+        this.images = images;
+    }
+
+    public void setOmitted(int omitted) {
+        this.omitted = omitted;
+    }
+
+    public void setOmittedImages(int omittedImages) {
+        this.omittedImages = omittedImages;
+    }
+
+    public void setReplies(int replies) {
+        this.replies = replies;
+    }
+
+    public static String fixInternalLinks(String body,
+            String root, String boardPath, String boardRegex) {
+        final String[] pathParts = boardPath.split("\\{uri\\}");
+        for (int i = 0; i < pathParts.length; i++) {
+            if (Strings.isEmpty(pathParts[i])) {
+                continue;
+            }
+            pathParts[i] = Pattern.quote(pathParts[i]);
+        }
+        final String boardPathRegex = String.join(boardRegex, pathParts);
+
+        final String regex = "<a((([a-zA-Z]+=\"[^\"]+\")|[a-zA-Z]+=[a-zA-Z]+|\\s)*)href=\""
+                + Pattern.quote(root) + "(" + boardPathRegex + ")";
+        final String replacement = "<a$1href=\"?/$4";
+
+        return body.replaceAll(regex, replacement);
     }
 }

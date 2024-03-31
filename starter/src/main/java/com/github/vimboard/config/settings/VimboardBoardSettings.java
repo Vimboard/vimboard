@@ -19,12 +19,7 @@ public class VimboardBoardSettings {
 
     // Database settings
 
-    // Cache, lock and queue settings
-
-    /** {@link VimboardBoardProperties#getLock()} */
-    private VimboardLockSettings lock;
-    /** {@link VimboardBoardProperties#getQueue()} */
-    private VimboardQueueSettings queue;
+    // Cache, lock and queue settings TODO: вырезано
 
     // Cookie settings
 
@@ -50,7 +45,15 @@ public class VimboardBoardSettings {
 
     // Markup settings
 
+    /** {@link VimboardBoardProperties#getAlwaysRegenerateMarkup()} */
+    private Boolean alwaysRegenerateMarkup;
+
     // Image settings
+
+    /** {@link VimboardBoardProperties#getNoko50Count()} */
+    private Integer noko50Count;
+    /** {@link VimboardBoardProperties#getNoko50Min()} */
+    private Integer noko50Min;
 
     // Board settings
 
@@ -100,6 +103,13 @@ public class VimboardBoardSettings {
 
     // Video embedding
 
+    /** {@link VimboardBoardProperties#getEmbedding()} */
+    private String[][] embedding;
+    /** {@link VimboardBoardProperties#getEmbedWidth()} */
+    private Integer embedWidth;
+    /** {@link VimboardBoardProperties#getEmbedHeight()} */
+    private Integer embedHeight;
+
     // Error messages
 
     // Directory/file settings
@@ -137,6 +147,9 @@ public class VimboardBoardSettings {
 
     // Mod permissions
 
+    /** {@link VimboardBoardProperties#getFileBoard()} */
+    private Boolean fileBoard;
+
     // Create pages
 
     // Public pages
@@ -148,7 +161,7 @@ public class VimboardBoardSettings {
     /** {@link VimboardBoardProperties#getApi()} */
     private VimboardApiSettings api;
 
-    // NNTPChan settings
+    // NNTPChan settings TODO: вырезано
 
     // Other/uncategorized
 
@@ -195,42 +208,6 @@ public class VimboardBoardSettings {
      */
     public void setRedirectHttp(Short redirectHttp) {
         this.redirectHttp = redirectHttp;
-    }
-
-    /**
-     * Getter for {@link #lock}.
-     *
-     * @return field value.
-     */
-    public VimboardLockSettings getLock() {
-        return lock;
-    }
-
-    /**
-     * Setter for {@link #lock}.
-     *
-     * @param lock new field value.
-     */
-    public void setLock(VimboardLockSettings lock) {
-        this.lock = lock;
-    }
-
-    /**
-     * Getter for {@link #queue}.
-     *
-     * @return field value.
-     */
-    public VimboardQueueSettings getQueue() {
-        return queue;
-    }
-
-    /**
-     * Setter for {@link #queue}.
-     *
-     * @param queue new field value.
-     */
-    public void setQueue(VimboardQueueSettings queue) {
-        this.queue = queue;
     }
 
     /**
@@ -321,6 +298,60 @@ public class VimboardBoardSettings {
      */
     public void setBanAppeals(Boolean banAppeals) {
         this.banAppeals = banAppeals;
+    }
+
+    /**
+     * Getter for {@link #alwaysRegenerateMarkup}.
+     *
+     * @return field value.
+     */
+    public Boolean getAlwaysRegenerateMarkup() {
+        return alwaysRegenerateMarkup;
+    }
+
+    /**
+     * Setter for {@link #alwaysRegenerateMarkup}.
+     *
+     * @param alwaysRegenerateMarkup new field value.
+     */
+    public void setAlwaysRegenerateMarkup(Boolean alwaysRegenerateMarkup) {
+        this.alwaysRegenerateMarkup = alwaysRegenerateMarkup;
+    }
+
+    /**
+     * Getter for {@link #noko50Count}.
+     *
+     * @return field value.
+     */
+    public Integer getNoko50Count() {
+        return noko50Count;
+    }
+
+    /**
+     * Setter for {@link #noko50Count}.
+     *
+     * @param noko50Count new field value.
+     */
+    public void setNoko50Count(Integer noko50Count) {
+        this.noko50Count = noko50Count;
+    }
+
+    /**
+     * Getter for {@link #noko50Min}.
+     *
+     * @return field value.
+     */
+    public Integer getNoko50Min() {
+        return noko50Min;
+    }
+
+    /**
+     * Setter for {@link #noko50Min}.
+     *
+     * @param noko50Min new field value.
+     */
+    public void setNoko50Min(Integer noko50Min) {
+        this.noko50Min = noko50Min;
     }
 
     /**
@@ -648,6 +679,60 @@ public class VimboardBoardSettings {
     }
 
     /**
+     * Getter for {@link #embedding}.
+     *
+     * @return field value.
+     */
+    public String[][] getEmbedding() {
+        return embedding;
+    }
+
+    /**
+     * Setter for {@link #embedding}.
+     *
+     * @param embedding new field value.
+     */
+    public void setEmbedding(String[][] embedding) {
+        this.embedding = embedding;
+    }
+
+    /**
+     * Getter for {@link #embedWidth}.
+     *
+     * @return field value.
+     */
+    public Integer getEmbedWidth() {
+        return embedWidth;
+    }
+
+    /**
+     * Setter for {@link #embedWidth}.
+     *
+     * @param embedWidth new field value.
+     */
+    public void setEmbedWidth(Integer embedWidth) {
+        this.embedWidth = embedWidth;
+    }
+
+    /**
+     * Getter for {@link #embedHeight}.
+     *
+     * @return field value.
+     */
+    public Integer getEmbedHeight() {
+        return embedHeight;
+    }
+
+    /**
+     * Setter for {@link #embedHeight}.
+     *
+     * @param embedHeight new field value.
+     */
+    public void setEmbedHeight(Integer embedHeight) {
+        this.embedHeight = embedHeight;
+    }
+
+    /**
      * Getter for {@link #root}.
      *
      * @return field value.
@@ -861,6 +946,24 @@ public class VimboardBoardSettings {
      */
     public void setMod(VimboardModSettings mod) {
         this.mod = mod;
+    }
+
+    /**
+     * Getter for {@link #fileBoard}.
+     *
+     * @return field value.
+     */
+    public Boolean getFileBoard() {
+        return fileBoard;
+    }
+
+    /**
+     * Setter for {@link #fileBoard}.
+     *
+     * @param fileBoard new field value.
+     */
+    public void setFileBoard(Boolean fileBoard) {
+        this.fileBoard = fileBoard;
     }
 
     /**
