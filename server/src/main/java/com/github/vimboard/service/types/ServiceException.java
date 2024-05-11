@@ -1,4 +1,4 @@
-package com.github.vimboard.service;
+package com.github.vimboard.service.types;
 
 /**
  * TODO

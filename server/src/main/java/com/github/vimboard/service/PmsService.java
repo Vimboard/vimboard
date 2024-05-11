@@ -15,6 +15,8 @@ import org.springframework.web.util.HtmlUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.vimboard.service.FunctionsService.utf8ToHtml;
+
 @Service
 public class PmsService {
 
@@ -95,7 +97,7 @@ public class PmsService {
         }
 
         // Re-escape the characters.
-        return "<em>" + HtmlUtils.htmlEscape(body)
+        return "<em>" + utf8ToHtml(body)
                 + (strlen > len ? "&hellip;" : "") + "</em>";
     }
 }

@@ -9,6 +9,7 @@ import com.github.vimboard.domain.ModLog;
 import com.github.vimboard.model.ModModel;
 import com.github.vimboard.model.ModPermissionsModel;
 import com.github.vimboard.repository.ModLogRepository;
+import com.github.vimboard.service.types.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

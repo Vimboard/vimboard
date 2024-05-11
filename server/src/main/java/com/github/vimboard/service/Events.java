@@ -26,7 +26,7 @@ public class Events {
     /**
      * TODO: вызов события.
      */
-    public String event(String event, Object... args) throws ServiceException {
+    public String event(String event, Object... args) throws RuntimeException {
         List<IncEventHandler> handlers = events.get(event);
 
         if (event == null) {
@@ -35,7 +35,7 @@ public class Events {
 
         for (IncEventHandler h : handlers) {
             if (h == null) {
-                throw new ServiceException("Event handler for " + event + " is not callable!");
+                throw new RuntimeException("Event handler for " + event + " is not callable!");
             } else {
                 String error = h.call(args);
                 if (error != null) {

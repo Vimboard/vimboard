@@ -79,7 +79,7 @@ vimboard:
     cookies:
 
       # Make this something long and random for security.
-      salt: abcdefghijklmnopqrstuvwxyz09123456789!@#$%^&*()
+      salt: 'abcdefghijklmnopqrstuvwxyz09123456789!@#$%^&*()'
 
     # ------------------------------------------------------------------------
     # Flood/spam settings
@@ -91,6 +91,22 @@ vimboard:
     # ------------------------------------------------------------------------
     # Post settings
     # ------------------------------------------------------------------------
+
+    # Typically spambots try to post many links. Refuse a post with X links?
+    max-links: 20
+
+    # Maximum number of cites per post (prevents abuse, as more citations
+    # mean more database queries).
+    max-cites: 45
+
+    # Automatically convert things like "..." to Unicode characters ("…").
+    auto-unicode: true
+
+    # Whether to turn URLs into functional links.
+    markup-urls: true
+
+    # Optional URL prefix for links (eg. "http://anonym.to/?").
+    link-prefix: ''
 
     # Load all country flags from one file.
     country-flags-condensed: true
@@ -108,6 +124,28 @@ vimboard:
     # ------------------------------------------------------------------------
     # Markup settings
     # ------------------------------------------------------------------------
+
+    # "Wiki" markup syntax ($config['wiki_markup'] in pervious versions):
+    markup:
+      - - "'''(.+?)'''"
+        - '<strong>$1</strong>'
+      - - "''(.+?)''"
+        - '<em>$1</em>'
+      - - '\*\*(.+?)\*\*'
+        - '<span class="spoiler">$1</span>'
+      - - '(?m)^[ |\t]*==(.+?)==[ |\t]*$'
+        - '<span class="heading">$1</span>'
+
+    # Code markup. This should be set to a regular expression, using tags you
+    # want to use. Examples:
+    # '(?si)\[code\](.*?)\[\/code\]'
+    # '(?s)```([a-z0-9-]{0,20})\n(.*?)\n?```\n?'
+    markup-code: ''
+
+    # Repair markup with HTML Tidy. This may be slower, but it solves nesting
+    # mistakes. Tinyboad, at the time of writing this, can not prevent
+    # out-of-order markup tags (eg. "**''test**'') without help from HTML Tidy.
+    markup-repair-tidy: false
 
     # Always regenerate markup. This isn't recommended and should only be used
     # for debugging; by default, Tinyboard only parses post markup when it
@@ -146,7 +184,7 @@ vimboard:
     # How to display the URI of boards. Usually "/{uri}/" (/b/, /mu/, etc).
     # This doesn't change the URL. Find {@link #boardPath} if you wish to
     # change the URL.
-    board-abbreviation: "/{uri}/"
+    board-abbreviation: '/{uri}/'
 
     # Allow unfiltered HTML in board subtitle.
     # This is useful for placing icons and links.
@@ -158,17 +196,17 @@ vimboard:
 
     # The format string passed to string built-in for displaying dates.
     # https://freemarker.apache.org/docs/ref_builtins_date.html
-    post-date: "MM/dd/yy (EEE) HH:mm:ss"
+    post-date: 'MM/dd/yy (EEE) HH:mm:ss'
 
     # Custom stylesheets available for the user to choose.
     # See the "stylesheets/" folder for a list of available
     # stylesheets (or create your own).
     #
     stylesheets:
-      Yotsuba B: '' # Default; there is no additional/custom stylesheet for this.
-      Yotsuba: yotsuba.css
-#     Futaba: futaba.css
-#     Dark: dark.css
+      '[Yotsuba B]': '' # Default; there is no additional/custom stylesheet for this.
+      '[Yotsuba]': yotsuba.css
+#     '[Futaba]': futaba.css
+#     '[Dark]': dark.css
 
     # The prefix for each stylesheet URI. Defaults to {@link #root}/stylesheets/
 #   uri-stylesheets: http://static.example.org/stylesheets/
@@ -254,7 +292,7 @@ vimboard:
     # ------------------------------------------------------------------------
 
     # Custom embedding (YouTube, vimeo, etc.)
-	# It's very important that you match the entire input (with ^ and $)
+    # It's very important that you match the entire input (with ^ and $)
     # or things will not work correctly.
     embedding:
       - - '/^https?:\/\/(\w+\.)?youtube\.com\/watch\?v=([a-zA-Z0-9\-_]{10,11})(&.+)?$/i'
@@ -292,13 +330,14 @@ vimboard:
     file-index: index.html
 
     # Name of the page file.
-    file-page: "{no}.html" # NB: page is both an index page and a thread
+    # NB: page is both an index page and a thread
+    file-page: '{no}.html'
 
     # Name of the main script file.
     file-script: main.js
 
     # Board directory, followed by a forward-slash (/).
-    board-path: "{uri}/"
+    board-path: '{uri}/'
 
     dir:
 
@@ -480,7 +519,7 @@ vimboard:
     # Regex for board URIs. Don't add "`" character or any Unicode that MySQL
     # can't handle. 58 characters is the absolute maximum, because MySQL cannot
     # handle table names greater than 64 characters.
-    board-regex: "[0-9a-zA-Z$_\u0080-\uFFFF]{1,58}"
+    board-regex: '[0-9a-zA-Z$_\u0080-\uFFFF]{1,58}'
 
 
   # ==========================================================================

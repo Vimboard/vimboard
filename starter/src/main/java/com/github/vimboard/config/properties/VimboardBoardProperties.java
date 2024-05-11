@@ -57,6 +57,32 @@ public class VimboardBoardProperties {
     //------------------------------------------------------------------------
 
     /**
+     * Typically spambots try to post many links. Refuse a post with X links?
+     */
+    private Integer maxLinks;
+
+    /**
+     * Maximum number of cites per post (prevents abuse, as more citations
+     * mean more database queries).
+     */
+    private Integer maxCites;
+
+    /**
+     # Automatically convert things like "..." to Unicode characters ("…").
+     */
+    private Boolean autoUnicode;
+
+    /**
+     * Whether to turn URLs into functional links.
+     */
+    private Boolean markupUrls;
+
+    /**
+     * Optional URL prefix for links (eg. "http://anonym.to/?").
+     */
+    private String linkPrefix;
+
+    /**
      * Load all country flags from one file.
      */
     private Boolean countryFlagsCondensed;
@@ -79,10 +105,32 @@ public class VimboardBoardProperties {
     // Markup settings
     //------------------------------------------------------------------------
 
-    // Always regenerate markup. This isn't recommended and should only be used
-    // for debugging; by default, Tinyboard only parses post markup when it
-    // needs to, and keeps post-markup HTML in the database. This will
-    // significantly impact performance when enabled.
+    /**
+     * "Wiki" markup syntax ($config['wiki_markup'] in pervious versions)
+     */
+    private String[][] markup;
+
+    /**
+     * Code markup. This should be set to a regular expression, using tags you
+     * want to use. Examples:
+     * "(?si)\[code\](.*?)\[\/code\]"
+     * "(?s)```([a-z0-9-]{0,20})\n(.*?)\n?```\n?"
+     */
+    private String markupCode;
+
+    /**
+     * Repair markup with HTML Tidy. This may be slower, but it solves nesting
+     * mistakes. Tinyboad, at the time of writing this, can not prevent
+     * out-of-order markup tags (eg. "**''test**'') without help from HTML Tidy.
+     */
+    private Boolean markupRepairTidy;
+
+    /**
+     * Always regenerate markup. This isn't recommended and should only be used
+     * for debugging; by default, Tinyboard only parses post markup when it
+     * needs to, and keeps post-markup HTML in the database. This will
+     * significantly impact performance when enabled.
+     */
     private Boolean alwaysRegenerateMarkup;
 
     //------------------------------------------------------------------------
@@ -502,6 +550,106 @@ public class VimboardBoardProperties {
     }
 
     /**
+     * Getter for {@link #maxLinks}.
+     *
+     * @return field value.
+     */
+    public Integer getMaxLinks() {
+        return maxLinks;
+    }
+
+    /**
+     * Setter for {@link #maxLinks}.
+     *
+     * @param maxLinks new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setMaxLinks(Integer maxLinks) {
+        this.maxLinks = maxLinks;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #maxCites}.
+     *
+     * @return field value.
+     */
+    public Integer getMaxCites() {
+        return maxCites;
+    }
+
+    /**
+     * Setter for {@link #maxCites}.
+     *
+     * @param maxCites new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setMaxCites(Integer maxCites) {
+        this.maxCites = maxCites;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #autoUnicode}.
+     *
+     * @return field value.
+     */
+    public Boolean getAutoUnicode() {
+        return autoUnicode;
+    }
+
+    /**
+     * Setter for {@link #autoUnicode}.
+     *
+     * @param autoUnicode new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setAutoUnicode(Boolean autoUnicode) {
+        this.autoUnicode = autoUnicode;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #markupUrls}.
+     *
+     * @return field value.
+     */
+    public Boolean getMarkupUrls() {
+        return markupUrls;
+    }
+
+    /**
+     * Setter for {@link #markupUrls}.
+     *
+     * @param markupUrls new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setMarkupUrls(Boolean markupUrls) {
+        this.markupUrls = markupUrls;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #linkPrefix}.
+     *
+     * @return field value.
+     */
+    public String getLinkPrefix() {
+        return linkPrefix;
+    }
+
+    /**
+     * Setter for {@link #linkPrefix}.
+     *
+     * @param linkPrefix new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setLinkPrefix(String linkPrefix) {
+        this.linkPrefix = linkPrefix;
+        return this;
+    }
+
+    /**
      * Getter for {@link #countryFlagsCondensed}.
      *
      * @return field value.
@@ -558,6 +706,66 @@ public class VimboardBoardProperties {
      */
     public VimboardBoardProperties setBanAppeals(Boolean banAppeals) {
         this.banAppeals = banAppeals;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #markup}.
+     *
+     * @return field value.
+     */
+    public String[][] getMarkup() {
+        return markup;
+    }
+
+    /**
+     * Setter for {@link #markup}.
+     *
+     * @param markup new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setMarkup(String[][] markup) {
+        this.markup = markup;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #markupCode}.
+     *
+     * @return field value.
+     */
+    public String getMarkupCode() {
+        return markupCode;
+    }
+
+    /**
+     * Setter for {@link #markupCode}.
+     *
+     * @param markupCode new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setMarkupCode(String markupCode) {
+        this.markupCode = markupCode;
+        return this;
+    }
+
+    /**
+     * Getter for {@link #markupRepairTidy}.
+     *
+     * @return field value.
+     */
+    public Boolean getMarkupRepairTidy() {
+        return markupRepairTidy;
+    }
+
+    /**
+     * Setter for {@link #markupRepairTidy}.
+     *
+     * @param markupRepairTidy new field value.
+     * @return {@code this}.
+     */
+    public VimboardBoardProperties setMarkupRepairTidy(Boolean markupRepairTidy) {
+        this.markupRepairTidy = markupRepairTidy;
         return this;
     }
 

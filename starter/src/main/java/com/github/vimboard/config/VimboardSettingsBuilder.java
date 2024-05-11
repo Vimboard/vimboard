@@ -8,6 +8,7 @@ import com.github.vimboard.domain.Group;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.github.vimboard.config.SettingsBuilder.throwInvalidProperty;
 
@@ -55,7 +56,7 @@ public class VimboardSettingsBuilder {
 
         vimboardSettings.setRunAsCli(runAsCli);
 
-        vimboardSettings.setWww(VimboardVersion.get());
+        vimboardSettings.setWww(VimboardEnv.getVersion());
     }
 
     /**
@@ -107,6 +108,7 @@ public class VimboardSettingsBuilder {
         sb.put("allowSubtitleHtml", false);
         sb.put("alwaysRegenerateMarkup", false);
         sb.put("api", buildApiSettings(null, boardUri), this::convertApi);
+        sb.put("autoUnicode", true);
         sb.put("banAppeals", false);
         sb.put("boardAbbreviation", "/{uri}/");
         sb.put("boardPath", "{uri}/");
@@ -154,6 +156,30 @@ public class VimboardSettingsBuilder {
                 GenerationStrategy.STRATEGY_SANE,
                 GenerationStrategy.STRATEGY_IMMEDIATE
         });
+        sb.put("linkPrefix", "");
+        sb.put("markup", new String[][] {
+                {
+                    "'''(.+?)'''",
+                    "<strong>$1</strong>"
+                },
+                {
+                    "''(.+?)''",
+                    "<em>$1</em>"
+                },
+                {
+                    "\\*\\*(.+?)\\*\\*",
+                    "<span class=\"spoiler\">$1</span>"
+                },
+                {
+                    "(?m)^[ |\\t]*==(.+?)==[ |\\t]*$",
+                    "<span class=\"heading\">$1</span>"
+                }
+        });
+        sb.put("markupCode", "");
+        sb.put("markupRepairTidy", false);
+        sb.put("markupUrls", true);
+        sb.put("maxCites", 45);
+        sb.put("maxLinks", 20);
         sb.put("maxPages", 10);
         sb.put("metaKeywords", null);
         sb.put("minifyHtml", true);

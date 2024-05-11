@@ -3,6 +3,7 @@ package com.github.vimboard.controller.context;
 import com.github.vimboard.config.settings.VimboardBoardSettings;
 import com.github.vimboard.domain.Board;
 import com.github.vimboard.model.BoardModel;
+import com.github.vimboard.service.Events;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class GlobalContext {
 
     /** Custom board config. */
     public VimboardBoardSettings config;
+
+    /** Events service. */
+    public Events events;
 
     /** Handler context */
     public HandlerContext handlerContext;
@@ -70,6 +74,17 @@ public class GlobalContext {
      */
     public GlobalContext setConfig(VimboardBoardSettings config) {
         this.config = config;
+        return this;
+    }
+
+    /**
+     * Setter for {@link #events}.
+     *
+     * @param events new field value.
+     * @return {@code this}.
+     */
+    public GlobalContext setEvents(Events events) {
+        this.events = events;
         return this;
     }
 

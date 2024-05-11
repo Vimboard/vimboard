@@ -1,4 +1,4 @@
-package com.github.vimboard.service;
+package com.github.vimboard.service.types;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;

@@ -12,6 +12,8 @@ import com.github.vimboard.page.Page;
 import com.github.vimboard.page.mod.*;
 import com.github.vimboard.repository.*;
 import com.github.vimboard.service.*;
+import com.github.vimboard.service.types.BodyRef;
+import com.github.vimboard.service.types.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,6 @@ import java.util.regex.Pattern;
 
 import static com.github.vimboard.controller.ModController.UriPatternType.SECURED;
 import static com.github.vimboard.controller.ModController.UriPatternType.SECURED_POST;
-import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
 @Controller
 @RequestMapping("/mod.php")
@@ -82,7 +83,8 @@ public class ModController extends AbstractController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final DebugService debugService;
-    private final Functions functions;
+    private final Events events;
+    private final FunctionsService functionsService;
     private final ModLogService modLogService;
     private final ModRepository modRepository;
     private final ModService modService;
@@ -102,7 +104,8 @@ public class ModController extends AbstractController {
             BoardRepository boardRepository,
             BoardService boardService,
             DebugService debugService,
-            Functions functions,
+            Events events,
+            FunctionsService functionsService,
             ModLogService modLogService,
             ModRepository modRepository,
             ModService modService,
@@ -116,7 +119,8 @@ public class ModController extends AbstractController {
         this.boardRepository = boardRepository;
         this.boardService = boardService;
         this.debugService = debugService;
-        this.functions = functions;
+        this.events = events;
+        this.functionsService = functionsService;
         this.modLogService = modLogService;
         this.modRepository = modRepository;
         this.modService = modService;
@@ -365,12 +369,14 @@ public class ModController extends AbstractController {
 
             // TODO: error 'Your filesystem cannot handle a board URI of that length'
 
-            final GlobalContext globalContext = new GlobalContext() // TODO: refactor (move)
-                    .setHandlerContext(ctx)
-                    .setUri(uri);
+            final FunctionsService.Functions f = functionsService.create(
+                    new GlobalContext() // TODO: refactor (move)
+                            .setEvents(events)
+                            .setHandlerContext(ctx)
+                            .setUri(uri));
 
             try {
-                if (functions.openBoard(globalContext)) {
+                if (f.openBoard()) {
                     return error(ctx.put("message",
                             i18n("error.boardexists", uri)));
                 }
@@ -384,7 +390,7 @@ public class ModController extends AbstractController {
                     .getAll().getBoardAbbreviation().replace("{uri}", uri));
 
             try {
-                if (!functions.openBoard(globalContext)) {
+                if (!f.openBoard()) {
                     return error(ctx.put("message",
                             i18n("error.boardnotcreated", uri)));
                 }
@@ -397,7 +403,7 @@ public class ModController extends AbstractController {
             // TODO ^^^^^^^^^^^^^^
 
             // Build the board
-            functions.buildIndex(globalContext); // TODO: CURRENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            f.buildIndex(); // TODO: CURRENT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
             // rebuildThemes('boards'); TODO: NEXT =======
 
@@ -444,8 +450,18 @@ public class ModController extends AbstractController {
         String message = ctx.request.getParameter("message");
         if (ctx.request.getMethod().equals("POST")
                 && message != null) {
-            message = Functions.escapeMarkupModifiers(message);
-            message = Functions.markup(message);
+            final FunctionsService.Functions f = functionsService.create(
+                    new GlobalContext() // TODO: refactor (move)
+                            .setHandlerContext(ctx));
+
+            message = f.escapeMarkupModifiers(message);
+            BodyRef bodyRef = new BodyRef(message);
+            try {
+                f.markup(bodyRef);
+            } catch (ServiceException ex) {
+                return error(ctx.put("message", i18n(ex.getMessage())));
+            }
+            message = bodyRef.body;
 
             pmsRepository.create(new Pms()
                     .setSender(modModel.getId())
@@ -454,7 +470,7 @@ public class ModController extends AbstractController {
                     .setTime(new Date()));
 
             securityService.log(ctx,
-                    "Sent a PM to " + htmlEscape(m.getUsername()));
+                    "Sent a PM to " + f.utf8ToHtml(m.getUsername()));
 
             return redirectToDashboard(ctx.request, null);
         }
@@ -529,6 +545,9 @@ public class ModController extends AbstractController {
     }
 
     private String user(HandlerContext ctx) {
+        final FunctionsService.Functions f = functionsService.create(
+                new GlobalContext()); // TODO: refactor (move)
+
         final ModModel modModel = ctx.modModel;
         final int userId = Integer.parseInt(ctx.matcher.group(1));
         final String username = ctx.request.getParameter("username");
@@ -579,7 +598,7 @@ public class ModController extends AbstractController {
                 }
                 modRepository.drop(userId);
                 securityService.log(ctx, "Deleted user "
-                        + htmlEscape(user.getUsername())
+                        + f.utf8ToHtml(user.getUsername())
                         + " <small>(#" + user.getId() + ")</small>");
                 return redirectToDashboard(ctx.request, "/users");
             }
@@ -593,15 +612,15 @@ public class ModController extends AbstractController {
 
             if (!user.getUsername().equals(username)) {
                 securityService.log(ctx, "Renamed user \""
-                        + htmlEscape(user.getUsername())
+                        + f.utf8ToHtml(user.getUsername())
                         + "\" <small>(#" + user.getId() + ")</small>"
-                        + " to \"" + htmlEscape(username) + "\"");
+                        + " to \"" + f.utf8ToHtml(username) + "\"");
             }
 
             if (!password.isEmpty()) {
                 modRepository.changePassword(userId, password);
                 securityService.log(ctx, "Changed password for "
-                        + htmlEscape(username)
+                        + f.utf8ToHtml(username)
                         + " <small>(#" + user.getId() + ")</small>");
             }
 
@@ -651,6 +670,9 @@ public class ModController extends AbstractController {
     }
 
     private String userNew(HandlerContext ctx) {
+        final FunctionsService.Functions f = functionsService.create(
+                new GlobalContext()); // TODO: refactor (move)
+
         final ModModel modModel = ctx.modModel;
         final String username = ctx.request.getParameter("username");
         final String password = ctx.request.getParameter("password");
@@ -707,7 +729,7 @@ public class ModController extends AbstractController {
             final Mod user = modRepository.findByName(username);
 
             securityService.log(ctx, "Created a new user: "
-                    + htmlEscape(username)
+                    + f.utf8ToHtml(username)
                     + " <small>(#" + user.getId() + ")</small>");
 
             return redirectToDashboard(ctx.request, "/users");
@@ -723,6 +745,9 @@ public class ModController extends AbstractController {
     }
 
     private String userPromote(HandlerContext ctx) {
+        final FunctionsService.Functions f = functionsService.create(
+                new GlobalContext()); // TODO: refactor (move)
+
         final ModModel modModel = ctx.modModel;
         final int userId = Integer.parseInt(ctx.matcher.group(1));
         final boolean isPromote = ctx.matcher.group(2).equals("promote");
@@ -746,7 +771,7 @@ public class ModController extends AbstractController {
         modRepository.alterType(userId, newType);
 
         securityService.log(ctx, (isPromote ? "Promoted" : "Demoted")
-                + " user \"" + htmlEscape(mod.getUsername())
+                + " user \"" + f.utf8ToHtml(mod.getUsername())
                 + "\" to " + newType.toString());
 
         return redirectToDashboard(ctx.request, "/users");

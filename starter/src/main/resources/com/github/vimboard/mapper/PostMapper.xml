@@ -3,6 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.vimboard.mapper.PostMapper">
 
+    <select id="listCitedPosts" resultType="com.github.vimboard.domain.CitedPost">
+        SELECT
+            id,
+            thread
+        FROM vmb.posts_#{uri}
+        WHERE id IN
+        <foreach item="item" index="index" collection="cites"
+                 open="(" separator=", " close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <select id="listPosts" resultType="com.github.vimboard.domain.Post">
         SELECT
             id,

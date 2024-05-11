@@ -5,28 +5,30 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Application version based on pom.xml project version.
+ * Application environment based on pom.xml variables.
  */
-class VimboardVersion {
+class VimboardEnv {
 
-    private static final String VERSION_PROPERTIES_FILE = "com/github/vimboard/config/VimboardVersion.properties";
+    private static final String ENV_PROPERTIES_FILE = "com/github/vimboard/config/VimboardEnv.properties";
 
+    private static final String basedir;
     private static final String version;
 
     static {
-        InputStream is = VimboardVersion.class.getClassLoader()
-                .getResourceAsStream(VERSION_PROPERTIES_FILE);
+        InputStream is = VimboardEnv.class.getClassLoader()
+                .getResourceAsStream(ENV_PROPERTIES_FILE);
         if (is != null) {
             Properties p = new Properties();
             try {
                 p.load(is);
+                basedir = p.getProperty("basedir");
                 version = p.getProperty("version");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         } else {
             throw new RuntimeException("Property file '"
-                    + VERSION_PROPERTIES_FILE
+                    + ENV_PROPERTIES_FILE
                     + "' not found in the classpath.");
         }
     }
@@ -36,7 +38,16 @@ class VimboardVersion {
      *
      * @return string, contains application version.
      */
-    static String get() {
+    static String getBasedir() {
+        return basedir;
+    }
+
+    /**
+     * Returns application version.
+     *
+     * @return string, contains application version.
+     */
+    static String getVersion() {
         return version;
     }
 }

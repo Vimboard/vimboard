@@ -1,7 +1,9 @@
 package com.github.vimboard.inc.display;
 
 import com.github.vimboard.config.settings.VimboardBoardSettings;
+import com.github.vimboard.controller.context.GlobalContext;
 import com.github.vimboard.domain.Post;
+import com.github.vimboard.service.FunctionsService;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +11,8 @@ import java.util.regex.PatternSyntaxException;
 
 public class IncPost {
 
-    protected final VimboardBoardSettings config;
+    protected final GlobalContext global;
+    protected final FunctionsService.Functions f;
 
     protected long id;
     protected Long thread;
@@ -39,23 +42,26 @@ public class IncPost {
     /**
      * TODO: IncThread пока создаётся самостоятельно. Объеденить позже.
      */
-    public IncPost(VimboardBoardSettings config) {
-        this.config = config;
+    public IncPost(FunctionsService.Functions f) {
+        this.f = f;
+        this.global = f.global;
     }
 
-    public IncPost(VimboardBoardSettings config, Post post) {
-        this(config, post, null, false);
+    public IncPost(FunctionsService.Functions f, Post post) {
+        this(f, post, null, false);
     }
 
-    public IncPost(VimboardBoardSettings config, Post post, String root) {
-        this(config, post, root, false);
+    public IncPost(FunctionsService.Functions f, Post post, String root) {
+        this(f, post, root, false);
     }
 
-    public IncPost(VimboardBoardSettings config, Post post, String root, boolean mod) {
-        this(config);
+    public IncPost(FunctionsService.Functions f, Post post, String root, boolean mod) {
+        this(f);
     }
 
     public String embedHtml(String link) {
+        final VimboardBoardSettings config = global.config;
+
         for (String[] embed : config.getEmbedding()) {
             // TODO: embed[0] - pattern
             // TODO: embed[1] - template
@@ -79,12 +85,12 @@ public class IncPost {
 
         }
 
-    	if (link.charAt(0) == '<') {
-    		// Prior to v0.9.6-dev-8, HTML code for embedding was stored in the database instead of the link.
-    		return link;
-    	}
+        if (link.charAt(0) == '<') {
+            // Prior to v0.9.6-dev-8, HTML code for embedding was stored in the database instead of the link.
+            return link;
+        }
 
-    	return "Embedding error.";
+        return "Embedding error.";
     }
 
     //------------------------------------------------------------------------

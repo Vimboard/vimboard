@@ -1,5 +1,6 @@
 package com.github.vimboard.service;
 
+import com.github.vimboard.service.types.SecurityUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

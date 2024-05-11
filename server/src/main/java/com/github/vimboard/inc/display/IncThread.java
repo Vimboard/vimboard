@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.vimboard.config.settings.VimboardBoardSettings;
 import com.github.vimboard.controller.context.GlobalContext;
 import com.github.vimboard.domain.Post;
-import com.github.vimboard.model.BoardModelFileboard;
-import com.github.vimboard.service.Functions;
+import com.github.vimboard.service.FunctionsService;
+import com.github.vimboard.service.types.BodyRef;
+import com.github.vimboard.service.types.ServiceException;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +16,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
 public class IncThread extends IncPost {
 
@@ -32,20 +31,21 @@ public class IncThread extends IncPost {
     private int images;
     private int replies;
 
-    public IncThread(VimboardBoardSettings config, Post post) {
-        this(config, post, null, false, true);
+    public IncThread(FunctionsService.Functions f, Post post) throws ServiceException {
+        this(f, post, null, false, true);
     }
 
-    public IncThread(VimboardBoardSettings config, Post post, String root) {
-        this(config, post, root, false, true);
+    public IncThread(FunctionsService.Functions f, Post post, String root) throws ServiceException {
+        this(f, post, root, false, true);
     }
 
-    public IncThread(VimboardBoardSettings config, Post post, String root, boolean mod) {
-        this(config, post, root, mod, true);
+    public IncThread(FunctionsService.Functions f, Post post, String root, boolean mod) throws ServiceException {
+        this(f, post, root, mod, true);
     }
 
-    public IncThread(VimboardBoardSettings config, Post post, String root, boolean mod, boolean hr) {
-        super(config);
+    public IncThread(FunctionsService.Functions f, Post post, String root, boolean mod, boolean hr) throws ServiceException {
+        super(f);
+        final VimboardBoardSettings config = global.config;
 
         if (root == null) {
             root = config.getRoot();
@@ -78,8 +78,8 @@ public class IncThread extends IncPost {
             }
         }
 
-        setSubject(htmlEscape(post.getSubject()));
-        setName(htmlEscape(post.getName()));
+        setSubject(f.utf8ToHtml(post.getSubject()));
+        setName(f.utf8ToHtml(post.getName()));
         this.mod = mod;
         this.root = root;
         this.hr = hr;
@@ -92,11 +92,13 @@ public class IncThread extends IncPost {
             setEmbed(embedHtml(post.getEmbed()));
         }
 
-        setModifiers(Functions.extractModifiers(getBodyNomarkup()));
+        setModifiers(f.extractModifiers(getBodyNomarkup()));
 
         if (config.getAlwaysRegenerateMarkup()) {
             setBody(getBodyNomarkup());
-            Functions.markup($this->body);
+            BodyRef bodyRef = new BodyRef(getBody());
+            f.markup(bodyRef); // TODO: CURRENT ================================================
+            setBody(bodyRef.body);
         }
 
         if (this.mod) {
@@ -113,32 +115,33 @@ public class IncThread extends IncPost {
         posts.add(post);
     }
 
-    public String build(GlobalContext context) {
-        return build(context, false, false);
+    public String build(GlobalContext global) {
+        return build(global, false, false);
     }
 
-    public String build(GlobalContext context, boolean index) {
-        return build(context, index, false);
+    public String build(GlobalContext global, boolean index) {
+        return build(global, index, false);
     }
 
-    public String build(GlobalContext context, boolean index, boolean isnoko50) {
-        final BoardModelFileboard board =
-                new BoardModelFileboard(context.boardModel);
-        final VimboardBoardSettings config = context.config;
-
-        final boolean hasnoko50 = (postCount() >= config.getNoko50Min());
-
-        /* TODO: CURRENT
-        event('show-thread', $this);
-
-        $file = ($index && $config['file_board']) ? 'post_thread_fileboard.html' : 'post_thread.html';
-        $built = Element($file, array('config' => $config, 'board' => $board, 'post' => &$this, 'index' => $index, 'hasnoko50' => $hasnoko50, 'isnoko50' => $isnoko50, 'mod' => $this->mod));
-
-        return $built;*/return null;// TODO: CURRENT
+    public String build(GlobalContext global, boolean index, boolean isnoko50) {
+//        final BoardModelFileboard board =
+//                new BoardModelFileboard(global.boardModel);
+//        final VimboardBoardSettings config = global.config;
+//
+//        final boolean hasnoko50 = (postCount() >= config.getNoko50Min());
+//
+//        global.events.event("show-thread", this);
+//
+//        String file = (index && config.getFileBoard())
+//                ? "post_thread_fileboard.html" : "post_thread.html";
+//        $built = Element($file, array('config' => $config, 'board' => $board, 'post' => &$this, 'index' => $index, 'hasnoko50' => $hasnoko50, 'isnoko50' => $isnoko50, 'mod' => $this->mod));
+//
+//        return $built;
+        return null; // TODO: remove ==============================================
     }
 
     public List<IncPost> getPosts() {
-        throw new RuntimeException("TODO getPosts"); // TODO: CURRENT
+        throw new RuntimeException("TODO getPosts"); // TODO: CURRENT ================================================
     }
 
     public int postCount() {

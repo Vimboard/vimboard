@@ -66,6 +66,15 @@
                 </excludes>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+<!--                <targetPath>com/github/vimboard/config</targetPath>-->
+                <directory>${project.basedir}/../common/config</directory>
+                <includes>
+                    <include>application-template.yml</include>
+                </includes>
+            </testResource>
+        </testResources>
     </build>
 
 </project>

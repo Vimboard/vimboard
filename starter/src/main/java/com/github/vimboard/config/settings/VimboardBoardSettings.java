@@ -33,6 +33,16 @@ public class VimboardBoardSettings {
 
     // Post settings
 
+    /** {@link VimboardBoardProperties#getMaxLinks()} */
+    private Integer maxLinks;
+    /** {@link VimboardBoardProperties#getMaxCites()} */
+    private Integer maxCites;
+    /** {@link VimboardBoardProperties#getAutoUnicode()} */
+    private Boolean autoUnicode;
+    /** {@link VimboardBoardProperties#getMarkupUrls()} */
+    private Boolean markupUrls;
+    /** {@link VimboardBoardProperties#getLinkPrefix()} */
+    private String linkPrefix;
     /** {@link VimboardBoardProperties#getCountryFlagsCondensed()} */
     private Boolean countryFlagsCondensed;
     /** {@link VimboardBoardProperties#getCountryFlagsCondensedCss()} */
@@ -45,6 +55,12 @@ public class VimboardBoardSettings {
 
     // Markup settings
 
+    /** {@link VimboardBoardProperties#getMarkup()} ()} */
+    private String[][] markup;
+    /** {@link VimboardBoardProperties#getMarkupCode()} ()} */
+    private String markupCode;
+    /** {@link VimboardBoardProperties#getMarkupRepairTidy()} */
+    private Boolean markupRepairTidy;
     /** {@link VimboardBoardProperties#getAlwaysRegenerateMarkup()} */
     private Boolean alwaysRegenerateMarkup;
 
@@ -247,6 +263,96 @@ public class VimboardBoardSettings {
     }
 
     /**
+     * Getter for {@link #maxLinks}.
+     *
+     * @return field value.
+     */
+    public Integer getMaxLinks() {
+        return maxLinks;
+    }
+
+    /**
+     * Setter for {@link #maxLinks}.
+     *
+     * @param maxLinks new field value.
+     */
+    public void setMaxLinks(Integer maxLinks) {
+        this.maxLinks = maxLinks;
+    }
+
+    /**
+     * Getter for {@link #maxCites}.
+     *
+     * @return field value.
+     */
+    public Integer getMaxCites() {
+        return maxCites;
+    }
+
+    /**
+     * Setter for {@link #maxCites}.
+     *
+     * @param maxCites new field value.
+     */
+    public void setMaxCites(Integer maxCites) {
+        this.maxCites = maxCites;
+    }
+
+    /**
+     * Getter for {@link #autoUnicode}.
+     *
+     * @return field value.
+     */
+    public Boolean getAutoUnicode() {
+        return autoUnicode;
+    }
+
+    /**
+     * Setter for {@link #autoUnicode}.
+     *
+     * @param autoUnicode new field value.
+     */
+    public void setAutoUnicode(Boolean autoUnicode) {
+        this.autoUnicode = autoUnicode;
+    }
+
+    /**
+     * Getter for {@link #markupUrls}.
+     *
+     * @return field value.
+     */
+    public Boolean getMarkupUrls() {
+        return markupUrls;
+    }
+
+    /**
+     * Setter for {@link #markupUrls}.
+     *
+     * @param markupUrls new field value.
+     */
+    public void setMarkupUrls(Boolean markupUrls) {
+        this.markupUrls = markupUrls;
+    }
+
+    /**
+     * Getter for {@link #linkPrefix}.
+     *
+     * @return field value.
+     */
+    public String getLinkPrefix() {
+        return linkPrefix;
+    }
+
+    /**
+     * Setter for {@link #linkPrefix}.
+     *
+     * @param linkPrefix new field value.
+     */
+    public void setLinkPrefix(String linkPrefix) {
+        this.linkPrefix = linkPrefix;
+    }
+
+    /**
      * Getter for {@link #countryFlagsCondensed}.
      *
      * @return field value.
@@ -298,6 +404,60 @@ public class VimboardBoardSettings {
      */
     public void setBanAppeals(Boolean banAppeals) {
         this.banAppeals = banAppeals;
+    }
+
+    /**
+     * Getter for {@link #markup}.
+     *
+     * @return field value.
+     */
+    public String[][] getMarkup() {
+        return markup;
+    }
+
+    /**
+     * Setter for {@link #markup}.
+     *
+     * @param markup new field value.
+     */
+    public void setMarkup(String[][] markup) {
+        this.markup = markup;
+    }
+
+    /**
+     * Getter for {@link #markupCode}.
+     *
+     * @return field value.
+     */
+    public String getMarkupCode() {
+        return markupCode;
+    }
+
+    /**
+     * Setter for {@link #markupCode}.
+     *
+     * @param markupCode new field value.
+     */
+    public void setMarkupCode(String markupCode) {
+        this.markupCode = markupCode;
+    }
+
+    /**
+     * Getter for {@link #markupRepairTidy}.
+     *
+     * @return field value.
+     */
+    public Boolean getMarkupRepairTidy() {
+        return markupRepairTidy;
+    }
+
+    /**
+     * Setter for {@link #markupRepairTidy}.
+     *
+     * @param markupRepairTidy new field value.
+     */
+    public void setMarkupRepairTidy(Boolean markupRepairTidy) {
+        this.markupRepairTidy = markupRepairTidy;
     }
 
     /**
