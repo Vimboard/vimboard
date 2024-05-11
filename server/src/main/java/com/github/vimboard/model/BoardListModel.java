@@ -5,6 +5,10 @@ package com.github.vimboard.model;
  */
 public class BoardListModel {
 
+    protected Object f;
+
+
+
     /**
      * String containing html for the top bar.
      */

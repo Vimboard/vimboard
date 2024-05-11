@@ -14,6 +14,7 @@ import com.github.vimboard.model.GenerationAction;
 import com.github.vimboard.repository.BoardRepository;
 import com.github.vimboard.repository.PostRepository;
 import com.github.vimboard.service.types.BodyRef;
+import com.github.vimboard.service.types.PostLF;
 import com.github.vimboard.service.types.ServiceException;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -558,14 +559,17 @@ public class FunctionsService {
                     }
 
                     if (citedPosts.get(cite) != null) {
-                        $replacement = "<a onclick=\"highlightReply('" + $cite + "', event);\" href=\""
+                        final Map<String, Object> post = new HashMap<>();
+                        post.put("id", cite);
+                        post.put("thread", citedPosts.get(cite));
+
+                        final String replacement = "<a onclick=\"highlightReply('" + cite + "', event);\" href=\""
                                 + config.getRoot() + board.getDir() + config.getDir().getRes()
-                                + link_for(array('id' => $cite, 'thread' => $cited_posts[$cite])) . '#' . $cite . '">' . //TODO <<---------------
-                                '&gt;&gt;' . $cite .
-                                '</a>';
+                                + linkFor(post) + "#" + cite + "\">" +
+                                "&gt;&gt;" + cite +
+                                "</a>";
 
-
-                        $body = mb_substr_replace($body, $matches[1][0].$replacement.$matches[3][0], $matches[0][1] + $skip_chars, mb_strlen($matches[0][0]));
+                        $body = mb_substr_replace($body, $matches[1][0] + $replacement + $matches[3][0], $matches[0][1] + $skip_chars, mb_strlen($matches[0][0]));
                         $skip_chars += mb_strlen($matches[1][0].$replacement.$matches[3][0]) - mb_strlen($matches[0][0]);
 
                         if ($track_cites && $config['track_cites'])
@@ -750,6 +754,70 @@ public class FunctionsService {
 
         public String utf8ToHtml(String string) {
             return htmlEscape(string);
+        }
+
+        public String linkFor(Map<String, Object> post) {
+            return linkFor(post, false, null, false);
+        }
+
+        public String linkFor(Map<String, Object> post, boolean page50) {
+            return linkFor(post, page50, null, false);
+        }
+
+        public String linkFor(Map<String, Object> post, boolean page50,
+                Board foreignlink) {
+            return linkFor(post, page50, foreignlink, false);
+        }
+
+        public String linkFor(PostLF post, boolean page50,
+                Board foreignlink, boolean thread) {
+            final BoardModel board = global.boardModel;
+            final VimboardBoardSettings config =
+                    settings.getCustom(board.getUri());
+
+            // Where do we need to look for OP?
+            Board b = foreignlink != null
+                    ? foreignlink
+                    : (post.getBoard() != null)
+                            ? new Board().setUri((String) post.getBoard())
+                            : board;
+
+            id = (post.get("thread") != null && post.get("thread")) ? post.get("thread") : post.get("id");
+
+            $slug = false;
+
+            if ($config['slugify'] && ( (isset($post['thread']) && $post['thread']) || !isset ($post['slug']) ) ) {
+                $cvar = "slug_".$b['uri']."_".$id;
+                if (!$thread) {
+                    $slug = Cache::get($cvar);
+
+                    if ($slug === false) {
+                        $query = prepare(sprintf("SELECT `slug` FROM ``posts_%s`` WHERE `id` = :id", $b['uri']));
+                        $query->bindValue(':id', $id, PDO::PARAM_INT);
+                        $query->execute() or error(db_error($query));
+
+                        $thread = $query->fetch(PDO::FETCH_ASSOC);
+
+                        $slug = $thread['slug'];
+
+                        Cache::set($cvar, $slug);
+                    }
+                }
+                else {
+                    $slug = $thread['slug'];
+                }
+            }
+            elseif ($config['slugify']) {
+                $slug = $post['slug'];
+            }
+
+
+            if ( $page50 &&  $slug)  $tpl = $config['file_page50_slug'];
+            else if (!$page50 &&  $slug)  $tpl = $config['file_page_slug'];
+            else if ( $page50 && !$slug)  $tpl = $config['file_page50'];
+            else if (!$page50 && !$slug)  $tpl = $config['file_page'];
+
+            return sprintf($tpl, $id, $slug);
         }
 
         /**
